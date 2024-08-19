@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rental Listings</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
     <style>
         .filter-form {
             margin-bottom: 20px;
@@ -15,12 +16,6 @@
 </head>
 <body>
     <h1>Rental Listings</h1>
-    <form class="filter-form" id="filter-form">
-        <input type="text" id="filter-price" placeholder="Price (e.g., $1200/month)">
-        <input type="text" id="filter-street" placeholder="Street (e.g., Elm St)">
-        <input type="text" id="filter-district" placeholder="District (e.g., Springfield)">
-        <button type="button" onclick="applyFilters()">Apply Filters</button>
-    </form>
     <div id="listings"></div>
 
     <!-- Link to the JavaScript file -->
