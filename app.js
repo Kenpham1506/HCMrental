@@ -2,8 +2,6 @@ const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s';
 const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE';
 const RANGE = 'Sheet1!A2:H'; // Adjust the range to include Host, Phone Number, Email
 
-let listings = [];
-
 function fetchListings() {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
 
@@ -15,17 +13,17 @@ function fetchListings() {
             return response.json();
         })
         .then(data => {
-            listings = data.values;
+            const listings = data.values;
             displayListings(listings);
         })
         .catch(error => console.error('Error fetching data:', error));
 }
 
-function displayListings(listingsToDisplay) {
+function displayListings(listings) {
     const listingsContainer = document.getElementById('listings');
     listingsContainer.innerHTML = '';
 
-    listingsToDisplay.forEach((listing, index) => {
+    listings.forEach((listing, index) => {
         const [name, address, price, imageUrl, description, host, phoneNumber, email] = listing;
 
         const listingDiv = document.createElement('div');
@@ -48,26 +46,6 @@ function displayListings(listingsToDisplay) {
 
         listingsContainer.appendChild(listingDiv);
     });
-}
-
-function applyFilters() {
-    const priceFilter = document.getElementById('filter-price').value.toLowerCase();
-    const streetFilter = document.getElementById('filter-street').value.toLowerCase();
-    const districtFilter = document.getElementById('filter-district').value.toLowerCase();
-
-    const filteredListings = listings.filter(listing => {
-        const [name, address, price] = listing;
-        const street = address ? address.toLowerCase().split(',')[0] : ''; // Extract street from address
-        const district = address ? address.toLowerCase().split(',')[1] : ''; // Extract district from address
-
-        return (
-            (priceFilter === '' || (price && price.toLowerCase().includes(priceFilter))) &&
-            (streetFilter === '' || street.includes(streetFilter)) &&
-            (districtFilter === '' || district.includes(districtFilter))
-        );
-    });
-
-    displayListings(filteredListings);
 }
 
 document.addEventListener('DOMContentLoaded', fetchListings);
