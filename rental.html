@@ -3,54 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rental Details</title>
+    <title>Rental Detail</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Rental Details</h1>
-    <div id="rental-details"></div>
+    <header>
+        <h1>Rental Details</h1>
+    </header>
 
-    <script>
-        const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s';
-        const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE';
-        const RANGE = 'Sheet1!A2:H'; // Adjust the range to include Host, Phone Number, Email
+    <main>
+        <div id="rental-detail"></div>
+        <button onclick="window.history.back()">Back to Listings</button>
+    </main>
 
-        function fetchRentalDetails() {
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+    <footer>
+        <p>&copy; 2024 Rental Listings</p>
+    </footer>
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const listings = data.values;
-                    const queryParams = new URLSearchParams(window.location.search);
-                    const id = queryParams.get('id');
-                    const rental = listings[id];
-
-                    if (rental) {
-                        displayRentalDetails(rental);
-                    } else {
-                        document.getElementById('rental-details').innerHTML = 'Rental not found.';
-                    }
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        }
-
-        function displayRentalDetails(rental) {
-            const [name, address, price, imageUrl, description, host, phoneNumber, email] = rental;
-
-            const detailsDiv = document.getElementById('rental-details');
-            detailsDiv.innerHTML = `
-                <h2>${name}</h2>
-                <p><strong>Address:</strong> ${address}</p>
-                <p><strong>Price:</strong> ${price}</p>
-                <p><strong>Description:</strong> ${description}</p>
-                <p><strong>Host:</strong> ${host}</p>
-                <p><strong>Phone Number:</strong> ${phoneNumber}</p>
-                <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-                <img src="${imageUrl}" alt="${name}" style="width: 400px; height: auto;">
-            `;
-        }
-
-        document.addEventListener('DOMContentLoaded', fetchRentalDetails);
-    </script>
+    <script src="rental.js"></script>
 </body>
 </html>
