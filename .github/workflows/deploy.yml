@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push to the main branch
+      - main  # or 'master' if that's your default branch
 
 jobs:
   build:
@@ -21,10 +21,11 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Create .env file
+      run: echo "API_KEY=${{ secrets.API_KEY }}" > .env
+
     - name: Build the project
-      run: |
-        echo "REACT_APP_API_KEY=${{ secrets.API_KEY }}" > .env
-        npm run build
+      run: npm run build
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
