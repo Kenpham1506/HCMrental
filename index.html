@@ -4,18 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rental Listings</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        .filter-form {
+            margin-bottom: 20px;
+        }
+        .filter-form input {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Rental Listings</h1>
-    </header>
-    <main>
-        <div id="listings"></div>
-    </main>
-    <footer>
-        <p>&copy; 2024 Rental Listings</p>
-    </footer>
+    <h1>Rental Listings</h1>
+    <form class="filter-form" id="filter-form">
+        <input type="text" id="filter-price" placeholder="Price (e.g., $1200/month)">
+        <input type="text" id="filter-street" placeholder="Street (e.g., Elm St)">
+        <input type="text" id="filter-district" placeholder="District (e.g., Springfield)">
+        <button type="button" onclick="applyFilters()">Apply Filters</button>
+    </form>
+    <div id="listings"></div>
+
+    <!-- Link to the JavaScript file -->
     <script src="app.js"></script>
 </body>
 </html>
