@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Details</title>
+</head>
+<body>
+    <h1>Rental Details</h1>
+    <div id="rental-details"></div>
+
+    <script>
+        const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s';
+        const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE';
+        const RANGE = 'Sheet1!A2:E';
+
+        function fetchRentalDetails() {
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const listings = data.values;
+                    const queryParams = new URLSearchParams(window.location.search);
+                    const id = queryParams.get('id');
+                    const rental = listings[id];
+
+                    if (rental) {
+                        displayRentalDetails(rental);
+                    } else {
+                        document.getElementById('rental-details').innerHTML = 'Rental not found.';
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function displayRentalDetails(rental) {
+            const [name, address, price, imageUrl, description] = rental;
+
+            const detailsDiv = document.getElementById('rental-details');
+            detailsDiv.innerHTML = `
+                <h2>${name}</h2>
+                <p><strong>Address:</strong> ${address}</p>
+                <p><strong>Price:</strong> ${price}</p>
+                <p><strong>Description:</strong> ${description}</p>
+                <img src="${imageUrl}" alt="${name}" style="width: 400px; height: auto;">
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchRentalDetails);
+    </script>
+</body>
+</html>
