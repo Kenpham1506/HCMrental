@@ -19,20 +19,22 @@ function displayListings(listings) {
     const listingsContainer = document.getElementById('listings');
     listingsContainer.innerHTML = '';
 
-    listings.forEach(listing => {
+    listings.forEach((listing, index) => {
         const [name, address, price, imageUrl, description] = listing;
 
         const listingDiv = document.createElement('div');
-        listingDiv.className = 'listing';
+        listingDiv.style.border = '1px solid #ddd';
+        listingDiv.style.padding = '10px';
+        listingDiv.style.marginBottom = '10px';
+
+        const detailPageUrl = `rental.html?id=${index}`; // Generate URL with query parameter
 
         listingDiv.innerHTML = `
-            <img src="${imageUrl}" alt="${name}">
-            <div class="listing-content">
-                <h2>${name}</h2>
-                <p><strong>Address:</strong> ${address}</p>
-                <p><strong>Price:</strong> ${price}</p>
-                <p>${description}</p>
-            </div>
+            <h2><a href="${detailPageUrl}">${name}</a></h2>
+            <p><strong>Address:</strong> ${address}</p>
+            <p><strong>Price:</strong> ${price}</p>
+            <p><strong>Description:</strong> ${description}</p>
+            <img src="${imageUrl}" alt="${name}" style="width: 200px; height: auto;">
         `;
 
         listingsContainer.appendChild(listingDiv);
