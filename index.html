@@ -9,16 +9,47 @@
         .filter-form {
             margin-bottom: 20px;
         }
-        .filter-form input {
+        .filter-form input, .filter-form select {
             margin-right: 10px;
         }
     </style>
 </head>
 <body>
     <h1>Rental Listings</h1>
+    <div class="filter-form">
+        <label for="district-filter">Filter by District:</label>
+        <select id="district-filter">
+            <option value="">All Districts</option>
+            <option value="District 1">District 1</option>
+            <option value="District 2">District 2</option>
+            <option value="District 3">District 3</option>
+            <option value="District 4">District 4</option>
+            <option value="District 5">District 5</option>
+            <option value="District 6">District 6</option>
+            <option value="District 7">District 7</option>
+            <option value="District 8">District 8</option>
+            <option value="District 9">District 9</option>
+            <option value="District 10">District 10</option>
+            <option value="District 11">District 11</option>
+            <option value="District 12">District 12</option>
+            <option value="Tan Binh District">Tan Binh District</option>
+            <option value="Tan Phu District">Tan Phu District</option>
+            <option value="Binh Thanh District">Binh Thanh District</option>
+            <option value="Binh Tan District">Binh Tan District</option>
+            <option value="Go Vap District">Go Vap District</option>
+            <option value="Phu Nhuan District">Phu Nhuan District</option>
+            <option value="Thu Duc City">Thu Duc City</option>
+            <option value="Hoc Mon District">Hoc Mon District</option>
+            <option value="Cu Chi District">Cu Chi District</option>
+            <option value="Nha Be District">Nha Be District</option>
+            <option value="Can Gio District">Can Gio District</option>
+        </select>
+        <button type="button" onclick="applyDistrictFilter()">Apply Filter</button>
+    </div>
     <div id="listings"></div>
 
     <!-- Link to the JavaScript file -->
     <script src="app.js"></script>
 </body>
 </html>
+
