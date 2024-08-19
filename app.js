@@ -1,6 +1,8 @@
 const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s';
 const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE';
-const RANGE = 'Sheet1!A2:H'; // Adjust the range to include Host, Phone Number, Email
+const RANGE = 'Sheet1!A2:I'; // Adjust range to include District column
+
+let listings = [];
 
 function fetchListings() {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
@@ -13,20 +15,18 @@ function fetchListings() {
             return response.json();
         })
         .then(data => {
-            const listings = data.values;
+            listings = data.values;
             displayListings(listings);
         })
         .catch(error => console.error('Error fetching data:', error));
 }
 
-function displayListings(listings) {
+function displayListings(listingsToDisplay) {
     const listingsContainer = document.getElementById('listings');
     listingsContainer.innerHTML = '';
 
-    listings.forEach((listing, index) => {
-        const [name, address, price, imageUrl, description, host, phoneNumber, email] = listing;
-
-        console.log('Image URL:', imageUrl); // Debugging line
+    listingsToDisplay.forEach((listing, index) => {
+        const [name, address, price, imageUrl, description, host, phoneNumber, email, district] = listing;
 
         const listingDiv = document.createElement('div');
         listingDiv.style.border = '1px solid #ddd';
@@ -43,11 +43,23 @@ function displayListings(listings) {
             <p><strong>Host:</strong> ${host || 'No host'}</p>
             <p><strong>Phone Number:</strong> ${phoneNumber || 'No phone number'}</p>
             <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
+            <p><strong>District:</strong> ${district || 'No district'}</p>
             <img src="${imageUrl || 'https://via.placeholder.com/200'}" alt="${name || 'No name'}" style="width: 200px; height: auto;">
         `;
 
         listingsContainer.appendChild(listingDiv);
     });
+}
+
+function applyDistrictFilter() {
+    const selectedDistrict = document.getElementById('district-filter').value;
+
+    const filteredListings = listings.filter(listing => {
+        const [, , , , , , , , district] = listing;
+        return selectedDistrict === '' || district === selectedDistrict;
+    });
+
+    displayListings(filteredListings);
 }
 
 document.addEventListener('DOMContentLoaded', fetchListings);
