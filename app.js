@@ -26,6 +26,8 @@ function displayListings(listings) {
     listings.forEach((listing, index) => {
         const [name, address, price, imageUrl, description, host, phoneNumber, email] = listing;
 
+        console.log('Image URL:', imageUrl); // Debugging line
+
         const listingDiv = document.createElement('div');
         listingDiv.style.border = '1px solid #ddd';
         listingDiv.style.padding = '10px';
