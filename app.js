@@ -15,12 +15,13 @@ function fetchListings() {
         .catch(error => console.error('Error fetching data:', error));
 }
 
+
 function displayListings(listings) {
     const listingsContainer = document.getElementById('listings');
     listingsContainer.innerHTML = '';
 
     listings.forEach((listing, index) => {
-        const [name, address, price, imageUrl, description] = listing;
+        const [name, address, price, imageUrl, description, host, phoneNumber, email] = listing;
 
         const listingDiv = document.createElement('div');
         listingDiv.style.border = '1px solid #ddd';
@@ -34,6 +35,9 @@ function displayListings(listings) {
             <p><strong>Address:</strong> ${address}</p>
             <p><strong>Price:</strong> ${price}</p>
             <p><strong>Description:</strong> ${description}</p>
+            <p><strong>Host:</strong> ${host}</p>
+            <p><strong>Phone Number:</strong> ${phoneNumber}</p>
+            <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
             <img src="${imageUrl}" alt="${name}" style="width: 200px; height: auto;">
         `;
 
