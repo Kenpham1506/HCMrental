@@ -1,3 +1,4 @@
+//hosting on Github doesn't have any way to hide the API key so here it is, insecure code so please don't replicate or abuse it, thank you.
 const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s';
 const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE';
 const RANGE = 'Sheet1!A2:I'; // Adjust range to include District column
