@@ -3,17 +3,19 @@ document.getElementById('rental-form').addEventListener('submit', function(event
 
     // Gather form data
     const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        title: document.getElementById('title').value,
-        description: document.getElementById('description').value,
-        price: document.getElementById('price').value,
-        district: document.getElementById('district').value,
-        contact: document.getElementById('contact').value,
+        propertyName: document.getElementById('property-name').value, // Property Name
+        address: document.getElementById('address').value,            // Address
+        price: document.getElementById('price').value,                // Price
+        imageUrl: document.getElementById('image-url').value,         // Image URL
+        description: document.getElementById('description').value,    // Description
+        host: document.getElementById('host').value,                  // Host
+        phoneNumber: document.getElementById('phone-number').value,   // Phone Number
+        email: document.getElementById('email').value,                // Email
+        district: document.getElementById('district').value           // District
     };
 
-    // Example of submitting data to a server or Google Sheets (you'll need to set up the endpoint)
-    fetch('YOUR_ENDPOINT_URL', {
+    // Submit data to Google Sheets via Apps Script Web App
+    fetch('YOUR_ENDPOINT_URL', { // Replace 'YOUR_ENDPOINT_URL' with your actual Web App URL
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
