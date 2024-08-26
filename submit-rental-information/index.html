@@ -9,35 +9,35 @@
 <body>
     <h1>Submit Your Rental Information</h1>
     
-<form id="rental-form">
+<form id="rental-form" enctype="multipart/form-data">
     <label for="property-name">Property Name:</label>
-    <input type="text" id="property-name" name="property-name" required>
+    <input type="text" id="property-name" name="property-name" required><br>
 
     <label for="address">Address:</label>
-    <input type="text" id="address" name="address" required>
+    <input type="text" id="address" name="address" required><br>
 
     <label for="price">Price:</label>
-    <input type="text" id="price" name="price" required>
+    <input type="text" id="price" name="price" required><br>
 
-    <label for="image-url">Image URL:</label>
-    <input type="url" id="image-url" name="image-url">
+    <label for="image-upload">Image:</label>
+    <input type="file" id="image-upload" name="image-upload" accept="image/*" required><br>
 
     <label for="description">Description:</label>
-    <textarea id="description" name="description"></textarea>
+    <textarea id="description" name="description" required></textarea><br>
 
     <label for="host">Host:</label>
-    <input type="text" id="host" name="host" required>
+    <input type="text" id="host" name="host" required><br>
 
     <label for="phone-number">Phone Number:</label>
-    <input type="tel" id="phone-number" name="phone-number" required>
+    <input type="text" id="phone-number" name="phone-number" required><br>
 
     <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
+    <input type="email" id="email" name="email" required><br>
 
     <label for="district">District:</label>
-    <input type="text" id="district" name="district" required>
+    <input type="text" id="district" name="district" required><br>
 
-    <button type="submit">Submit Rental Information</button>
+    <button type="submit">Submit</button>
 </form>
 
     <script src="submit.js"></script> <!-- Link to your JavaScript file -->
