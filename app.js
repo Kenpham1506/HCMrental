@@ -17,7 +17,7 @@ function fetchListings() {
         })
         .then(data => {
             listings = data.values;
-            displayListings(listings);
+            displayListings(listings.map((listing, index) => ({ listing, index }))); // Include the index for each listing
         })
         .catch(error => console.error('Error fetching data:', error));
 }
@@ -26,7 +26,7 @@ function displayListings(listingsToDisplay) {
     const listingsContainer = document.getElementById('listings');
     listingsContainer.innerHTML = '';
 
-    listingsToDisplay.forEach((listing, index) => {
+    listingsToDisplay.forEach(({ listing, index }) => {
         const [name, address, price, imageUrl, description, host, phoneNumber, email, district] = listing;
 
         const listingDiv = document.createElement('div');
@@ -34,7 +34,7 @@ function displayListings(listingsToDisplay) {
         listingDiv.style.padding = '10px';
         listingDiv.style.marginBottom = '10px';
 
-        const detailPageUrl = `rental.html?id=${index}`; // Generate URL with query parameter
+        const detailPageUrl = `rental.html?id=${index}`; // Use the original index for the URL
 
         listingDiv.innerHTML = `
             <h2><a href="${detailPageUrl}">${name || 'No name'}</a></h2>
@@ -54,10 +54,12 @@ function displayListings(listingsToDisplay) {
 function applyDistrictFilter() {
     const selectedDistrict = document.getElementById('district-filter').value;
 
-    const filteredListings = listings.filter(listing => {
-        const [, , , , , , , , district] = listing;
-        return selectedDistrict === '' || district === selectedDistrict;
-    });
+    const filteredListings = listings
+        .map((listing, index) => ({ listing, index })) // Store the original index
+        .filter(({ listing }) => {
+            const [, , , , , , , , district] = listing;
+            return selectedDistrict === '' || district === selectedDistrict;
+        });
 
     displayListings(filteredListings);
 }
