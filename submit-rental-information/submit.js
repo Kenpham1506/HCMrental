@@ -11,7 +11,7 @@ document.getElementById('rental-form').addEventListener('submit', async function
         const imgurResponse = await fetch('https://api.imgur.com/3/image', {
             method: 'POST',
             headers: {
-                'Authorization': 'Client-ID e56f8a4b47c6eee' // Replace with your actual Client ID
+                'Authorization': 'Client-ID e56f8a4b47c6eee' //Hosting on Github doesn't have any way to hide the Client-ID, so here it is. It's insecure code, so please don't replicate or abuse it. Thank you.
             },
             body: formData
         });
