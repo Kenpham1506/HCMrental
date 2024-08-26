@@ -44,7 +44,7 @@ function displayListings(listingsToDisplay) {
             <p><strong>Host:</strong> ${host || 'No host'}</p>
             <p><strong>Phone Number:</strong> ${phoneNumber || 'No phone number'}</p>
             <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
-            <p><strong>District:</strong> ${district || 'No district'}</p>
+            //<p><strong>District:</strong> ${district || 'No district'}</p>
             <img src="${imageUrl || 'https://via.placeholder.com/200'}" alt="${name || 'No name'}" style="width: 200px; height: auto;">
         `;
 
