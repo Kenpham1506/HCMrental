@@ -15,8 +15,7 @@ document.getElementById('rental-form').addEventListener('submit', function(event
     };
 
     // Submit data to Google Sheets via Apps Script Web App
-    fetch('YOUR_ENDPOINT_URL', { // Replace 'YOUR_ENDPOINT_URL' with your actual Web App URL
-        method: 'POST',
+    fetch('https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec', { //hosting on Github doesn't have any way to hide the API key so here it is, insecure code so please don't replicate or abuse it, thank you.
         headers: {
             'Content-Type': 'application/json'
         },
