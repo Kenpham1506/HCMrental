@@ -44,7 +44,7 @@ async function submitRentalInfo(imageUrl) {
     };
 
     try {
-        const response = await fetch('https://rough-talented-diascia.glitch.me//https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec', {
+        const response = await fetch('https://rough-talented-diascia.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
