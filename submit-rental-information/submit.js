@@ -1,11 +1,6 @@
-document.getElementById('rentalForm').addEventListener('submit', function(event) {
+document.getElementById('submitForm').addEventListener('submit', function(event) {
     event.preventDefault();
-
-    const corsProxy = 'https://cors-anywhere.herokuapp.com/';
-    const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
-    const apiUrl = corsProxy + googleScriptUrl;
-
-    const formData = new FormData(this);
+    const formData = new FormData(event.target);
 
     const data = {
         propertyName: formData.get('propertyName'),
@@ -16,26 +11,27 @@ document.getElementById('rentalForm').addEventListener('submit', function(event)
         host: formData.get('host'),
         phoneNumber: formData.get('phoneNumber'),
         email: formData.get('email'),
-        district: formData.get('district')
+        district: formData.get('district'),
     };
 
-    fetch(apiUrl, {
+    fetch('https://cors-anywhere.herokuapp.com/YOUR_GOOGLE_SCRIPT_URL', {
         method: 'POST',
-        mode: 'cors',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
     })
     .then(response => response.json())
-    .then(responseData => {
-        document.getElementById('message').textContent = responseData.message;
-        if (responseData.status === 'success') {
-            document.getElementById('rentalForm').reset();
+    .then(data => {
+        if (data.result === 'success') {
+            alert('Form submitted successfully!');
+            event.target.reset();
+        } else {
+            document.getElementById('errorMessage').style.display = 'block';
         }
     })
     .catch(error => {
-        console.error('Error submitting form:', error);
-        document.getElementById('message').textContent = 'There was an error submitting your rental information. Please try again.';
+        console.error('Error:', error);
+        document.getElementById('errorMessage').style.display = 'block';
     });
 });
