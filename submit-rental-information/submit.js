@@ -1,69 +1,39 @@
-document.getElementById('rental-form').addEventListener('submit', async function(event) {
-    event.preventDefault(); // Prevent default form submission
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('rental-form');
+  const proxyUrl = 'https://rough-talented-diascia.glitch.me/';
+  const targetUrl = 'https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
 
-    // Create a FormData object to handle file upload
-    const formData = new FormData();
-    formData.append('image', document.getElementById('image-upload').files[0]);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-    try {
-        // Upload image to Imgur
-        const imgurResponse = await fetch('https://api.imgur.com/3/image', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Client-ID e56f8a4b47c6eee'
-            },
-            body: formData
-        });
+    const formData = new FormData(form);
+    const data = {
+      propertyName: formData.get('propertyName'),
+      address: formData.get('address'),
+      price: formData.get('price'),
+      imageUrl: formData.get('imageUrl'),
+      description: formData.get('description'),
+      host: formData.get('host'),
+      phoneNumber: formData.get('phoneNumber'),
+      email: formData.get('email'),
+      district: formData.get('district'),
+    };
 
-        if (!imgurResponse.ok) {
-            throw new Error(`Imgur upload failed with status ${imgurResponse.status}`);
-        }
-
-        const imgurData = await imgurResponse.json();
-        const imageUrl = imgurData.data.link;
-
-        // Submit rental information including the image URL
-        await submitRentalInfo(imageUrl);
-    } catch (error) {
-        console.error('Error uploading image:', error);
-        alert('There was an error uploading the image.');
-    }
-});
-
-async function submitRentalInfo(imageUrl) {
-  const formData = {
-    propertyName: document.getElementById('property-name').value,
-    address: document.getElementById('address').value,
-    price: document.getElementById('price').value,
-    imageUrl: imageUrl,
-    description: document.getElementById('description').value,
-    host: document.getElementById('host').value,
-    phoneNumber: document.getElementById('phone-number').value,
-    email: document.getElementById('email').value,
-    district: document.getElementById('district').value
-  };
-
-  try {
-    const response = await fetch('https://rough-talented-diascia.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec', {
+    fetch(`${proxyUrl}${targetUrl}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formData)
-    });
-
-    const textResponse = await response.text(); // Read response as text first
-    console.log('Response Text:', textResponse); // Log the raw response text for debugging
-
-    const data = JSON.parse(textResponse); // Parse text as JSON
-    if (data.status === 'success') {
-      alert('Rental information submitted successfully!');
-      document.getElementById('rental-form').reset();
-    } else {
-      throw new Error('Submission failed.');
-    }
-  } catch (error) {
-    console.error('Error submitting rental info:', error);
-    alert('There was an error submitting the form.');
-  }
-}
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(result => {
+      if (result.status === 'success') {
+        console.log('Rental info submitted successfully');
+      } else {
+        console.error('Error submitting rental info:', result.message);
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  });
+});
