@@ -4,56 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Rental Information</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Submit Rental Information</h1>
-        <form id="rental-form" class="form">
-            <div class="form-group">
-                <label for="property-name">Property Name</label>
-                <input type="text" id="property-name" name="propertyName" required>
-            </div>
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address" required>
-            </div>
-            <div class="form-group">
-                <label for="price">Price</label>
-                <input type="text" id="price" name="price" required>
-            </div>
-            <div class="form-group">
-                <label for="image-upload">Image</label>
-                <input type="file" id="image-upload" name="image" accept="image/*" required>
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" name="description" rows="4" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="host">Host</label>
-                <input type="text" id="host" name="host" required>
-            </div>
-            <div class="form-group">
-                <label for="phone-number">Phone Number</label>
-                <input type="tel" id="phone-number" name="phoneNumber" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="district">District</label>
-                <select id="district" name="district" required>
-                    <option value="">Select a district</option>
-                    <option value="District 1">District 1</option>
-                    <option value="District 2">District 2</option>
-                    <!-- Add other districts as needed -->
-                </select>
-            </div>
-            <button type="submit" class="submit-button">Submit</button>
-        </form>
-    </div>
-    <script src="submit.js"></script> <!-- Link to your JavaScript file -->
+    <h1>Submit Rental Information</h1>
+    
+    <form id="rentalForm">
+        <label for="propertyName">Property Name:</label>
+        <input type="text" id="propertyName" name="propertyName" required>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required>
+
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" required>
+
+        <label for="imageUrl">Image URL:</label>
+        <input type="text" id="imageUrl" name="imageUrl">
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+
+        <label for="host">Host:</label>
+        <input type="text" id="host" name="host" required>
+
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="district">District:</label>
+        <input type="text" id="district" name="district" required>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script src="submit.js"></script>
 </body>
 </html>
