@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const imageUrl = imgurData.data.link;
 
                     // Send data to Google Sheets directly
-                    const response = await fetch('https://script.google.com/macros/s/1z2eMXged92tAEFILcUbFf8ITBNqMxDVxmnmKpJko49nSK1YSzYye8k6w/exec', {
+                    const response = await fetch('http://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/1z2eMXged92tAEFILcUbFf8ITBNqMxDVxmnmKpJko49nSK1YSzYye8k6w/exec', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
