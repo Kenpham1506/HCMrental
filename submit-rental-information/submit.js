@@ -16,7 +16,7 @@ document.getElementById('rental-form').addEventListener('submit', function(event
     if (imageFile) {
         uploadImageToImgur(imageFile).then(imageUrl => {
             // Now send data to Google Sheets
-            fetch('https://script.google.com/macros/s/1z2eMXged92tAEFILcUbFf8ITBNqMxDVxmnmKpJko49nSK1YSzYye8k6w/exec', {
+            fetch('https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/1z2eMXged92tAEFILcUbFf8ITBNqMxDVxmnmKpJko49nSK1YSzYye8k6w/exec', {
                 method: 'POST',
                 body: JSON.stringify({
                     propertyName,
