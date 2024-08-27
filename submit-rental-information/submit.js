@@ -1,73 +1,81 @@
-document.getElementById('rental-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const formData = new FormData(event.target);
-    const propertyName = formData.get('property-name');
-    const address = formData.get('address');
-    const price = formData.get('price');
-    const description = formData.get('description');
-    const host = formData.get('host');
-    const phoneNumber = formData.get('phone-number');
-    const email = formData.get('email');
-    const district = formData.get('district');
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('rentalForm');
     
-    const imageFile = formData.get('image-upload');
+    if (form) {
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
 
-    if (imageFile) {
-        uploadImageToImgur(imageFile).then(imageUrl => {
-            // Now send data to Google Sheets
-            fetch('https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/1z2eMXged92tAEFILcUbFf8ITBNqMxDVxmnmKpJko49nSK1YSzYye8k6w/exec', {
-                method: 'POST',
-                body: JSON.stringify({
-                    propertyName,
-                    address,
-                    price,
-                    imageUrl,
-                    description,
-                    host,
-                    phoneNumber,
-                    email,
-                    district
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
-                    alert('Rental information submitted successfully!');
-                    document.getElementById('rental-form').reset();
+            const propertyName = document.getElementById('propertyName').value;
+            const address = document.getElementById('address').value;
+            const price = document.getElementById('price').value;
+            const district = document.getElementById('district').value;
+            const description = document.getElementById('description').value;
+            const host = document.getElementById('host').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+
+            const imageFile = document.getElementById('image').files[0];
+
+            if (!imageFile) {
+                alert('Please upload an image.');
+                return;
+            }
+
+            try {
+                const imgurClientId = 'e56f8a4b47c6eee';
+                const formData = new FormData();
+                formData.append('image', imageFile);
+
+                const imgurResponse = await fetch('https://api.imgur.com/3/image', {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Client-ID ${imgurClientId}`
+                    },
+                    body: formData
+                });
+
+                const imgurData = await imgurResponse.json();
+
+                if (imgurData.success) {
+                    const imageUrl = imgurData.data.link;
+
+                    // Send data to Google Sheets
+                    const response = await fetch('https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/1z2eMXged92tAEFILcUbFf8ITBNqMxDVxmnmKpJko49nSK1YSzYye8k6w/exec', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            propertyName,
+                            address,
+                            price,
+                            district,
+                            description,
+                            host,
+                            phone,
+                            email,
+                            imageUrl
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        alert('Rental information submitted successfully!');
+                        form.reset();
+                    } else {
+                        alert('Failed to submit rental information.');
+                    }
                 } else {
-                    alert('Failed to submit rental information.');
+                    alert('Failed to upload image to Imgur.');
                 }
-            });
-        }).catch(error => {
-            alert('Failed to upload image to Imgur.');
-            console.error(error);
+
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('An error occurred while submitting the form.');
+            }
         });
+    } else {
+        console.error('Form element not found.');
     }
 });
-
-function uploadImageToImgur(file) {
-    const clientId = 'e56f8a4b47c6eee';
-    const url = 'https://api.imgur.com/3/image';
-
-    return new Promise((resolve, reject) => {
-        const formData = new FormData();
-        formData.append('image', file);
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Client-ID ${clientId}`
-            },
-            body: formData
-        }).then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                resolve(data.data.link);
-            } else {
-                reject(new Error('Failed to upload image.'));
-            }
-        }).catch(reject);
-    });
-}
