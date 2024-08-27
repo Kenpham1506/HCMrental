@@ -1,4 +1,3 @@
-// Add event listener for form submission
 document.getElementById('rental-form').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent default form submission
 
@@ -11,10 +10,14 @@ document.getElementById('rental-form').addEventListener('submit', async function
         const imgurResponse = await fetch('https://api.imgur.com/3/image', {
             method: 'POST',
             headers: {
-                'Authorization': 'Client-ID e56f8a4b47c6eee' //Hosting on Github doesn't have any way to hide the Client-ID, so here it is. It's insecure code, so please don't replicate or abuse it. Thank you.
+                'Authorization': 'Client-ID e56f8a4b47c6eee' // Note: Exposing Client-ID is not recommended for production
             },
             body: formData
         });
+
+        if (!imgurResponse.ok) {
+            throw new Error(`Imgur upload failed with status ${imgurResponse.status}`);
+        }
 
         const imgurData = await imgurResponse.json();
         const imageUrl = imgurData.data.link;
@@ -23,6 +26,7 @@ document.getElementById('rental-form').addEventListener('submit', async function
         await submitRentalInfo(imageUrl);
     } catch (error) {
         console.error('Error uploading image:', error);
+        alert('There was an error uploading the image.');
     }
 });
 
@@ -48,6 +52,10 @@ async function submitRentalInfo(imageUrl) {
             },
             body: JSON.stringify(formData)
         });
+
+        if (!response.ok) {
+            throw new Error(`Google Sheets submission failed with status ${response.status}`);
+        }
 
         const data = await response.json();
         if (data.status === 'success') {
