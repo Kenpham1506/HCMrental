@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (imgurData.success) {
                     const imageUrl = imgurData.data.link;
 
-                    // Send data to Google Sheets directly
-                    const response = await fetch('http://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/1z2eMXged92tAEFILcUbFf8ITBNqMxDVxmnmKpJko49nSK1YSzYye8k6w/exec', {
+                    // Send data to Google Sheets using HTTPS and the CORS proxy
+                    const response = await fetch('https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/1z2eMXged92tAEFILcUbFf8ITBNqMxDVxmnmKpJko49nSK1YSzYye8k6w/exec', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
