@@ -10,7 +10,7 @@ document.getElementById('rental-form').addEventListener('submit', async function
         const imgurResponse = await fetch('https://api.imgur.com/3/image', {
             method: 'POST',
             headers: {
-                'Authorization': 'Client-ID e56f8a4b47c6eee' // Note: Exposing Client-ID is not recommended for production
+                'Authorization': 'Client-ID e56f8a4b47c6eee'
             },
             body: formData
         });
@@ -30,7 +30,6 @@ document.getElementById('rental-form').addEventListener('submit', async function
     }
 });
 
-// Function to submit rental information to Google Sheets
 async function submitRentalInfo(imageUrl) {
     const formData = {
         propertyName: document.getElementById('property-name').value,
