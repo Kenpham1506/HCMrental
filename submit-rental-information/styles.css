@@ -1,28 +1,63 @@
-/* General Styling */
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
-    color: #333;
+/* Basic Reset */
+* {
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    box-sizing: border-box;
 }
 
-/* Container */
-.container {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom, #f7f7f7, #f9f9f9);
+    color: #333;
+}
+
+header, footer {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    position: fixed;
     width: 100%;
-    margin: 20px;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
 }
 
-/* Form */
+header {
+    top: 0;
+}
+
+footer {
+    bottom: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header .container, footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 1.5em;
+}
+
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+main {
+    margin-top: 80px; /* Adjust based on header height */
+    margin-bottom: 60px; /* Adjust based on footer height */
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -30,61 +65,30 @@ form {
 
 form label {
     margin-bottom: 5px;
-    font-weight: 600;
+    font-weight: bold;
 }
 
-form input,
-form textarea,
-form select {
-    width: calc(100% - 20px);
+form input, form textarea, form select {
+    margin-bottom: 15px;
     padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box; /* Ensures padding and borders are included in the element's width and height */
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-form textarea {
-    resize: vertical;
-    height: 150px;
-}
-
-button {
-    background-color: #ff6f61;
+form button {
+    padding: 10px 20px;
+    background-color: #e56f6f;
     color: #fff;
-    padding: 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #ff3d2e;
+form button:hover {
+    background-color: #d94f4f;
 }
 
-h2 {
+footer p {
     text-align: center;
-    margin-bottom: 20px;
-    color: #ff6f61;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .container {
-        margin: 10px;
-        padding: 20px;
-    }
-
-    form input,
-    form textarea,
-    form select {
-        padding: 8px;
-        margin-bottom: 15px;
-    }
-
-    button {
-        padding: 8px;
-    }
+    font-size: 0.9em;
 }
