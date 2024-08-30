@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const district = document.getElementById('district').value.trim();
             const description = document.getElementById('description').value.trim();
             const host = document.getElementById('host').value.trim();
-            const phone = "123-456-7890";//document.getElementById('phone').value.trim();
+            const phone = document.getElementById('phone').value.trim();
             const email = document.getElementById('email').value.trim();
 
             const imageFile = document.getElementById('image').files[0];
