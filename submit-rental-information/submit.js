@@ -5,14 +5,14 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
-            const propertyName = document.getElementById('propertyName').value;
-            const address = document.getElementById('address').value;
-            const price = document.getElementById('price').value;
-            const district = document.getElementById('district').value;
-            const description = document.getElementById('description').value;
-            const host = document.getElementById('host').value;
-            const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value;
+            const propertyName = document.getElementById('propertyName').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const price = document.getElementById('price').value.trim();
+            const district = document.getElementById('district').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const host = document.getElementById('host').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
 
             const imageFile = document.getElementById('image').files[0];
 
@@ -39,23 +39,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (imgurData.success) {
                     const imageUrl = imgurData.data.link;
 
-                    // Send data to Google Sheets using HTTPS
+                    // Payload order should match the sheet columns order
+                    const payload = {
+                        propertyName,
+                        address,
+                        price,
+                        imageUrl,  // Move imageUrl here
+                        description,
+                        host,
+                        phone,
+                        email,
+                        district  // Move district to the end
+                    };
+
                     const response = await fetch('https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({
-                            propertyName,
-                            address,
-                            price,
-                            district,
-                            description,
-                            host,
-                            phone,
-                            email,
-                            imageUrl
-                        })
+                        body: JSON.stringify(payload)
                     });
 
                     const result = await response.json();
