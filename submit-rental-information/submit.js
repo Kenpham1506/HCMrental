@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const imageUrl = imgurData.data.link;
 
                     // Send data to Google Sheets using HTTPS
-                    const response = await fetch('https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec', {
+                    const response = await fetch('https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
