@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const district = document.getElementById('district').value.trim();
             const description = document.getElementById('description').value.trim();
             const host = document.getElementById('host').value.trim();
-            const phone = document.getElementById('SDT').value.trim();
+            const phone = document.getElementById('phone').value.trim();
             const email = document.getElementById('email').value.trim();
 
             const imageFile = document.getElementById('image').files[0];
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         imageUrl,  // Move imageUrl here
                         description,
                         host,
-                        SDT,
+                        phone,
                         email,
                         district  // Move district to the end
                     };
