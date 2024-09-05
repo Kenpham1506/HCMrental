@@ -1,35 +1,35 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('rentalForm');
-    let userEmail = '';
-
-    // Google Sign-In callback
-    function handleCredentialResponse(response) {
-        const data = jwt_decode(response.credential);
-        userEmail = data.email;
-        console.log('Logged in user email:', userEmail);
-        if (userEmail) {
-            document.getElementById('email').value = userEmail; // Populate email field with user email
-        } else {
-            console.error('Failed to retrieve email from Google Sign-In.');
-        }
-    }
-
-    // Initialize Google Sign-In
-    window.onload = function () {
-        google.accounts.id.initialize({
-            client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
-            callback: handleCredentialResponse
-        });
-        google.accounts.id.renderButton(
-            document.getElementById("buttonDiv"), // Element to render the button
-            { theme: "outline", size: "large" }  // Customization of the button
-        );
-        google.accounts.id.prompt(); // Display the one-tap prompt if available
-    };
 
     if (form) {
-        form.addEventListener('submit', async function (event) {
+        // Initialize Google Sign-In API
+        gapi.load('auth2', function() {
+            gapi.auth2.init({
+                client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
+            }).then(function(auth2) {
+                const user = auth2.currentUser.get();
+                const isSignedIn = user.isSignedIn();
+
+                if (isSignedIn) {
+                    // If user is signed in, set email field
+                    const profile = user.getBasicProfile();
+                    document.getElementById('email').value = profile.getEmail();
+                } else {
+                    // If user is not signed in, prompt for login
+                    gapi.auth2.getAuthInstance().signIn();
+                }
+            });
+        });
+
+        form.addEventListener('submit', async function(event) {
             event.preventDefault();
+
+            // Check if user is signed in
+            const auth2 = gapi.auth2.getAuthInstance();
+            if (!auth2.isSignedIn.get()) {
+                alert('You must be logged in to submit the form.');
+                return;
+            }
 
             const propertyName = document.getElementById('propertyName').value;
             const address = document.getElementById('address').value;
@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const description = document.getElementById('description').value;
             const host = document.getElementById('host').value;
             const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+
             const imageFile = document.getElementById('image').files[0];
 
             if (!imageFile) {
@@ -73,12 +75,12 @@ document.addEventListener('DOMContentLoaded', function () {
                             propertyName,
                             address,
                             price,
-                            imageUrl,
+                            imageUrl, // Position of imageUrl is now before district
                             description,
                             host,
                             phone,
-                            email: userEmail, // Use logged-in user's email
-                            district
+                            email,
+                            district // Position of district is now at the end
                         })
                     });
 
