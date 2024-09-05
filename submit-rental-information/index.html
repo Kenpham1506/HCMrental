@@ -7,6 +7,32 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta name="google-signin-client_id" content="809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com">
+    <style>
+        /* Add some basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #gSignInWrapper {
+            margin-bottom: 20px;
+        }
+        .customGSignInButton {
+            background-color: #4285F4;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .buttonText {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        form {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -74,6 +100,8 @@
                 client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com'
             }).then(function(auth2) {
                 renderButton();
+            }).catch(function(error) {
+                console.error('Google Auth initialization error:', error);
             });
         });
     </script>
