@@ -6,7 +6,12 @@ document.addEventListener('DOMContentLoaded', function () {
     function handleCredentialResponse(response) {
         const data = jwt_decode(response.credential);
         userEmail = data.email;
-        document.getElementById('email').value = userEmail; // Set the email input to the logged-in user's email
+        console.log('Logged in user email:', userEmail);
+        if (userEmail) {
+            document.getElementById('email').value = userEmail; // Populate email field with user email
+        } else {
+            console.error('Failed to retrieve email from Google Sign-In.');
+        }
     }
 
     // Initialize Google Sign-In
@@ -68,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             propertyName,
                             address,
                             price,
-                            imageUrl,
+                            districtimageUrl,
                             description,
                             host,
                             phone,
