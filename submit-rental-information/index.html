@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Rental Information</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://apis.google.com/js/api.js" async defer></script>
+    <!-- Load Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <header>
         <h1>Submit Rental Information</h1>
-        <div id="login-status"></div> <!-- Login status indicator -->
+        <div id="login-status">Please log in to submit the form.</div>
     </header>
     <main>
         <form id="rentalForm" method="POST">
@@ -38,14 +39,14 @@
             <label for="image">Upload Image:</label>
             <input type="file" id="image" name="image" accept="image/*" required>
 
-            <button type="submit" id="submitButton">Submit</button>
+            <button type="submit" id="submitButton" disabled>Submit</button>
         </form>
+        <!-- Google Sign-In button -->
         <div id="g_id_onload"
              data-client_id="809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com"
-             data-callback="handleCredentialResponse"
-             data-auto_prompt="false">
+             data-callback="handleCredentialResponse">
         </div>
-        <div id="g_id_signin"></div> <!-- Google Sign-In button -->
+        <div id="g_id_signin"></div>
     </main>
     <script src="submit.js"></script>
 </body>
