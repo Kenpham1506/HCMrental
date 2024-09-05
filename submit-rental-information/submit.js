@@ -13,9 +13,23 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     function handleCredentialResponse(response) {
-        // Decode the JWT token to extract email
-        const decodedToken = jwt_decode(response.credential);
-        document.getElementById('email').value = decodedToken.email;
+        try {
+            // Ensure jwt_decode is available and decode the token
+            if (typeof jwt_decode === 'undefined') {
+                throw new Error('JWT decode library is not loaded');
+            }
+            const decodedToken = jwt_decode(response.credential);
+
+            // Ensure the email field exists before setting its value
+            const emailField = document.getElementById('email');
+            if (emailField) {
+                emailField.value = decodedToken.email;
+            } else {
+                console.error('Email field not found.');
+            }
+        } catch (error) {
+            console.error('Google Auth initialization error:', error);
+        }
     }
 
     const form = document.getElementById('rentalForm');
@@ -24,16 +38,17 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
-            const propertyName = document.getElementById('propertyName').value;
-            const address = document.getElementById('address').value;
-            const price = document.getElementById('price').value;
-            const district = document.getElementById('district').value;
-            const description = document.getElementById('description').value;
-            const host = document.getElementById('host').value;
-            const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value;
+            // Safeguard against null values
+            const propertyName = document.getElementById('propertyName')?.value || '';
+            const address = document.getElementById('address')?.value || '';
+            const price = document.getElementById('price')?.value || '';
+            const district = document.getElementById('district')?.value || '';
+            const description = document.getElementById('description')?.value || '';
+            const host = document.getElementById('host')?.value || '';
+            const phone = document.getElementById('phone')?.value || '';
+            const email = document.getElementById('email')?.value || '';
 
-            const imageFile = document.getElementById('image').files[0];
+            const imageFile = document.getElementById('image')?.files[0];
 
             if (!imageFile) {
                 alert('Please upload an image.');
@@ -81,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     if (result.status === 'success') {
                         alert('Rental information submitted successfully!');
-                        // Do not reset the form here
+                        // Remove the form reset here
                     } else {
                         alert('Failed to submit rental information.');
                     }
