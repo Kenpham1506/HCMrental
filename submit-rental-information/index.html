@@ -10,18 +10,9 @@
 <body>
     <header>
         <h1>Submit Rental Information</h1>
+        <div id="buttonDiv"></div> <!-- Google Sign-In button -->
     </header>
-
     <main>
-        <!-- Google Sign-In button -->
-        <div id="g_id_onload"
-            data-client_id="809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com"
-            data-callback="handleCredentialResponse"
-            data-auto_prompt="false">
-        </div>
-        <div class="g_id_signin" data-type="standard"></div>
-
-        <!-- Form for submitting rental information -->
         <form id="rentalForm">
             <label for="propertyName">Property Name:</label>
             <input type="text" id="propertyName" name="propertyName" required>
@@ -45,7 +36,7 @@
             <input type="text" id="phone" name="phone" required>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" required readonly>
 
             <label for="image">Upload Image:</label>
             <input type="file" id="image" name="image" accept="image/*" required>
@@ -53,7 +44,6 @@
             <button type="submit">Submit</button>
         </form>
     </main>
-
     <script src="submit.js"></script>
 </body>
 </html>
