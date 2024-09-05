@@ -1,54 +1,45 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Google Sign-In Initialization
-    window.onload = function() {
+    const form = document.getElementById('rentalForm');
+    const loginStatus = document.getElementById('login-status');
+    const submitButton = document.getElementById('submitButton');
+
+    let userEmail = null;
+
+    function handleCredentialResponse(response) {
+        const credential = response.credential;
+        const decodedToken = jwt_decode(credential);
+        userEmail = decodedToken.email;
+        loginStatus.textContent = 'Logged in as: ' + userEmail;
+        submitButton.disabled = false;
+    }
+
+    function initGoogleSignIn() {
         google.accounts.id.initialize({
             client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
             callback: handleCredentialResponse
         });
-        google.accounts.id.renderButton(
-            document.querySelector('.g_id_signin'),
-            { theme: 'outline', size: 'large' }  // customization attributes
-        );
-        google.accounts.id.prompt(); // Display the One Tap prompt
-    };
-
-    function handleCredentialResponse(response) {
-        try {
-            // Ensure jwt_decode is available and decode the token
-            if (typeof jwt_decode === 'undefined') {
-                throw new Error('JWT decode library is not loaded');
-            }
-            const decodedToken = jwt_decode(response.credential);
-
-            // Ensure the email field exists before setting its value
-            const emailField = document.getElementById('email');
-            if (emailField) {
-                emailField.value = decodedToken.email;
-            } else {
-                console.error('Email field not found.');
-            }
-        } catch (error) {
-            console.error('Google Auth initialization error:', error);
-        }
+        google.accounts.id.prompt(); // Show the Google Sign-In prompt
     }
 
-    const form = document.getElementById('rentalForm');
-    
+    initGoogleSignIn();
+
     if (form) {
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
-            // Safeguard against null values
-            const propertyName = document.getElementById('propertyName')?.value || '';
-            const address = document.getElementById('address')?.value || '';
-            const price = document.getElementById('price')?.value || '';
-            const district = document.getElementById('district')?.value || '';
-            const description = document.getElementById('description')?.value || '';
-            const host = document.getElementById('host')?.value || '';
-            const phone = document.getElementById('phone')?.value || '';
-            const email = document.getElementById('email')?.value || '';
+            if (!userEmail) {
+                alert('Please log in to submit the form.');
+                return;
+            }
 
-            const imageFile = document.getElementById('image')?.files[0];
+            const propertyName = document.getElementById('propertyName').value;
+            const address = document.getElementById('address').value;
+            const price = document.getElementById('price').value;
+            const district = document.getElementById('district').value;
+            const description = document.getElementById('description').value;
+            const host = document.getElementById('host').value;
+            const phone = document.getElementById('phone').value;
+            const imageFile = document.getElementById('image').files[0];
 
             if (!imageFile) {
                 alert('Please upload an image.');
@@ -87,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             description,
                             host,
                             phone,
-                            email,
+                            email: userEmail,
                             district
                         })
                     });
@@ -96,7 +87,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     if (result.status === 'success') {
                         alert('Rental information submitted successfully!');
-                        // Remove the form reset here
+                        form.reset();
+                        submitButton.disabled = true;
+                        loginStatus.textContent = 'Please log in to submit the form.';
                     } else {
                         alert('Failed to submit rental information.');
                     }
