@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         google.accounts.id.prompt(); // Show the Google Sign-In prompt
     }
 
+    // Initialize Google Sign-In on page load
     initGoogleSignIn();
 
     if (form) {
