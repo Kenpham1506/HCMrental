@@ -1,36 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('rentalForm');
-
+    
     if (form) {
-        // Initialize Google Sign-In API
-        gapi.load('auth2', function() {
-            gapi.auth2.init({
-                client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
-            }).then(function(auth2) {
-                const user = auth2.currentUser.get();
-                const isSignedIn = user.isSignedIn();
-
-                if (isSignedIn) {
-                    // If user is signed in, set email field
-                    const profile = user.getBasicProfile();
-                    document.getElementById('email').value = profile.getEmail();
-                } else {
-                    // If user is not signed in, prompt for login
-                    gapi.auth2.getAuthInstance().signIn();
-                }
-            });
-        });
-
         form.addEventListener('submit', async function(event) {
-            event.preventDefault();
+            event.preventDefault();  // Prevent form from submitting the default way and reloading the page
 
-            // Check if user is signed in
-            const auth2 = gapi.auth2.getAuthInstance();
-            if (!auth2.isSignedIn.get()) {
-                alert('You must be logged in to submit the form.');
-                return;
-            }
-
+            // Get form values
             const propertyName = document.getElementById('propertyName').value;
             const address = document.getElementById('address').value;
             const price = document.getElementById('price').value;
@@ -48,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
+                // Upload image to Imgur
                 const imgurClientId = 'e56f8a4b47c6eee';
                 const formData = new FormData();
                 formData.append('image', imageFile);
@@ -65,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (imgurData.success) {
                     const imageUrl = imgurData.data.link;
 
-                    // Send data to Google Sheets using HTTPS
+                    // Send data to Google Sheets
                     const response = await fetch('https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec', {
                         method: 'POST',
                         headers: {
@@ -75,12 +51,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             propertyName,
                             address,
                             price,
-                            imageUrl, // Position of imageUrl is now before district
+                            district,
                             description,
                             host,
                             phone,
                             email,
-                            district // Position of district is now at the end
+                            imageUrl
                         })
                     });
 
@@ -88,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     if (result.status === 'success') {
                         alert('Rental information submitted successfully!');
-                        form.reset();
+                        form.reset();  // Reset form after submission
                     } else {
                         alert('Failed to submit rental information.');
                     }
