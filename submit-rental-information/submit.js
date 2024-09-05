@@ -23,6 +23,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
+                // Log the form data
+                console.log("Form data being sent:", {
+                    propertyName,
+                    address,
+                    price,
+                    district,
+                    description,
+                    host,
+                    phone,
+                    email
+                });
+
                 // Upload image to Imgur
                 const imgurClientId = 'e56f8a4b47c6eee';
                 const formData = new FormData();
@@ -40,6 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (imgurData.success) {
                     const imageUrl = imgurData.data.link;
+
+                    // Log image URL after uploading to Imgur
+                    console.log("Image URL from Imgur:", imageUrl);
 
                     // Send data to Google Sheets
                     const response = await fetch('https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec', {
@@ -60,7 +75,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         })
                     });
 
+                    // Log the response from Google Sheets
                     const result = await response.json();
+                    console.log("Response from Google Sheets:", result);
 
                     if (result.status === 'success') {
                         alert('Rental information submitted successfully!');
