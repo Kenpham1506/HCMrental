@@ -5,12 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Rental Information</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <header>
         <h1>Submit Rental Information</h1>
     </header>
+
     <main>
+        <!-- Google Sign-In button -->
+        <div id="g_id_onload"
+            data-client_id="809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com"
+            data-callback="handleCredentialResponse"
+            data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin" data-type="standard"></div>
+
+        <!-- Form for submitting rental information -->
         <form id="rentalForm">
             <label for="propertyName">Property Name:</label>
             <input type="text" id="propertyName" name="propertyName" required>
@@ -42,6 +53,7 @@
             <button type="submit">Submit</button>
         </form>
     </main>
+
     <script src="submit.js"></script>
 </body>
 </html>
