@@ -5,44 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Rental Information</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-        #gSignInWrapper {
-            margin-bottom: 20px;
-        }
-        .customGSignInButton {
-            background-color: #4285F4;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: inline-block;
-        }
-        .buttonText {
-            font-size: 16px;
-            font-weight: bold;
-        }
-        form {
-            margin-top: 20px;
-            display: none; /* Hide the form by default */
-        }
-    </style>
 </head>
 <body>
     <header>
         <h1>Submit Rental Information</h1>
     </header>
     <main>
-        <div id="gSignInWrapper">
-            <div id="gSignInButton" class="customGSignInButton">
-                <span class="buttonText">Sign in with Google</span>
-            </div>
-        </div>
-        <form id="rentalForm">
+        <form id="rentalForm" onsubmit="return false;">  <!-- Prevent default form submission behavior here -->
             <label for="propertyName">Property Name:</label>
             <input type="text" id="propertyName" name="propertyName" required>
 
@@ -65,7 +34,7 @@
             <input type="text" id="phone" name="phone" required>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required readonly> <!-- Readonly, will be populated from login -->
+            <input type="email" id="email" name="email" required>
 
             <label for="image">Upload Image:</label>
             <input type="file" id="image" name="image" accept="image/*" required>
@@ -73,36 +42,6 @@
             <button type="submit">Submit</button>
         </form>
     </main>
-
-    <!-- Load the Google Identity Services Library -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <!-- Load the JWT Decode Library -->
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
-    <script>
-        function handleCredentialResponse(response) {
-            // Decode the JWT token
-            const data = jwt_decode(response.credential);
-            console.log('Decoded JWT:', data);
-
-            // Populate the email field with the user's email from Google
-            document.getElementById('email').value = data.email;
-            document.getElementById('rentalForm').style.display = 'block'; // Show the form after signing in
-        }
-
-        function initGoogleSignIn() {
-            google.accounts.id.initialize({
-                client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
-                callback: handleCredentialResponse,
-                auto_select: true
-            });
-
-            google.accounts.id.renderButton(
-                document.getElementById('gSignInButton'),
-                { theme: "outline", size: "large" }
-            );
-        }
-
-        window.onload = initGoogleSignIn;
-    </script>
+    <script src="submit.js"></script>
 </body>
 </html>
