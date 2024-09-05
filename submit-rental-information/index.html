@@ -5,13 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Rental Information</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Include the Google Identity Services library -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Include the JWT decode library -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 </head>
 <body>
     <header>
         <h1>Submit Rental Information</h1>
     </header>
     <main>
-        <form id="rentalForm" onsubmit="return false;">  <!-- Prevent default form submission behavior here -->
+        <!-- Google Sign-In button -->
+        <div id="g_id_onload"
+            data-client_id="809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com"
+            data-login_uri="http://localhost:8000"
+            data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin" data-type="standard"></div>
+
+        <form id="rentalForm" onsubmit="return false;">
             <label for="propertyName">Property Name:</label>
             <input type="text" id="propertyName" name="propertyName" required>
 
@@ -32,9 +44,6 @@
 
             <label for="phone">Phone:</label>
             <input type="text" id="phone" name="phone" required>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
 
             <label for="image">Upload Image:</label>
             <input type="file" id="image" name="image" accept="image/*" required>
