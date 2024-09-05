@@ -1,18 +1,29 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('rentalForm');
+    let userEmail = '';
 
-    // Google Sign-In callback function
-    window.handleCredentialResponse = function(response) {
+    // Google Sign-In callback
+    function handleCredentialResponse(response) {
         const data = jwt_decode(response.credential);
-        console.log("User information: ", data);
+        userEmail = data.email;
+        document.getElementById('email').value = userEmail; // Set the email input to the logged-in user's email
+    }
 
-        // Automatically populate the email field with the user's Google email
-        document.getElementById('email').value = data.email;
+    // Initialize Google Sign-In
+    window.onload = function () {
+        google.accounts.id.initialize({
+            client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
+            callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+            document.getElementById("buttonDiv"), // Element to render the button
+            { theme: "outline", size: "large" }  // Customization of the button
+        );
+        google.accounts.id.prompt(); // Display the one-tap prompt if available
     };
 
-    // Handle form submission
     if (form) {
-        form.addEventListener('submit', async function(event) {
+        form.addEventListener('submit', async function (event) {
             event.preventDefault();
 
             const propertyName = document.getElementById('propertyName').value;
@@ -22,8 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const description = document.getElementById('description').value;
             const host = document.getElementById('host').value;
             const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value;
-
             const imageFile = document.getElementById('image').files[0];
 
             if (!imageFile) {
@@ -59,12 +68,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             propertyName,
                             address,
                             price,
-                            imageUrl,  // Move imageUrl here
+                            imageUrl,
                             description,
                             host,
                             phone,
-                            email,
-                            district  // Move district to the end
+                            email: userEmail, // Use logged-in user's email
+                            district
                         })
                     });
 
