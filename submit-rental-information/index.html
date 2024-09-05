@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Rental Information</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Load Google Sign-In library -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Load jwt-decode library -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 </head>
 <body>
     <header>
         <h1>Submit Rental Information</h1>
-        <div id="buttonDiv"></div> <!-- Google Sign-In button -->
     </header>
     <main>
+        <div id="buttonDiv"></div> <!-- Google Sign-In button -->
         <form id="rentalForm">
             <label for="propertyName">Property Name:</label>
             <input type="text" id="propertyName" name="propertyName" required>
@@ -36,7 +39,7 @@
             <input type="text" id="phone" name="phone" required>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required readonly>
+            <input type="email" id="email" name="email" readonly> <!-- Email field populated by Google Sign-In -->
 
             <label for="image">Upload Image:</label>
             <input type="file" id="image" name="image" accept="image/*" required>
