@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             propertyName,
                             address,
                             price,
-                            districtimageUrl,
+                            imageUrl,
                             description,
                             host,
                             phone,
