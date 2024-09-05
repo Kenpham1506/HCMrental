@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Rental Information</title>
     <link rel="stylesheet" href="styles.css">
-    <meta name="google-signin-client_id" content="809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,7 +37,7 @@
     </header>
     <main>
         <div id="gSignInWrapper">
-            <div id="customBtn" class="customGSignInButton">
+            <div id="gSignInButton" class="customGSignInButton">
                 <span class="buttonText">Sign in with Google</span>
             </div>
         </div>
@@ -73,47 +72,29 @@
             <button type="submit">Submit</button>
         </form>
     </main>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script>
-        function onSignIn(googleUser) {
-            // Get the Google profile information
-            var profile = googleUser.getBasicProfile();
-            console.log('Email:', profile.getEmail()); // Debugging
-            document.getElementById('email').value = profile.getEmail();
-            document.getElementById('rentalForm').style.display = 'block'; // Show the form
-        }
 
-        function renderButton() {
-            if (gapi) {
-                gapi.signin2.render('customBtn', {
-                    'scope': 'profile email',
-                    'width': 240,
-                    'height': 50,
-                    'longtitle': true,
-                    'theme': 'dark',
-                    'onsuccess': onSignIn,
-                    'onfailure': function(error) {
-                        console.error('Google Sign-In failed:', error); // Debugging
-                    }
-                });
-            } else {
-                console.error('gapi is not defined');
-            }
+    <!-- Load the Google Identity Services Library -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        function handleCredentialResponse(response) {
+            const data = jwt_decode(response.credential);
+            document.getElementById('email').value = data.email;
+            document.getElementById('rentalForm').style.display = 'block'; // Show the form once signed in
         }
 
         function initGoogleSignIn() {
-            gapi.load('auth2', function() {
-                gapi.auth2.init({
-                    client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com'
-                }).then(function(auth2) {
-                    renderButton();
-                }).catch(function(error) {
-                    console.error('Google Auth initialization error:', error); // Debugging
-                });
+            google.accounts.id.initialize({
+                client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
+                callback: handleCredentialResponse,
+                auto_select: true
             });
+
+            google.accounts.id.renderButton(
+                document.getElementById('gSignInButton'),
+                { theme: "outline", size: "large" }
+            );
         }
 
-        // Ensure the Google API is loaded before initializing
         window.onload = initGoogleSignIn;
     </script>
 </body>
