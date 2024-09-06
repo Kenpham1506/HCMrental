@@ -12,13 +12,33 @@ document.addEventListener('DOMContentLoaded', function() {
         google.accounts.id.prompt(); // Show the account chooser
     }
 
+    // Load jwt-decode from CDN
+    async function loadJwtDecode() {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js';
+        script.onload = () => {
+            if (typeof jwt_decode !== 'function') {
+                console.error('jwt_decode function is not available.');
+            }
+        };
+        document.head.appendChild(script);
+    }
+
     // Handle the credential response from Google
-    async function handleCredentialResponse(response) {
-        // Load jwt-decode from CDN
-        const jwt_decode = (await import('https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js')).default;
-        const user = jwt_decode(response.credential);
-        document.getElementById('email').value = user.email;
-        document.getElementById('signInMessage').style.display = 'none'; // Hide sign-in message when logged in
+    function handleCredentialResponse(response) {
+        // Check if jwt_decode is loaded
+        if (typeof jwt_decode === 'undefined') {
+            console.error('jwt_decode is not loaded.');
+            return;
+        }
+
+        try {
+            const user = jwt_decode(response.credential);
+            document.getElementById('email').value = user.email;
+            document.getElementById('signInMessage').style.display = 'none'; // Hide sign-in message when logged in
+        } catch (error) {
+            console.error('Error decoding JWT:', error);
+        }
     }
 
     // Make sure the Google Identity Services script is loaded before calling initGoogleSignIn
@@ -26,11 +46,14 @@ document.addEventListener('DOMContentLoaded', function() {
     gsiScript.src = 'https://accounts.google.com/gsi/client';
     gsiScript.async = true;
     gsiScript.defer = true;
-    gsiScript.onload = initGoogleSignIn;
+    gsiScript.onload = async () => {
+        await loadJwtDecode();
+        initGoogleSignIn();
+    };
     document.head.appendChild(gsiScript);
 
     const form = document.getElementById('rentalForm');
-    
+
     if (form) {
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
