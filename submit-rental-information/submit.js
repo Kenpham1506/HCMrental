@@ -14,13 +14,20 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.disabled = false;
     }
 
-    // Initialize Google Sign-In
+    // Initialize Google Sign-In and render button
     function initGoogleSignIn() {
         google.accounts.id.initialize({
             client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
             callback: handleCredentialResponse
         });
-        google.accounts.id.prompt(); // Show the Google Sign-In prompt
+
+        // Render the Google Sign-In button for new users
+        google.accounts.id.renderButton(
+            document.getElementById('g_id_signin'),
+            { theme: 'outline', size: 'large' } // Customize button options
+        );
+
+        google.accounts.id.prompt(); // Show the Google Sign-In prompt for returning users
     }
 
     // Wait until the Google Identity Services script is loaded
