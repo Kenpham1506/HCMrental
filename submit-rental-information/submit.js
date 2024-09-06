@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('rentalForm');
     const loginStatus = document.getElementById('login-status');
+    const loginError = document.getElementById('login-error');
     const submitButton = document.getElementById('submitButton');
 
     let userEmail = null;
@@ -11,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const decodedToken = jwt_decode(credential); // Decode JWT token using jwt-decode
         userEmail = decodedToken.email;
         loginStatus.textContent = 'Logged in as: ' + userEmail;
+        loginError.textContent = ''; // Clear any previous login errors
         submitButton.disabled = false;
     }
 
@@ -21,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
             callback: handleCredentialResponse
         });
 
-        // Render the Google Sign-In button for new users
+        // Render the Google Sign-In button at the top
         google.accounts.id.renderButton(
             document.getElementById('g_id_signin'),
             { theme: 'outline', size: 'large' } // Customize button options
@@ -44,7 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
 
             if (!userEmail) {
-                alert('Please log in to submit the form.');
+                // If the user is not logged in, show an error message
+                loginError.textContent = 'You must log in to submit the form.';
                 return;
             }
 
