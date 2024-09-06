@@ -5,22 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Rental Information</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Load Google Identity Services -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <!-- Load jwt-decode library -->
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 </head>
 <body>
     <header>
         <h1>Submit Rental Information</h1>
-        <!-- Google Sign-In button will be placed at the top -->
-        <div id="g_id_signin"></div>
-        <!-- Login status and error messages -->
-        <div id="login-status" class="login-status">Please log in to submit the form.</div>
-        <div id="login-error" class="login-error" style="color: red;"></div>
     </header>
     <main>
-        <form id="rentalForm" method="POST">
+        <div id="signInMessage" style="display: none; color: red;">Please sign in to submit the form.</div>
+        <div id="signInButton"></div>
+        <form id="rentalForm">
             <label for="propertyName">Property Name:</label>
             <input type="text" id="propertyName" name="propertyName" required>
 
@@ -42,12 +35,17 @@
             <label for="phone">Phone:</label>
             <input type="text" id="phone" name="phone" required>
 
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" readonly>
+
             <label for="image">Upload Image:</label>
             <input type="file" id="image" name="image" accept="image/*" required>
 
-            <button type="submit" id="submitButton" disabled>Submit</button>
+            <button type="submit">Submit</button>
         </form>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="submit.js"></script>
 </body>
 </html>
