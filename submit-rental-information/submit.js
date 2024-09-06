@@ -1,53 +1,36 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('rentalForm');
-    const loginStatus = document.getElementById('login-status');
-    const loginError = document.getElementById('login-error');
-    const submitButton = document.getElementById('submitButton');
-
-    let userEmail = null;
-
-    // Function to handle the response from Google Sign-In
-    function handleCredentialResponse(response) {
-        const credential = response.credential;
-        const decodedToken = jwt_decode(credential); // Decode JWT token using jwt-decode
-        userEmail = decodedToken.email;
-        loginStatus.textContent = 'Logged in as: ' + userEmail;
-        loginError.textContent = ''; // Clear any previous login errors
-        submitButton.disabled = false;
-    }
-
-    // Initialize Google Sign-In and render button
+    // Initialize Google Sign-In
     function initGoogleSignIn() {
         google.accounts.id.initialize({
             client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
             callback: handleCredentialResponse
         });
-
-        // Render the Google Sign-In button at the top
         google.accounts.id.renderButton(
-            document.getElementById('g_id_signin'),
-            { theme: 'outline', size: 'large' } // Customize button options
+            document.getElementById('signInButton'),
+            { theme: "outline", size: "large" }
         );
-
-        google.accounts.id.prompt(); // Show the Google Sign-In prompt for returning users
+        google.accounts.id.prompt(); // Show the account chooser
     }
 
-    // Wait until the Google Identity Services script is loaded
-    window.onload = function() {
-        if (typeof google !== 'undefined') {
-            initGoogleSignIn();
-        } else {
-            console.error('Google Identity Services script not loaded.');
-        }
-    };
+    // Handle the credential response from Google
+    async function handleCredentialResponse(response) {
+        const jwt_decode = (await import('jwt-decode')).default;
+        const user = jwt_decode(response.credential);
+        document.getElementById('email').value = user.email;
+        document.getElementById('signInMessage').style.display = 'none'; // Hide sign-in message when logged in
+    }
 
+    initGoogleSignIn();
+
+    const form = document.getElementById('rentalForm');
+    
     if (form) {
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
-            if (!userEmail) {
-                // If the user is not logged in, show an error message
-                loginError.textContent = 'You must log in to submit the form.';
+            const email = document.getElementById('email').value;
+            if (!email) {
+                document.getElementById('signInMessage').style.display = 'block'; // Show sign-in message if not logged in
                 return;
             }
 
@@ -83,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (imgurData.success) {
                     const imageUrl = imgurData.data.link;
 
-                    // Send data to Google Sheets using HTTPS
                     const response = await fetch('https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec', {
                         method: 'POST',
                         headers: {
@@ -97,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             description,
                             host,
                             phone,
-                            email: userEmail,
+                            email,
                             district
                         })
                     });
@@ -107,8 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (result.status === 'success') {
                         alert('Rental information submitted successfully!');
                         form.reset();
-                        submitButton.disabled = true;
-                        loginStatus.textContent = 'Please log in to submit the form.';
                     } else {
                         alert('Failed to submit rental information.');
                     }
