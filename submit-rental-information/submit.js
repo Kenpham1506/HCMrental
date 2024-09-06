@@ -14,13 +14,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle the credential response from Google
     async function handleCredentialResponse(response) {
-        const jwt_decode = (await import('jwt-decode')).default;
+        // Load jwt-decode from CDN
+        const jwt_decode = (await import('https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js')).default;
         const user = jwt_decode(response.credential);
         document.getElementById('email').value = user.email;
         document.getElementById('signInMessage').style.display = 'none'; // Hide sign-in message when logged in
     }
 
-    initGoogleSignIn();
+    // Make sure the Google Identity Services script is loaded before calling initGoogleSignIn
+    const gsiScript = document.createElement('script');
+    gsiScript.src = 'https://accounts.google.com/gsi/client';
+    gsiScript.async = true;
+    gsiScript.defer = true;
+    gsiScript.onload = initGoogleSignIn;
+    document.head.appendChild(gsiScript);
 
     const form = document.getElementById('rentalForm');
     
