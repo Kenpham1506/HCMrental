@@ -13,7 +13,11 @@
 <body>
     <header>
         <h1>Submit Rental Information</h1>
-        <div id="login-status">Please log in to submit the form.</div>
+        <!-- Google Sign-In button will be placed at the top -->
+        <div id="g_id_signin"></div>
+        <!-- Login status and error messages -->
+        <div id="login-status" class="login-status">Please log in to submit the form.</div>
+        <div id="login-error" class="login-error" style="color: red;"></div>
     </header>
     <main>
         <form id="rentalForm" method="POST">
@@ -43,11 +47,7 @@
 
             <button type="submit" id="submitButton" disabled>Submit</button>
         </form>
-
-        <!-- Google Sign-In button -->
-        <div id="g_id_signin"></div>
     </main>
-
     <script src="submit.js"></script>
 </body>
 </html>
