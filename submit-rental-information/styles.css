@@ -1,111 +1,66 @@
-/* Reset some default styles */
-body, h1, h2, h3, h4, h5, h6, p, input, textarea, button {
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* General Body Styles */
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to right, #f9d5d3, #fcebb1); /* Adjust gradient to match your design */
-    color: #333;
-    padding: 0;
-    margin: 0;
-}
-
-/* Header Styles */
 header {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 1.5em;
-    color: #e74c3c; /* Adjust color to match your design */
+    background-color: #f5f5f5;
+    padding: 10px;
     text-align: center;
 }
 
-/* Main Content Styles */
 main {
-    margin-top: 100px; /* Adjust based on header height */
     padding: 20px;
     max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
 }
 
-form {
+/* Auth container styling */
+.auth-container {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#email {
+    margin-left: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Form styling */
+form {
+    display: grid;
+    gap: 10px;
 }
 
 form label {
     font-weight: bold;
-    margin-top: 10px;
 }
 
-form input, form textarea {
+form input, form textarea, form button {
     padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 1em;
-}
-
-form textarea {
-    resize: vertical;
-    min-height: 100px;
 }
 
 form button {
-    background-color: #e74c3c; /* Adjust color to match your design */
+    background-color: #28a745;
     color: white;
-    padding: 10px;
     border: none;
-    border-radius: 4px;
-    font-size: 1em;
     cursor: pointer;
-    margin-top: 15px;
-    transition: background-color 0.3s ease;
 }
 
 form button:hover {
-    background-color: #c0392b; /* Adjust color to match your design */
+    background-color: #218838;
 }
 
 #status {
-    margin-top: 10px;
     color: red;
     font-weight: bold;
-}
-
-/* Google Sign-In Button */
-#g_id_signin {
-    margin-top: 10px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 1.2em;
-    }
-
-    form {
-        padding: 10px;
-    }
-
-    form input, form textarea, form button {
-        font-size: 0.9em;
-    }
+    margin-bottom: 20px;
 }
