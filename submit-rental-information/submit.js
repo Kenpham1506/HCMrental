@@ -5,14 +5,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let userEmail = null;
 
+    // Function to handle the response from Google Sign-In
     function handleCredentialResponse(response) {
         const credential = response.credential;
-        const decodedToken = jwt_decode(credential);
+        const decodedToken = jwt_decode(credential); // Ensure jwt_decode is loaded
         userEmail = decodedToken.email;
         loginStatus.textContent = 'Logged in as: ' + userEmail;
         submitButton.disabled = false;
     }
 
+    // Initialize Google Sign-In
     function initGoogleSignIn() {
         google.accounts.id.initialize({
             client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
@@ -21,8 +23,14 @@ document.addEventListener('DOMContentLoaded', function() {
         google.accounts.id.prompt(); // Show the Google Sign-In prompt
     }
 
-    // Initialize Google Sign-In on page load
-    initGoogleSignIn();
+    // Wait until the Google Identity Services script is loaded
+    window.onload = function() {
+        if (typeof google !== 'undefined') {
+            initGoogleSignIn();
+        } else {
+            console.error('Google Identity Services script not loaded.');
+        }
+    };
 
     if (form) {
         form.addEventListener('submit', async function(event) {
