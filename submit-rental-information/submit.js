@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('rentalForm');
     const status = document.getElementById('status');
     const emailField = document.getElementById('email');
+    const submittingIndicator = document.getElementById('submittingIndicator');
     let userEmail = '';
 
     // Initialize Google Sign-In
@@ -27,9 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
             userEmail = decodedToken.email;
             emailField.value = userEmail;
             status.textContent = 'You are logged in as ' + userEmail;
+            status.style.color = 'green'; // Set the color to green
         } catch (error) {
             console.error('Error decoding token:', error);
             status.textContent = 'Failed to log in. Please try again.';
+            status.style.color = 'red'; // Set the color to red
         }
     }
 
@@ -40,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!userEmail) {
                 status.textContent = 'You must be logged in to submit the form.';
+                status.style.color = 'red'; // Set the color to red
                 return;
             }
 
@@ -58,6 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
+                submittingIndicator.style.display = 'block'; // Show submitting indicator
+
                 const imgurClientId = 'e56f8a4b47c6eee';
                 const formData = new FormData();
                 formData.append('image', imageFile);
@@ -101,6 +107,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         form.reset();
                         emailField.value = '';
                         userEmail = '';
+                        status.textContent = '';
+                        submittingIndicator.style.display = 'none'; // Hide submitting indicator
                     } else {
                         alert('Failed to submit rental information.');
                     }
@@ -110,6 +118,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } catch (error) {
                 console.error('Error submitting form:', error);
                 alert('An error occurred while submitting the form.');
+            } finally {
+                submittingIndicator.style.display = 'none'; // Hide submitting indicator
             }
         });
     }
