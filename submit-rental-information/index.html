@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Rental Information</title>
     <link rel="stylesheet" href="styles.css">
+
     <!-- Load Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Load jwt-decode library -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 </head>
 <body>
     <header>
@@ -15,7 +18,6 @@
     </header>
     <main>
         <form id="rentalForm" method="POST">
-            <!-- Form fields -->
             <label for="propertyName">Property Name:</label>
             <input type="text" id="propertyName" name="propertyName" required>
 
