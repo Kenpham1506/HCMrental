@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to handle the response from Google Sign-In
     function handleCredentialResponse(response) {
         const credential = response.credential;
-        const decodedToken = jwt_decode(credential); // Ensure jwt_decode is loaded
+        const decodedToken = jwt_decode(credential); // Decode JWT token using jwt-decode
         userEmail = decodedToken.email;
         loginStatus.textContent = 'Logged in as: ' + userEmail;
         submitButton.disabled = false;
