@@ -5,50 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Rental Information</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="submit.js" defer></script>
+    <script src="https://apis.google.com/js/api.js" async defer></script>
 </head>
 <body>
     <header>
         <h1>Submit Rental Information</h1>
-        <div id="g_id_onload" data-client_id="809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com" data-login_uri="https://kenpham1506.github.io/submit-rental-information/index.html" data-auto_prompt="false"></div>
-        <div id="g_id_signin" data-type="standard"></div>
     </header>
+
     <main>
+        <div id="status"></div>
+
+        <div class="auth-container">
+            <div id="g_id_signin"></div> <!-- Google Sign-In Button -->
+            <input type="email" id="email" placeholder="Email" readonly>
+        </div>
+
         <form id="rentalForm">
-            <label for="propertyName">Property Name:</label>
-            <input type="text" id="propertyName" name="propertyName" required>
+            <label for="propertyName">Property Name</label>
+            <input type="text" id="propertyName" required>
 
-            <label for="address">Address:</label>
-            <input type="text" id="address" name="address" required>
+            <label for="address">Address</label>
+            <input type="text" id="address" required>
 
-            <label for="price">Price:</label>
-            <input type="text" id="price" name="price" required>
+            <label for="price">Price</label>
+            <input type="text" id="price" required>
 
-            <label for="district">District:</label>
-            <input type="text" id="district" name="district" required>
+            <label for="image">Image</label>
+            <input type="file" id="image" required>
 
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" required></textarea>
+            <label for="description">Description</label>
+            <textarea id="description" required></textarea>
 
-            <label for="host">Host:</label>
-            <input type="text" id="host" name="host" required>
+            <label for="host">Host</label>
+            <input type="text" id="host" required>
 
-            <label for="phone">Phone:</label>
-            <input type="text" id="phone" name="phone" required>
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" required>
 
-            <!-- Email field without label and positioned next to the login button -->
-            <div style="display: flex; align-items: center;">
-                <input type="email" id="email" name="email" placeholder="Email" readonly>
-                <div id="g_id_signin" style="margin-left: 10px;"></div>
-            </div>
-
-            <label for="image">Upload Image:</label>
-            <input type="file" id="image" name="image" accept="image/*" required>
+            <label for="district">District</label>
+            <input type="text" id="district" required>
 
             <button type="submit">Submit</button>
-            <div id="status" style="display: none;">Submitting, please wait...</div>
         </form>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+    <script src="submit.js"></script>
 </body>
 </html>
