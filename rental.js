@@ -31,7 +31,7 @@ function getStatus(activeDate) {
     if (diffDays < 7) {
         return '<span style="color: green;">&#x25CF; Active</span>';
     } else if (diffDays < 30) {
-        return '<span style="color: yellow;">&#x25CF; Pending</span>';
+        return '<span style="color: orange;">&#x25CF; Pending</span>';
     } else {
         return '<span style="color: red;">&#x25CF; Inactive</span>';
     }
