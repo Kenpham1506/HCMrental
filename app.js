@@ -1,10 +1,9 @@
-const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s'; // API Key
-const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE'; // Spreadsheet ID
-const RANGE = 'Sheet1!A2:J'; // Adjust range to include the "Active" column (J column)
+const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s'; // Hosting on Github doesn't have any way to hide the Client-ID, so here it is. It's insecure code, so please don't replicate or abuse it. Thank you.
+const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE';
+const RANGE = 'Sheet1!A2:J'; // Adjust range to include "Active" date column
 
 let listings = [];
 
-// Function to fetch listings from Google Sheets
 function fetchListings() {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
 
@@ -17,90 +16,43 @@ function fetchListings() {
         })
         .then(data => {
             listings = data.values;
-            displayListings(filterAndSortListings(listings));
+            displayListings(listings.map((listing, index) => ({ listing, index }))); // Include the index for each listing
         })
         .catch(error => console.error('Error fetching data:', error));
 }
 
-// Function to calculate the days since active and determine status
-function calculateStatus(activeDate) {
-    const currentDate = new Date();
-    const activeDateObj = new Date(activeDate);
-    
-    const millisecondsPerDay = 1000 * 60 * 60 * 24;
-    const diffTime = currentDate - activeDateObj;
-    const diffDays = Math.floor(diffTime / millisecondsPerDay);
-
-    let status = '';
-    let color = '';
-    if (diffDays < 7) {
-        status = 'Active'; // Green dot
-        color = 'green';
-    } else if (diffDays >= 7 && diffDays < 30) {
-        status = 'Pending'; // Yellow dot
-        color = 'yellow';
-    } else {
-        status = 'Inactive'; // Red dot
-        color = 'red';
-    }
-
-    return { diffDays, status, color };
-}
-
-// Function to filter and sort the listings
-function filterAndSortListings(listings) {
-    const activeListings = [];
-    const pendingListings = [];
-    
-    listings.forEach(listing => {
-        const [name, address, price, imageUrl, description, host, phoneNumber, email, district, activeDate] = listing;
-        
-        const { status, color } = calculateStatus(activeDate);
-
-        if (status === 'Active') {
-            activeListings.push({ listing, status, color });
-        } else if (status === 'Pending') {
-            pendingListings.push({ listing, status, color });
-        }
-        // Inactive listings are ignored
-    });
-
-    // Concatenate active listings with pending listings (active first, then pending)
-    return [...activeListings, ...pendingListings];
-}
-
-// Function to display the listings
 function displayListings(listingsToDisplay) {
     const listingsContainer = document.getElementById('listings');
     listingsContainer.innerHTML = '';
 
-    listingsToDisplay.forEach(({ listing, status, color }) => {
+    // Sort listings by status (Active -> Pending -> Inactive)
+    listingsToDisplay.sort((a, b) => {
+        const statusA = getStatus(a.listing[9]).status; // Assuming the "Active" column is index 9
+        const statusB = getStatus(b.listing[9]).status;
+        return statusA === "Inactive" ? 1 : statusB === "Inactive" ? -1 : statusA === "Pending" ? 1 : -1;
+    });
+
+    listingsToDisplay.forEach(({ listing, index }) => {
         const [name, address, price, imageUrl, description, host, phoneNumber, email, district, activeDate] = listing;
+
+        const { status, color } = getStatus(activeDate); // Get status and color for the activeDate
 
         const listingDiv = document.createElement('div');
         listingDiv.style.border = '1px solid #ddd';
         listingDiv.style.padding = '10px';
         listingDiv.style.marginBottom = '10px';
 
-        const detailPageUrl = `rental.html?id=${listings.indexOf(listing)}`;
-
-        // Status with colored dot
-        const statusIndicator = `
-            <p style="display: flex; align-items: center;">
-                <span style="width: 10px; height: 10px; background-color: ${color}; border-radius: 50%; margin-right: 10px;"></span>
-                ${status}
-            </p>
-        `;
+        const detailPageUrl = `rental.html?id=${index}`; // Use the original index for the URL
 
         listingDiv.innerHTML = `
             <h2><a href="${detailPageUrl}">${name || 'No name'}</a></h2>
-            ${statusIndicator}
             <p><strong>Address:</strong> ${address || 'No address'}</p>
             <p><strong>Price:</strong> ${price || 'No price'}</p>
             <p><strong>Description:</strong> ${description || 'No description'}</p>
             <p><strong>Host:</strong> ${host || 'No host'}</p>
             <p><strong>Phone Number:</strong> ${phoneNumber || 'No phone number'}</p>
             <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
+            <p style="color:${color};"><strong>Status:</strong> <span style="color: ${color}; font-weight: bold;">&#9679;</span> ${status}</p>
             <img src="${imageUrl || 'https://via.placeholder.com/200'}" alt="${name || 'No name'}" style="width: 200px; height: auto;">
         `;
 
@@ -108,17 +60,34 @@ function displayListings(listingsToDisplay) {
     });
 }
 
+// Function to get status based on "Active" date
+function getStatus(activeDate) {
+    const now = new Date();
+    const listedDate = new Date(activeDate);
+    const diffTime = Math.abs(now - listedDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+
+    if (diffDays <= 7) {
+        return { status: "Active", color: "green" };
+    } else if (diffDays > 7 && diffDays <= 30) {
+        return { status: "Pending", color: "orange" };
+    } else {
+        return { status: "Inactive", color: "red" };
+    }
+}
+
 // Function to apply district filter
 function applyDistrictFilter() {
     const selectedDistrict = document.getElementById('district-filter').value;
 
     const filteredListings = listings
-        .filter(listing => {
+        .map((listing, index) => ({ listing, index })) // Store the original index
+        .filter(({ listing }) => {
             const [, , , , , , , , district] = listing;
             return selectedDistrict === '' || district === selectedDistrict;
         });
 
-    displayListings(filterAndSortListings(filteredListings));
+    displayListings(filteredListings);
 }
 
 document.addEventListener('DOMContentLoaded', fetchListings);
