@@ -1,84 +1,131 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('editRentalForm');
-    const emailField = document.getElementById('email');
-    const statusField = document.getElementById('status');
-    const endDateField = document.getElementById('endDate');
-    const endDateLabel = document.getElementById('endDateLabel');
-    const userEmail = '';
+const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s';
+const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE';
+const RANGE = 'Sheet1!A2:I'; // Adjust range to include all necessary columns
 
-    // Initialize Google Sign-In
-    function initGoogleSignIn() {
-        google.accounts.id.initialize({
-            client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
-            callback: handleCredentialResponse
+let userEmail = '';
+
+function initClient() {
+    gapi.load('client:auth2', () => {
+        gapi.client.init({
+            apiKey: API_KEY,
+            clientId: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
+            discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/sheets/v4/rest"],
+            scope: 'https://www.googleapis.com/auth/spreadsheets'
+        }).then(() => {
+            gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+            updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
         });
-
-        google.accounts.id.renderButton(
-            document.getElementById('g_id_signin'),
-            { theme: 'outline', size: 'large' }
-        );
-
-        google.accounts.id.prompt();
-    }
-
-    // Handle the Google Sign-In response
-    function handleCredentialResponse(response) {
-        const idToken = response.credential;
-        const decodedToken = jwt_decode(idToken);
-        userEmail = decodedToken.email;
-        emailField.value = userEmail;
-        document.getElementById('status').textContent = `You are logged in as ${userEmail}`;
-    }
-
-    // Show/hide end date field based on rental status
-    statusField.addEventListener('change', function() {
-        if (statusField.value === 'rented') {
-            endDateLabel.style.display = 'block';
-            endDateField.style.display = 'block';
-        } else {
-            endDateLabel.style.display = 'none';
-            endDateField.style.display = 'none';
-        }
     });
+}
 
-    // Handle form submission
-    form.addEventListener('submit', async function(event) {
-        event.preventDefault();
+function updateSigninStatus(isSignedIn) {
+    if (isSignedIn) {
+        userEmail = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
+        document.getElementById('g_id_signin').style.display = 'none';
+        fetchRentals();
+    } else {
+        document.getElementById('rental-list').innerHTML = '<p>Please sign in to manage your rentals.</p>';
+    }
+}
 
-        const propertyName = document.getElementById('propertyName').value;
-        const address = document.getElementById('address').value;
-        const price = document.getElementById('price').value;
-        const rentalStatus = statusField.value;
-        const endDate = endDateField.value;
+function fetchRentals() {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+    
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const rentals = data.values.filter(row => row[7] === userEmail); // Filter by email
+            displayRentals(rentals);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
 
-        const updateData = {
-            email: userEmail,
-            propertyName,
-            address,
-            price,
-            rentalStatus,
-            endDate
-        };
+function displayRentals(rentals) {
+    const rentalList = document.getElementById('rental-list');
+    rentalList.innerHTML = '';
 
-        const response = await fetch('https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updateData)
-        });
+    rentals.forEach((rental, index) => {
+        const [name, address, price, imageUrl, description, host, phoneNumber, email, activeDate] = rental;
 
-        const result = await response.json();
-        if (result.status === 'success') {
-            alert('Rental information updated successfully!');
-        } else {
-            alert('Failed to update rental information.');
-        }
+        const rentalDiv = document.createElement('div');
+        rentalDiv.style.border = '1px solid #ddd';
+        rentalDiv.style.padding = '10px';
+        rentalDiv.style.marginBottom = '10px';
+
+        rentalDiv.innerHTML = `
+            <h2>${name || 'No name'}</h2>
+            <p><strong>Address:</strong> ${address || 'No address'}</p>
+            <p><strong>Price:</strong> ${price || 'No price'}</p>
+            <p><strong>Description:</strong> ${description || 'No description'}</p>
+            <p><strong>Host:</strong> ${host || 'No host'}</p>
+            <p><strong>Phone Number:</strong> ${phoneNumber || 'No phone number'}</p>
+            <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
+            <p><strong>Status:</strong> <span class="status-dot" style="background-color: ${getStatusColor(activeDate)};"></span> ${getStatusText(activeDate)}</p>
+            <button onclick="updateRental('${name}', '${activeDate}')">Update Rental</button>
+        `;
+
+        rentalList.appendChild(rentalDiv);
     });
+}
 
-    // Load Google Sign-In library
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
-    script.onload = initGoogleSignIn;
-    document.head.appendChild(script);
-});
+function getStatusColor(dateString) {
+    const today = new Date();
+    const activeDate = new Date(dateString);
+    const diffDays = Math.ceil((activeDate - today) / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 7) return 'green';
+    if (diffDays <= 30) return 'orange';
+    return 'red';
+}
+
+function getStatusText(dateString) {
+    const today = new Date();
+    const activeDate = new Date(dateString);
+    const diffDays = Math.ceil((activeDate - today) / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 7) return 'Active';
+    if (diffDays <= 30) return 'Pending';
+    return 'Inactive';
+}
+
+function updateRental(name, currentActiveDate) {
+    const status = prompt('Enter new status ("active" or "rented"):').toLowerCase();
+    if (status === 'active') {
+        updateActiveDate(name, new Date().toISOString().split('T')[0]); // Set to current date
+    } else if (status === 'rented') {
+        const endDate = prompt('Enter end date (YYYY-MM-DD):');
+        updateActiveDate(name, endDate);
+    } else {
+        alert('Invalid status. Please enter "active" or "rented".');
+    }
+}
+
+function updateActiveDate(name, date) {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Sheet1!A2:I?key=${API_KEY}`;
+    
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const values = data.values;
+            const rowIndex = values.findIndex(row => row[0] === name && row[7] === userEmail) + 2; // Row index in Google Sheets
+            const range = `Sheet1!I${rowIndex}`;
+
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${range}?valueInputOption=RAW`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token}`
+                },
+                body: JSON.stringify({ range, values: [[date]] })
+            })
+                .then(response => response.json())
+                .then(() => {
+                    alert('Rental updated successfully.');
+                    fetchRentals();
+                })
+                .catch(error => console.error('Error updating data:', error));
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+document.addEventListener('DOMContentLoaded', initClient);
