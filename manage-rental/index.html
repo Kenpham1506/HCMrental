@@ -3,33 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Rental Properties</title>
+    <title>Manage Rentals</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Manage Your Rental Properties</h1>
+        <h1>Manage Your Rentals</h1>
+        <div id="g_id_signin"></div>
+        <p id="user-email"></p>
     </header>
-    
-    <main>
-        <!-- Google Sign-In Button -->
-        <div id="g_id_onload"
-             data-client_id="809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com"
-             data-callback="handleCredentialResponse"
-             data-auto_prompt="false">
-        </div>
-        <div class="g_id_signin" data-type="standard"></div>
 
-        <div id="status"></div>
-        <div id="rental-properties"></div> <!-- Rental properties will be displayed here -->
+    <main>
+        <div id="rental-list"></div>
     </main>
 
-    <!-- Include the jwt-decode library -->
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
-    
-    <!-- Google Sign-In library -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    
     <script src="manage-rental.js"></script>
 </body>
 </html>
