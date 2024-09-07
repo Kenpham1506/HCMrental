@@ -10,12 +10,24 @@
     <header>
         <h1>Edit Rental Details</h1>
     </header>
+
     <main>
         <div id="g_id_signin"></div>
+        <input type="email" id="email" placeholder="Email" readonly>
         <div id="status"></div>
-        <form id="editRentalForm" style="display:none;">
+
+        <form id="editRentalForm">
+            <label for="propertyName">Property Name:</label>
+            <input type="text" id="propertyName" name="propertyName" required>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required>
+
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price" required>
+
             <label for="status">Rental Status:</label>
-            <select id="rentalStatus" name="status" required>
+            <select id="status" name="status" required>
                 <option value="active">Active</option>
                 <option value="rented">Rented</option>
             </select>
@@ -26,6 +38,7 @@
             <button type="submit">Update</button>
         </form>
     </main>
+
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script src="manage-rental.js"></script>
 </body>
