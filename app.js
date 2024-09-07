@@ -32,15 +32,19 @@ function calculateStatus(activeDate) {
     const diffDays = Math.floor(diffTime / millisecondsPerDay);
 
     let status = '';
+    let color = '';
     if (diffDays < 7) {
         status = 'Active'; // Green dot
+        color = 'green';
     } else if (diffDays >= 7 && diffDays < 30) {
         status = 'Pending'; // Yellow dot
+        color = 'yellow';
     } else {
         status = 'Inactive'; // Red dot
+        color = 'red';
     }
 
-    return { diffDays, status };
+    return { diffDays, status, color };
 }
 
 // Function to filter and sort the listings
@@ -51,12 +55,12 @@ function filterAndSortListings(listings) {
     listings.forEach(listing => {
         const [name, address, price, imageUrl, description, host, phoneNumber, email, district, activeDate] = listing;
         
-        const { status } = calculateStatus(activeDate);
+        const { status, color } = calculateStatus(activeDate);
 
         if (status === 'Active') {
-            activeListings.push(listing);
+            activeListings.push({ listing, status, color });
         } else if (status === 'Pending') {
-            pendingListings.push(listing);
+            pendingListings.push({ listing, status, color });
         }
         // Inactive listings are ignored
     });
@@ -70,7 +74,7 @@ function displayListings(listingsToDisplay) {
     const listingsContainer = document.getElementById('listings');
     listingsContainer.innerHTML = '';
 
-    listingsToDisplay.forEach((listing, index) => {
+    listingsToDisplay.forEach(({ listing, status, color }) => {
         const [name, address, price, imageUrl, description, host, phoneNumber, email, district, activeDate] = listing;
 
         const listingDiv = document.createElement('div');
@@ -78,10 +82,19 @@ function displayListings(listingsToDisplay) {
         listingDiv.style.padding = '10px';
         listingDiv.style.marginBottom = '10px';
 
-        const detailPageUrl = `rental.html?id=${index}`;
+        const detailPageUrl = `rental.html?id=${listings.indexOf(listing)}`;
+
+        // Status with colored dot
+        const statusIndicator = `
+            <p style="display: flex; align-items: center;">
+                <span style="width: 10px; height: 10px; background-color: ${color}; border-radius: 50%; margin-right: 10px;"></span>
+                ${status}
+            </p>
+        `;
 
         listingDiv.innerHTML = `
             <h2><a href="${detailPageUrl}">${name || 'No name'}</a></h2>
+            ${statusIndicator}
             <p><strong>Address:</strong> ${address || 'No address'}</p>
             <p><strong>Price:</strong> ${price || 'No price'}</p>
             <p><strong>Description:</strong> ${description || 'No description'}</p>
