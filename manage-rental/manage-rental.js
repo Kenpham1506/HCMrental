@@ -4,19 +4,28 @@ const RANGE = 'Sheet1!A2:J'; // Adjust range to include the 'Active' column
 
 let userEmail = '';
 
-function onSignIn(googleUser) {
-    const profile = googleUser.getBasicProfile();
-    userEmail = profile.getEmail();
-    document.getElementById('sign-in-btn').style.display = 'none';
+function handleCredentialResponse(response) {
+    const user = response.credential;
+    const jwt = parseJwt(user);
+    userEmail = jwt.email;
     document.getElementById('sign-out-btn').style.display = 'block';
     fetchRentals();
+}
+
+function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(c => 
+        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join(''));
+    
+    return JSON.parse(jsonPayload);
 }
 
 function onSignOut() {
     const auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(() => {
         userEmail = '';
-        document.getElementById('sign-in-btn').style.display = 'block';
         document.getElementById('sign-out-btn').style.display = 'none';
         document.getElementById('rental-list').innerHTML = '';
     });
@@ -107,19 +116,13 @@ function updateRental(index) {
     }
 }
 
-document.getElementById('sign-in-btn').addEventListener('click', () => {
+// Initialize Google Sign-In
+window.onload = function () {
     google.accounts.id.initialize({
         client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
-        callback: onSignIn,
+        callback: handleCredentialResponse
     });
     google.accounts.id.prompt(); // Show the Google login button
-});
+};
 
 document.getElementById('sign-out-btn').addEventListener('click', onSignOut);
-
-document.addEventListener('DOMContentLoaded', () => {
-    const auth2 = gapi.auth2.getAuthInstance();
-    if (auth2.isSignedIn.get()) {
-        onSignIn(auth2.currentUser.get());
-    }
-});
