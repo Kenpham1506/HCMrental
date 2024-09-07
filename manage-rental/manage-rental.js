@@ -1,137 +1,99 @@
-const CLIENT_ID = '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com';
-const SHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE';
-const SCRIPT_URL = 'YOUR_DEPLOYED_SCRIPT_URL'; // Replace with your deployed Google Apps Script web app URL
+let userEmail = '';
 
-let auth2;
-let userEmail;
+function handleCredentialResponse(response) {
+    const data = jwt_decode(response.credential);
+    userEmail = data.email;
 
-function initClient() {
-    gapi.load('auth2', () => {
-        gapi.auth2.init({
-            client_id: CLIENT_ID
-        }).then(() => {
-            auth2 = gapi.auth2.getAuthInstance();
-            auth2.isSignedIn.listen(updateSigninStatus);
-        });
-    });
+    document.getElementById('status').innerHTML = `Logged in as ${userEmail}`;
+    loadUserRentals();  // Load the user's rental properties based on their email
 }
 
-function updateSigninStatus(isSignedIn) {
-    if (isSignedIn) {
-        const user = auth2.currentUser.get();
-        userEmail = user.getBasicProfile().getEmail();
-        fetchUserProperties();
+async function loadUserRentals() {
+    if (!userEmail) {
+        document.getElementById('status').innerHTML = 'Please sign in to manage your rentals.';
+        return;
+    }
+
+    const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s'; // Replace with your actual API key
+    const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE'; // Replace with your actual Sheet ID
+    const RANGE = 'Sheet1!A2:J'; // Modify this to fit your sheet's structure
+
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const properties = data.values.filter(property => property[7] === userEmail);  // Filter by email column
+        displayUserRentals(properties);
+    } catch (error) {
+        console.error('Error fetching rental properties:', error);
+        document.getElementById('status').innerHTML = 'Error fetching your properties. Please try again later.';
     }
 }
 
-function onSignIn(googleUser) {
-    userEmail = googleUser.getBasicProfile().getEmail();
-    fetchUserProperties();
-}
+function displayUserRentals(properties) {
+    const container = document.getElementById('rental-properties');
+    container.innerHTML = '';  // Clear any previous listings
 
-function fetchUserProperties() {
-    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Sheet1?key=${API_KEY}`)
-        .then(response => response.json())
-        .then(data => {
-            const properties = data.values;
-            const userProperties = properties.filter(row => row[7] === userEmail); // Assuming email is in column 8 (index 7)
-            displayProperties(userProperties);
-        })
-        .catch(error => console.error('Error fetching properties:', error));
-}
-
-function displayProperties(properties) {
-    const propertyList = document.getElementById('property-list');
-    propertyList.innerHTML = '';
+    if (properties.length === 0) {
+        container.innerHTML = '<p>You have no rental properties.</p>';
+        return;
+    }
 
     properties.forEach((property, index) => {
-        const [name, address, price, imageUrl, description, host, phone, email, district, activeDate] = property;
+        const [propertyName, address, price, imageUrl, description, host, phone, email, district, activeDate] = property;
+
         const propertyDiv = document.createElement('div');
-        propertyDiv.classList.add('property');
-
+        propertyDiv.classList.add('property-item');
         propertyDiv.innerHTML = `
-            <h3>${name || 'No name'}</h3>
-            <p><strong>Address:</strong> ${address || 'No address'}</p>
-            <p><strong>Price:</strong> ${price || 'No price'}</p>
-            <p><strong>Description:</strong> ${description || 'No description'}</p>
-            <p><strong>Host:</strong> ${host || 'No host'}</p>
-            <p><strong>Phone:</strong> ${phone || 'No phone'}</p>
-            <p><strong>Email:</strong> ${email || 'No email'}</p>
-            <img src="${imageUrl || 'https://via.placeholder.com/150'}" alt="${name || 'No name'}">
-            <p><strong>Active Date:</strong> ${activeDate || 'No date'}</p>
-            <button onclick="editProperty(${index})">Edit</button>
+            <h3>${propertyName}</h3>
+            <p><strong>Address:</strong> ${address}</p>
+            <p><strong>Price:</strong> ${price}</p>
+            <p><strong>Active Date:</strong> ${activeDate || 'Not set'}</p>
+            <button onclick="setActiveDate(${index})">Set to Active</button>
+            <button onclick="setRented(${index})">Set to Rented</button>
         `;
-
-        propertyList.appendChild(propertyDiv);
+        container.appendChild(propertyDiv);
     });
 }
 
-function editProperty(index) {
-    const propertyList = document.getElementById('property-list');
-    const propertyForm = document.getElementById('property-form');
-    const form = document.getElementById('update-form');
-    const propertyName = form.querySelector('#property-name');
-    const propertyActiveDate = form.querySelector('#property-active-date');
-    const propertyStatus = form.querySelector('#property-status');
-    const rentedDateContainer = form.querySelector('#rented-date-container');
-    const propertyEndDate = form.querySelector('#property-end-date');
-    const propertyIndex = form.querySelector('#property-index');
-
-    propertyList.style.display = 'none';
-    propertyForm.style.display = 'block';
-
-    // Load the selected property's data into the form
-    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Sheet1?key=${API_KEY}`)
-        .then(response => response.json())
-        .then(data => {
-            const properties = data.values;
-            const property = properties[index];
-            const [name, , , , , , , , , activeDate] = property;
-
-            propertyName.value = name;
-            propertyActiveDate.value = activeDate || '';
-            propertyStatus.value = activeDate ? 'Active' : 'Rented';
-            propertyEndDate.value = activeDate || '';
-
-            rentedDateContainer.style.display = propertyStatus.value === 'Rented' ? 'block' : 'none';
-            propertyIndex.value = index;
-        });
+function setActiveDate(index) {
+    updateActiveDate(index, new Date().toISOString().split('T')[0]);  // Set to today's date
 }
 
-document.getElementById('update-form').addEventListener('submit', function (e) {
-    e.preventDefault();
+function setRented(index) {
+    const futureDate = prompt('Enter the rental end date (YYYY-MM-DD):');
+    if (futureDate) {
+        updateActiveDate(index, futureDate);
+    }
+}
 
-    const propertyName = document.getElementById('property-name').value;
-    const propertyActiveDate = document.getElementById('property-active-date').value;
-    const propertyStatus = document.getElementById('property-status').value;
-    const propertyEndDate = document.getElementById('property-end-date').value;
-    const propertyIndex = document.getElementById('property-index').value;
+async function updateActiveDate(index, date) {
+    const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s';  // Replace with your actual API key
+    const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE';  // Replace with your actual Sheet ID
 
-    const data = {
-        index: parseInt(propertyIndex),
-        activeDate: propertyStatus === 'Rented' ? propertyEndDate : propertyActiveDate
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Sheet1!J${index + 2}?valueInputOption=RAW&key=${API_KEY}`;
+    const body = {
+        values: [[date]]
     };
 
-    fetch(SCRIPT_URL, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(result => {
-        console.log(result);
-        alert('Property updated successfully!');
-        document.getElementById('property-form').style.display = 'none';
-        document.getElementById('property-list').style.display = 'block';
-        fetchUserProperties();
-    })
-    .catch(error => console.error('Error updating property:', error));
-});
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
 
-document.getElementById('property-status').addEventListener('change', function () {
-    const rentedDateContainer = document.getElementById('rented-date-container');
-    rentedDateContainer.style.display = this.value === 'Rented' ? 'block' : 'none';
-});
-
-// Initialize Google API client
-gapi.load('client:auth2', initClient);
+        if (response.ok) {
+            alert('Rental status updated.');
+            loadUserRentals();  // Refresh the user's rentals
+        } else {
+            console.error('Error updating rental status:', await response.json());
+            alert('Failed to update rental status.');
+        }
+    } catch (error) {
+        console.error('Error updating rental status:', error);
+        alert('An error occurred while updating rental status.');
+    }
+}
