@@ -3,43 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Rental Details</title>
+    <title>Manage Rentals</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <header>
-        <h1>Edit Rental Details</h1>
+        <h1>Manage Rentals</h1>
+        <div id="g_id_onload"
+             data-client_id="809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com"
+             data-login_uri="http://localhost/manage-rental/index.html">
+        </div>
+        <div id="g_id_signin"></div>
     </header>
 
     <main>
-        <div id="g_id_signin"></div>
-        <input type="email" id="email" placeholder="Email" readonly>
-        <div id="status"></div>
-
-        <form id="editRentalForm">
-            <label for="propertyName">Property Name:</label>
-            <input type="text" id="propertyName" name="propertyName" required>
-
-            <label for="address">Address:</label>
-            <input type="text" id="address" name="address" required>
-
-            <label for="price">Price:</label>
-            <input type="text" id="price" name="price" required>
-
-            <label for="status">Rental Status:</label>
-            <select id="status" name="status" required>
-                <option value="active">Active</option>
-                <option value="rented">Rented</option>
-            </select>
-
-            <label for="endDate" id="endDateLabel" style="display:none;">End Date:</label>
-            <input type="date" id="endDate" name="endDate" style="display:none;">
-
-            <button type="submit">Update</button>
-        </form>
+        <div id="rental-list"></div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <footer>
+        <p>&copy; 2024 Ken Pham. All rights reserved.</p>
+    </footer>
+
     <script src="manage-rental.js"></script>
 </body>
 </html>
