@@ -1,14 +1,15 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('editRentalForm');
-    const statusDropdown = document.getElementById('rentalStatus');
+    const emailField = document.getElementById('email');
+    const statusField = document.getElementById('status');
     const endDateField = document.getElementById('endDate');
     const endDateLabel = document.getElementById('endDateLabel');
-    let userEmail = '';
+    const userEmail = '';
 
     // Initialize Google Sign-In
     function initGoogleSignIn() {
         google.accounts.id.initialize({
-            client_id: 'YOUR_GOOGLE_CLIENT_ID',
+            client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
             callback: handleCredentialResponse
         });
 
@@ -17,62 +18,65 @@ document.addEventListener('DOMContentLoaded', function () {
             { theme: 'outline', size: 'large' }
         );
 
-        google.accounts.id.prompt(); // Shows login prompt
+        google.accounts.id.prompt();
     }
 
-    // Handle Google Sign-In response
+    // Handle the Google Sign-In response
     function handleCredentialResponse(response) {
         const idToken = response.credential;
         const decodedToken = jwt_decode(idToken);
         userEmail = decodedToken.email;
-        document.getElementById('status').textContent = `Logged in as ${userEmail}`;
-        form.style.display = 'block'; // Show form after login
-
-        loadUserRentalData(userEmail);
+        emailField.value = userEmail;
+        document.getElementById('status').textContent = `You are logged in as ${userEmail}`;
     }
 
-    // Show/hide the end date field based on the status selection
-    statusDropdown.addEventListener('change', function () {
-        if (this.value === 'rented') {
-            endDateField.style.display = 'block';
+    // Show/hide end date field based on rental status
+    statusField.addEventListener('change', function() {
+        if (statusField.value === 'rented') {
             endDateLabel.style.display = 'block';
+            endDateField.style.display = 'block';
         } else {
-            endDateField.style.display = 'none';
             endDateLabel.style.display = 'none';
+            endDateField.style.display = 'none';
         }
     });
 
-    // Load the user's rental data based on the email
-    function loadUserRentalData(email) {
-        fetch(`https://sheets.googleapis.com/v4/spreadsheets/YOUR_SHEET_ID/values/Sheet1!A:I?key=YOUR_API_KEY`)
-            .then(response => response.json())
-            .then(data => {
-                const listings = data.values;
-                const userListing = listings.find(listing => listing[7] === email);
-                if (userListing) {
-                    // Populate form with rental data (if needed)
-                }
-            });
-    }
-
-    // Handle form submission for updating rental status
-    form.addEventListener('submit', function (event) {
+    // Handle form submission
+    form.addEventListener('submit', async function(event) {
         event.preventDefault();
-        const status = statusDropdown.value;
-        const endDate = endDateField.value;
-        const currentDate = new Date().toISOString().slice(0, 10); // Format as YYYY-MM-DD
 
-        const updatedData = {
-            status: status === 'active' ? 'Active' : 'Rented',
-            activeDate: status === 'active' ? currentDate : '',
-            endDate: status === 'rented' ? endDate : ''
+        const propertyName = document.getElementById('propertyName').value;
+        const address = document.getElementById('address').value;
+        const price = document.getElementById('price').value;
+        const rentalStatus = statusField.value;
+        const endDate = endDateField.value;
+
+        const updateData = {
+            email: userEmail,
+            propertyName,
+            address,
+            price,
+            rentalStatus,
+            endDate
         };
 
-        // Send the updated data to Google Sheets via API or App Script
-        // (handle the updating logic here based on the row the user owns)
+        const response = await fetch('https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updateData)
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            alert('Rental information updated successfully!');
+        } else {
+            alert('Failed to update rental information.');
+        }
     });
 
-    // Load Google Sign-In
+    // Load Google Sign-In library
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
     script.onload = initGoogleSignIn;
