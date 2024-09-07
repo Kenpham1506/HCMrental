@@ -5,17 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Rentals</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <header>
-        <h1>Manage Rentals</h1>
-        <div id="g_id_onload"
-             data-client_id="809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com"
-             data-login_uri="http://localhost/manage-rental/index.html">
-        </div>
-        <div id="g_id_signin"></div>
+        <h1>Manage Your Rentals</h1>
+        <button id="sign-in-btn">Sign In</button>
+        <button id="sign-out-btn" style="display: none;">Sign Out</button>
     </header>
 
     <main>
@@ -26,6 +21,7 @@
         <p>&copy; 2024 Ken Pham. All rights reserved.</p>
     </footer>
 
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="manage-rental.js"></script>
 </body>
 </html>
