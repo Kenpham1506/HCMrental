@@ -1,88 +1,79 @@
-/* General Styles */
+/* General styles */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: #f4f4f4;
-    color: #333;
+    background-color: #f7f7f7;
 }
 
 header {
-    background: #ff6f61;
-    color: white;
-    padding: 20px;
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 10px 20px;
     text-align: center;
 }
 
-header h1 {
+h1 {
     margin: 0;
 }
 
-.filter-form {
-    margin: 20px auto;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+#rental-list {
+    padding: 20px;
 }
 
-.filter-form label {
-    margin-bottom: 10px;
-    font-weight: bold;
+div.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 5px;
 }
 
-.filter-form select,
-.filter-form button {
-    padding: 10px;
-    margin: 5px;
-    border: 1px solid #ccc;
+/* Rental listing styles */
+div {
+    border: 1px solid #ddd;
+    background-color: #ffffff;
     border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+h2 {
+    margin-top: 0;
 }
 
 button {
-    background: #ff6f61;
-    color: white;
+    background-color: #007bff;
+    color: #ffffff;
     border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 button:hover {
-    background: #ff4a43;
+    background-color: #0056b3;
 }
 
-main {
-    padding: 20px;
-    padding-bottom: 100px;
+/* Sign-in button */
+#g_id_signin {
+    margin: 20px auto;
+    text-align: center;
 }
 
 footer {
-    background: #333;
-    color: white;
-    text-align: center;
+    background-color: #007bff;
+    color: #ffffff;
     padding: 10px;
+    text-align: center;
     position: fixed;
     bottom: 0;
     width: 100%;
 }
 
-#listings {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-#listings div {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 10px;
-    padding: 15px;
-    width: 300px;
-    box-sizing: border-box;
-}
-
-#listings img {
-    max-width: 100%;
-    border-radius: 5px;
+footer p {
+    margin: 0;
 }
