@@ -7,37 +7,51 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="g_id_signin"></div>
-    <input type="email" id="email" placeholder="Email" readonly>
-    <div id="status"></div>
-    <div id="submittingIndicator" style="display: none;">Submitting, please wait...</div>
-    <form id="rentalForm">
-        <label for="propertyName">Property Name</label>
-        <input type="text" id="propertyName" name="propertyName" required>
+    <header>
+        <h1>Submit Rental Information</h1>
+    </header>
 
-        <label for="address">Address</label>
-        <input type="text" id="address" name="address" required>
+    <main>
+        <!-- Auth container with Google sign-in and email display -->
+        <div class="auth-container">
+            <div id="g_id_signin"></div>
+            <input type="email" id="email" placeholder="Email" readonly>
+        </div>
 
-        <label for="price">Price</label>
-        <input type="text" id="price" name="price" required>
+        <!-- Status indicator -->
+        <div id="status"></div>
+        <!-- Submitting indicator -->
+        <div id="submittingIndicator" style="display: none;">Submitting, please wait...</div>
 
-        <label for="district">District</label>
-        <input type="text" id="district" name="district" required>
+        <!-- Form for submitting rental information -->
+        <form id="rentalForm">
+            <label for="propertyName">Property Name</label>
+            <input type="text" id="propertyName" name="propertyName" required>
 
-        <label for="description">Description</label>
-        <textarea id="description" name="description" required></textarea>
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" required>
 
-        <label for="host">Host</label>
-        <input type="text" id="host" name="host" required>
+            <label for="price">Price</label>
+            <input type="text" id="price" name="price" required>
 
-        <label for="phone">Phone</label>
-        <input type="text" id="phone" name="phone" required>
+            <label for="district">District</label>
+            <input type="text" id="district" name="district" required>
 
-        <label for="image">Image</label>
-        <input type="file" id="image" name="image" required>
+            <label for="description">Description</label>
+            <textarea id="description" name="description" required></textarea>
 
-        <button type="submit">Submit</button>
-    </form>
+            <label for="host">Host</label>
+            <input type="text" id="host" name="host" required>
+
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" name="phone" required>
+
+            <label for="image">Image</label>
+            <input type="file" id="image" name="image" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script src="submit.js"></script>
