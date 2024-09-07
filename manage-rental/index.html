@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Rental Details</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Edit Rental Details</h1>
+    </header>
+    <main>
+        <div id="g_id_signin"></div>
+        <div id="status"></div>
+        <form id="editRentalForm" style="display:none;">
+            <label for="status">Rental Status:</label>
+            <select id="rentalStatus" name="status" required>
+                <option value="active">Active</option>
+                <option value="rented">Rented</option>
+            </select>
+
+            <label for="endDate" id="endDateLabel" style="display:none;">End Date:</label>
+            <input type="date" id="endDate" name="endDate" style="display:none;">
+
+            <button type="submit">Update</button>
+        </form>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script src="edit-rental.js"></script>
+</body>
+</html>
