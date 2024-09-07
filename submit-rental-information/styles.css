@@ -63,6 +63,8 @@ form input, form textarea, form button {
 
 form input, form textarea {
     width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
 }
 
 form button {
