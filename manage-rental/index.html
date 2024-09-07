@@ -4,42 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Rental Properties</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
-    <script src="https://apis.google.com/js/api:client.js"></script>
-    <script src="manage-rental.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Manage Rental Properties</h1>
-        <div id="g-signin" class="g-signin2" data-onsuccess="onSignIn"></div>
+        <h1>Manage Your Rental Properties</h1>
     </header>
-
+    
     <main>
-        <div id="property-list"></div>
-        <div id="property-form" style="display:none;">
-            <h2>Update Property</h2>
-            <form id="update-form">
-                <input type="hidden" id="property-index">
-                <label for="property-name">Property Name:</label>
-                <input type="text" id="property-name" required>
-                <label for="property-active-date">Active Date:</label>
-                <input type="date" id="property-active-date">
-                <label for="property-status">Status:</label>
-                <select id="property-status">
-                    <option value="Active">Active</option>
-                    <option value="Rented">Rented</option>
-                </select>
-                <div id="rented-date-container" style="display:none;">
-                    <label for="property-end-date">End Date:</label>
-                    <input type="date" id="property-end-date">
-                </div>
-                <button type="submit">Update Property</button>
-            </form>
+        <!-- Google Sign-In Button -->
+        <div id="g_id_onload"
+             data-client_id="809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com"
+             data-callback="handleCredentialResponse"
+             data-auto_prompt="false">
         </div>
+        <div class="g_id_signin" data-type="standard"></div>
+
+        <div id="status"></div>
+        <div id="rental-properties"></div> <!-- Rental properties will be displayed here -->
     </main>
 
-    <footer>
-        <p>&copy; 2024 Ken Pham. All rights reserved.</p>
-    </footer>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="manage-rental.js"></script>
 </body>
 </html>
