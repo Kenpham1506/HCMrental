@@ -96,7 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             host,
                             phone,
                             email: userEmail,
-                            district
+                            district,
+                            active: new Date()
                         })
                     });
 
