@@ -37,7 +37,17 @@
                 <option value="Nha Be District">Nha Be District</option>
                 <option value="Can Gio District">Can Gio District</option>
             </select>
-            <button type="button" onclick="applyDistrictFilter()">Apply Filter</button>
+
+            <label for="status-filter">Filter by Status:</label>
+            <select id="status-filter">
+                <option value="">All Status</option>
+                <option value="Active">Active</option>
+                <option value="Pending">Pending</option>
+                <option value="Rented">Rented</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+            
+            <button type="button" onclick="applyFilters()">Apply Filters</button>
         </div>
     </header>
     
