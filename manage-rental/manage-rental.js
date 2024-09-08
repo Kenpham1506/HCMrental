@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Google Sign-In
     function initGoogleSignIn() {
         google.accounts.id.initialize({
-            client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
+            client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com', // Replace with your actual Client ID
             callback: handleCredentialResponse
         });
 
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function fetchUserRentals(email) {
         const url = `https://sheets.googleapis.com/v4/spreadsheets/1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE/values/Sheet1!A2:K?key=AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s`;
-        
+
         try {
             const response = await fetch(url);
             const data = await response.json();
@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayUserRentals(rentals, email) {
         const rentalList = document.getElementById('rental-list');
         rentalList.innerHTML = '';
-        
+
         rentals.forEach((rental) => {
-            const [id, propertyName, address, price, imageUrl, description, host, phone, rentalEmail, activeDate, district] = rental;
+            const [id, propertyName, address, district, price, description, host, phone, rentalEmail, activeDate, imageUrl] = rental;
             if (rentalEmail === email) {
                 const rentalDiv = document.createElement('div');
                 rentalDiv.innerHTML = `
@@ -58,11 +58,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function setActiveDate(id) {
-        const url = `https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec`;
+        const url = `https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
 
         const body = {
             id,
-            activeDate: new Date().toISOString().split('T')[0]
+            active: new Date().toISOString().split('T')[0] // Set current date as Active
         };
 
         try {
@@ -87,11 +87,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const rentedDate = prompt('Enter the rental end date (YYYY-MM-DD)');
         if (!rentedDate) return;
 
-        const url = `https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec`;
+        const url = `https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
 
         const body = {
             id,
-            activeDate: rentedDate
+            active: rentedDate // Set future date as the rented end date
         };
 
         try {
