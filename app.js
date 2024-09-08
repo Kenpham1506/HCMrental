@@ -20,9 +20,7 @@ function sortAndDisplayListings(listingsToDisplay) {
     const activeListings = [];
     const pendingListings = [];
     const futureListings = [];
-    //const inactiveListings = [];
-}
-
+    const inactiveListings = [];
     
     listingsToDisplay.forEach(({ listing, index }) => {
         const [id, name, address, district, price, description, host, phoneNumber, email, activeDate, imageUrl] = listing;
