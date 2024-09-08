@@ -11,21 +11,51 @@ function fetchListings() {
         .then(response => response.json())
         .then(data => {
             listings = data.values;
-            sortAndDisplayListings(listings.map((listing, index) => ({ listing, index })));
+            applyFilters(); // Apply filters initially when data is loaded
         })
         .catch(error => console.error('Error fetching data:', error));
 }
 
-function sortAndDisplayListings(listingsToDisplay) {
-    const activeListings = [];
-    const pendingListings = [];
-    const rentedListings = [];
-    const inactiveListings = [];
+function applyFilters() {
+    const selectedDistrict = document.getElementById('district-filter').value;
+    const selectedStatus = document.getElementById('status-filter').value;
+
+    const filteredListings = listings
+        .map((listing, index) => ({ listing, index }))
+        .filter(({ listing }) => {
+            const [, , , district, , , , , , activeDate] = listing;
+            const statusHtml = getStatusHtml(activeDate);
+
+            const matchesDistrict = selectedDistrict === '' || district === selectedDistrict;
+            const matchesStatus = selectedStatus === '' || statusHtml.statusText === selectedStatus;
+
+            return matchesDistrict && matchesStatus;
+        });
+
+    // Sort filtered listings by status
+    const sortedListings = sortListingsByStatus(filteredListings);
+
+    displayListings(sortedListings);
+}
+
+function sortListingsByStatus(listingsToSort) {
+    return listingsToSort.sort((a, b) => {
+        const statusA = getStatusHtml(a.listing[9]).statusText;
+        const statusB = getStatusHtml(b.listing[9]).statusText;
+
+        const statusOrder = ['Active', 'Pending', 'Rented', 'Inactive'];
+
+        return statusOrder.indexOf(statusA) - statusOrder.indexOf(statusB);
+    });
+}
+
+function displayListings(listingsToDisplay) {
+    const listingsContainer = document.getElementById('listings');
+    listingsContainer.innerHTML = '';
 
     listingsToDisplay.forEach(({ listing, index }) => {
         const [id, name, address, district, price, description, host, phoneNumber, email, activeDate, imageUrl] = listing;
         const statusHtml = getStatusHtml(activeDate);
-        const status = statusHtml.statusText;
 
         const listingHtml = `
             <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
@@ -36,24 +66,13 @@ function sortAndDisplayListings(listingsToDisplay) {
                 <p><strong>Host:</strong> ${host || 'No host'}</p>
                 <p><strong>Phone Number:</strong> ${phoneNumber || 'No phone number'}</p>
                 <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
-                <p><strong>Status:</strong> ${statusHtml.dotHtml}<span style="color: ${statusHtml.color}; margin-left: 5px;">${status}</span></p>
+                <p><strong>Status:</strong> ${statusHtml.dotHtml}<span style="color: ${statusHtml.color}; margin-left: 5px;">${statusHtml.statusText}</span></p>
                 <img src="${imageUrl || 'https://via.placeholder.com/200'}" alt="${name || 'No name'}" style="width: 200px; height: auto;">
             </div>
         `;
 
-        if (status === 'Active') {
-            activeListings.push(listingHtml);
-        } else if (status === 'Pending') {
-            pendingListings.push(listingHtml);
-        } else if (status === 'Rented') {
-            rentedListings.push(listingHtml);
-        } else if (status === 'Inactive') {
-            inactiveListings.push(listingHtml);
-        }
+        listingsContainer.innerHTML += listingHtml;
     });
-
-    const listingsContainer = document.getElementById('listings');
-    listingsContainer.innerHTML = activeListings.concat(pendingListings).concat(rentedListings).concat(inactiveListings).join('');
 }
 
 function getStatusHtml(activeDate) {
@@ -73,19 +92,6 @@ function getStatusHtml(activeDate) {
     } else {
         return { dotHtml: `<span style="color: red;">●</span>`, statusText: 'Inactive', color: 'red' };
     }
-}
-
-function applyDistrictFilter() {
-    const selectedDistrict = document.getElementById('district-filter').value;
-
-    const filteredListings = listings
-        .map((listing, index) => ({ listing, index }))
-        .filter(({ listing }) => {
-            const [, , , district] = listing;
-            return selectedDistrict === '' || district === selectedDistrict;
-        });
-
-    sortAndDisplayListings(filteredListings);
 }
 
 document.addEventListener('DOMContentLoaded', fetchListings);
