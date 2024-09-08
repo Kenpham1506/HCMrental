@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function fetchUserRentals(email) {
         // Use your CORS proxy server to access Google Sheets API
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE/values/Sheet1!A2:K?key=AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s`;
+        const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
 
         try {
             const response = await fetch(url);
@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
                     <p><strong>Status:</strong> ${activeDate ? 'Active' : 'Rented'}</p>
-                    <button onclick="setActiveDate('${id}')">Set Active</button>
-                    <button onclick="setRentedDate('${id}')">Set Rented</button>
+                    <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}')">Set Active</button>
+                    <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}')">Set Rented</button>
                 `;
                 rentalList.appendChild(rentalDiv);
             }
@@ -59,12 +59,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Define setActiveDate and setRentedDate globally
-    window.setActiveDate = async function(id) {
+    window.setActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district) {
         // Use your CORS proxy server to access Google Apps Script API
         const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
 
         const body = {
             id,
+            propertyName,
+            address,
+            price,
+            imageUrl,
+            description,
+            host,
+            phone,
+            district,
             active: new Date().toISOString().split('T')[0] // Set current date as Active
         };
 
@@ -86,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    window.setRentedDate = async function(id) {
+    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district) {
         const rentedDate = prompt('Enter the rental end date (YYYY-MM-DD)');
         if (!rentedDate) return;
 
@@ -95,6 +103,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const body = {
             id,
+            propertyName,
+            address,
+            price,
+            imageUrl,
+            description,
+            host,
+            phone,
+            district,
             active: rentedDate // Set future date as the rented end date
         };
 
