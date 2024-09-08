@@ -20,6 +20,7 @@ function sortAndDisplayListings(listingsToDisplay) {
     const activeListings = [];
     const pendingListings = [];
     const inactiveListings = [];
+    const futureListings = [];
 
     listingsToDisplay.forEach(({ listing, index }) => {
         const [id, name, address, district, price, description, host, phoneNumber, email, activeDate, imageUrl] = listing;
@@ -45,13 +46,15 @@ function sortAndDisplayListings(listingsToDisplay) {
             activeListings.push(listingHtml);
         } else if (status === 'Pending') {
             pendingListings.push(listingHtml);
-        } else {
+        } else if (status === 'Inactive') {
             inactiveListings.push(listingHtml);
+        } else if (status === 'Rented') {
+            futureListings.push(listingHtml);
         }
     });
 
     const listingsContainer = document.getElementById('listings');
-    listingsContainer.innerHTML = activeListings.concat(pendingListings).concat(inactiveListings).join('');
+    listingsContainer.innerHTML = activeListings.concat(pendingListings).concat(inactiveListings).concat(futureListings).join('');
 }
 
 function getStatusHtml(activeDate) {
@@ -60,11 +63,13 @@ function getStatusHtml(activeDate) {
     const diffTime = Math.abs(dateNow - activeDateObj);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Difference in days
 
-    if (activeDate === '') {
+    if (!activeDate) {
         return { dotHtml: `<span style="color: gray;">●</span>`, statusText: 'Unknown', color: 'gray' };
-    } else if (diffDays <= 7) {
-        return { dotHtml: `<span style="color: green;">●</span>`, statusText: 'Active', color: 'green' };
+    } else if (activeDateObj > dateNow) {
+        return { dotHtml: `<span style="color: blue;">●</span>`, statusText: 'Rented', color: 'blue' };
     } else if (diffDays <= 30) {
+        return { dotHtml: `<span style="color: green;">●</span>`, statusText: 'Active', color: 'green' };
+    } else if (diffDays <= 90) {
         return { dotHtml: `<span style="color: orange;">●</span>`, statusText: 'Pending', color: 'orange' };
     } else {
         return { dotHtml: `<span style="color: red;">●</span>`, statusText: 'Inactive', color: 'red' };
