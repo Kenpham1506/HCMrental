@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Google Sign-In
     function initGoogleSignIn() {
         google.accounts.id.initialize({
-            client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com', // Replace with your actual Client ID
+            client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com', // Your actual Google Client ID
             callback: handleCredentialResponse
         });
 
@@ -57,7 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    async function setActiveDate(id) {
+    // Define setActiveDate and setRentedDate globally
+    window.setActiveDate = async function(id) {
         const url = `https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
 
         const body = {
@@ -81,9 +82,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('Error updating rental status:', error);
         }
-    }
+    };
 
-    async function setRentedDate(id) {
+    window.setRentedDate = async function(id) {
         const rentedDate = prompt('Enter the rental end date (YYYY-MM-DD)');
         if (!rentedDate) return;
 
@@ -110,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('Error updating rental status:', error);
         }
-    }
+    };
 
     // Load Google Sign-In script
     const script = document.createElement('script');
