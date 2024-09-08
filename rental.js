@@ -1,6 +1,6 @@
 const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s'; // Hosting on GitHub doesn't have any way to hide the Client-ID, so here it is.
 const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE';
-const RANGE = 'Sheet1!A2:J'; // Adjust range to include Active column
+const RANGE = 'Sheet1!A2:K'; // Adjust range to include Active column
 
 function getRentalDetails() {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
@@ -16,7 +16,8 @@ function getRentalDetails() {
         })
         .then(data => {
             const listings = data.values;
-            const listing = listings[id];
+            // Find listing by ID
+            const listing = listings.find(row => row[0] === id);
 
             displayRentalDetails(listing);
         })
@@ -28,7 +29,9 @@ function getStatus(activeDate) {
     const date = new Date(activeDate);
     const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
 
-    if (diffDays < 7) {
+    if (!activeDate) {
+        return '<span style="color: gray;">&#x25CF; Unknown</span>';
+    } else if (diffDays < 7) {
         return '<span style="color: green;">&#x25CF; Active</span>';
     } else if (diffDays < 30) {
         return '<span style="color: orange;">&#x25CF; Pending</span>';
@@ -43,7 +46,7 @@ function displayRentalDetails(listing) {
         return;
     }
 
-    const [name, address, price, imageUrl, description, host, phoneNumber, email, district, activeDate] = listing;
+    const [id, name, address, district, price, description, host, phoneNumber, email, activeDate, imageUrl] = listing;
 
     const rentalDetailDiv = document.getElementById('rental-detail');
     rentalDetailDiv.innerHTML = `
