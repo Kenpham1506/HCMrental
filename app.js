@@ -21,6 +21,7 @@ function sortAndDisplayListings(listingsToDisplay) {
     const pendingListings = [];
     const futureListings = [];
     //const inactiveListings = [];
+}
 
     
     listingsToDisplay.forEach(({ listing, index }) => {
