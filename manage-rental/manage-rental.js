@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
                     <p><strong>Status:</strong> ${activeDate ? 'Active' : 'Rented'}</p>
-                    <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}')">Set Active</button>
-                    <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}')">Set Rented</button>
+                    <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
+                    <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                 `;
                 rentalList.appendChild(rentalDiv);
             }
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Define setActiveDate and setRentedDate globally
-    window.setActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district) {
+    window.setActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         // Use your CORS server for the Google Apps Script API
         const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
 
@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
             host,
             phone,
             district,
+            rentalEmail,
             active: new Date().toISOString().split('T')[0] // Set current date as Active
         };
 
@@ -94,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district) {
+    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const rentedDate = prompt('Enter the rental end date (YYYY-MM-DD)');
         if (!rentedDate) return;
 
@@ -111,6 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
             host,
             phone,
             district,
+            rentalEmail,
             active: rentedDate // Set future date as the rented end date
         };
 
