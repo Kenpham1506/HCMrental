@@ -31,9 +31,11 @@ function getStatus(activeDate) {
 
     if (!activeDate) {
         return '<span style="color: gray;">&#x25CF; Unknown</span>';
-    } else if (diffDays < 7) {
-        return '<span style="color: green;">&#x25CF; Active</span>';
+    } else if (date > now) {
+        return '<span style="color: blue;">&#x25CF; Rented</span>';
     } else if (diffDays < 30) {
+        return '<span style="color: green;">&#x25CF; Active</span>';
+    } else if (diffDays < 90) {
         return '<span style="color: orange;">&#x25CF; Pending</span>';
     } else {
         return '<span style="color: red;">&#x25CF; Inactive</span>';
