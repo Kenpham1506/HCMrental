@@ -19,9 +19,9 @@ function fetchListings() {
 function sortAndDisplayListings(listingsToDisplay) {
     const activeListings = [];
     const pendingListings = [];
-    const futureListings = [];
+    const rentedListings = [];
     const inactiveListings = [];
-    
+
     listingsToDisplay.forEach(({ listing, index }) => {
         const [id, name, address, district, price, description, host, phoneNumber, email, activeDate, imageUrl] = listing;
         const statusHtml = getStatusHtml(activeDate);
@@ -45,15 +45,15 @@ function sortAndDisplayListings(listingsToDisplay) {
             activeListings.push(listingHtml);
         } else if (status === 'Pending') {
             pendingListings.push(listingHtml);
+        } else if (status === 'Rented') {
+            rentedListings.push(listingHtml);
         } else if (status === 'Inactive') {
             inactiveListings.push(listingHtml);
-        } else if (status === 'Rented') {
-            futureListings.push(listingHtml);
         }
     });
 
     const listingsContainer = document.getElementById('listings');
-    listingsContainer.innerHTML = activeListings.concat(pendingListings).concat(inactiveListings).concat(futureListings).join('');
+    listingsContainer.innerHTML = activeListings.concat(pendingListings).concat(rentedListings).concat(inactiveListings).join('');
 }
 
 function getStatusHtml(activeDate) {
