@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function fetchUserRentals(email) {
+        // Use your CORS proxy server to access Google Sheets API
         const url = `https://sheets.googleapis.com/v4/spreadsheets/1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE/values/Sheet1!A2:K?key=AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s`;
 
         try {
@@ -59,7 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Define setActiveDate and setRentedDate globally
     window.setActiveDate = async function(id) {
-        const url = `https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
+        // Use your CORS proxy server to access Google Apps Script API
+        const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
 
         const body = {
             id,
@@ -88,7 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const rentedDate = prompt('Enter the rental end date (YYYY-MM-DD)');
         if (!rentedDate) return;
 
-        const url = `https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
+        // Use your CORS proxy server to access Google Apps Script API
+        const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
 
         const body = {
             id,
