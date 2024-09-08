@@ -41,15 +41,40 @@ document.addEventListener('DOMContentLoaded', function() {
         const rentalList = document.getElementById('rental-list');
         rentalList.innerHTML = '';
 
+        const currentDate = new Date();
+        
         rentals.forEach((rental) => {
             const [id, propertyName, address, district, price, description, host, phone, rentalEmail, activeDate, imageUrl] = rental;
             if (rentalEmail === email) {
+                let statusHTML = '';
+                if (activeDate) {
+                    const activeDateObj = new Date(activeDate);
+                    const timeDiff = currentDate - activeDateObj;
+                    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                    
+                    if (activeDateObj > currentDate) {
+                        // Future date (Rented)
+                        statusHTML = '<span style="color: blue;">• Rented</span>';
+                    } else if (daysDiff < 30) {
+                        // Less than a month (Active)
+                        statusHTML = '<span style="color: green;">• Active</span>';
+                    } else if (daysDiff < 90) {
+                        // More than a month but less than 3 months (Pending)
+                        statusHTML = '<span style="color: orange;">• Pending</span>';
+                    } else {
+                        // More than 3 months (Inactive)
+                        statusHTML = '<span style="color: red;">• Inactive</span>';
+                    }
+                } else {
+                    statusHTML = '<span style="color: gray;">• No active date</span>';
+                }
+
                 const rentalDiv = document.createElement('div');
                 rentalDiv.innerHTML = `
                     <h3>${propertyName}</h3>
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
-                    <p><strong>Status:</strong> ${activeDate ? 'Active' : 'Rented'}</p>
+                    <p><strong>Status:</strong> ${statusHTML}</p>
                     <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                 `;
