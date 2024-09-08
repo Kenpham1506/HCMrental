@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
             host,
             phone,
             district,
-            rentalEmail,
+            email: rentalEmail,
             active: new Date().toISOString().split('T')[0] // Set current date as Active
         };
 
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
             host,
             phone,
             district,
-            rentalEmail,
+            email: rentalEmail,
             active: rentedDate // Set future date as the rented end date
         };
 
