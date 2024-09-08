@@ -22,12 +22,11 @@ header h1 {
     margin: 20px auto;
     max-width: 600px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
 }
 
 .filter-form label {
-    margin-bottom: 10px;
     font-weight: bold;
 }
 
