@@ -37,8 +37,8 @@ function sortAndDisplayListings(listingsToDisplay) {
                 <p><strong>Phone Number:</strong> ${phoneNumber || 'No phone number'}</p>
                 <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
                 <p><strong>District:</strong> ${district || 'No district'}</p>
-                <img src="${imageUrl || 'https://via.placeholder.com/200'}" alt="${name || 'No name'}" style="width: 200px; height: auto;">
                 <p><strong>Status:</strong> ${statusHtml.dotHtml}<span style="color: ${statusHtml.color}; margin-left: 5px;">${status}</span></p>
+                <img src="${imageUrl || 'https://via.placeholder.com/200'}" alt="${name || 'No name'}" style="width: 200px; height: auto;">
             </div>
         `;
 
