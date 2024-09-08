@@ -1,6 +1,6 @@
 const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s';
 const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE';
-const RANGE = 'Sheet1!A2:J'; // Adjust range to include Active column
+const RANGE = 'Sheet1!A2:K'; // Adjust range to include Active column
 
 let listings = [];
 
@@ -22,13 +22,13 @@ function sortAndDisplayListings(listingsToDisplay) {
     const inactiveListings = [];
 
     listingsToDisplay.forEach(({ listing, index }) => {
-        const [name, address, price, imageUrl, description, host, phoneNumber, email, district, activeDate] = listing;
+        const [id, name, address, district, price, description, host, phoneNumber, email, activeDate, imageUrl] = listing;
         const statusHtml = getStatusHtml(activeDate);
         const status = statusHtml.statusText;
 
         const listingHtml = `
             <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
-                <h2><a href="rental.html?id=${index}">${name || 'No name'}</a></h2>
+                <h2><a href="rental.html?id=${id}">${name || 'No name'}</a></h2>
                 <p><strong>Address:</strong> ${address || 'No address'}</p>
                 <p><strong>Price:</strong> ${price || 'No price'}</p>
                 <p><strong>Description:</strong> ${description || 'No description'}</p>
@@ -51,7 +51,7 @@ function sortAndDisplayListings(listingsToDisplay) {
     });
 
     const listingsContainer = document.getElementById('listings');
-    listingsContainer.innerHTML = activeListings.concat(pendingListings).join('');
+    listingsContainer.innerHTML = activeListings.concat(pendingListings).concat(inactiveListings).join('');
 }
 
 function getStatusHtml(activeDate) {
@@ -60,7 +60,9 @@ function getStatusHtml(activeDate) {
     const diffTime = Math.abs(dateNow - activeDateObj);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Difference in days
 
-    if (diffDays <= 7) {
+    if (activeDate === '') {
+        return { dotHtml: `<span style="color: gray;">●</span>`, statusText: 'Unknown', color: 'gray' };
+    } else if (diffDays <= 7) {
         return { dotHtml: `<span style="color: green;">●</span>`, statusText: 'Active', color: 'green' };
     } else if (diffDays <= 30) {
         return { dotHtml: `<span style="color: orange;">●</span>`, statusText: 'Pending', color: 'orange' };
@@ -75,7 +77,7 @@ function applyDistrictFilter() {
     const filteredListings = listings
         .map((listing, index) => ({ listing, index }))
         .filter(({ listing }) => {
-            const [, , , , , , , , district] = listing;
+            const [, , , district] = listing;
             return selectedDistrict === '' || district === selectedDistrict;
         });
 
