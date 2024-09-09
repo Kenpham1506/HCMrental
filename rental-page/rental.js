@@ -61,17 +61,15 @@ function displayRentalDetails(listing) {
         <p><strong>Phone Number:</strong> ${phoneNumber || 'No phone number'}</p>
         <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
         <p><strong>Status:</strong> ${getStatus(activeDate)}</p>
-        <div class="carousel-container">
-            <div class="carousel-images" id="carousel-images">
-                ${imagesHtml}
-            </div>
-            <button class="carousel-button left" id="carousel-left">&#10094;</button>
-            <button class="carousel-button right" id="carousel-right">&#10095;</button>
+        <div id="carousel-images" class="carousel-images">
+            ${imagesHtml}
         </div>
+        <button class="carousel-button left" id="carousel-left">&#10094;</button>
+        <button class="carousel-button right" id="carousel-right">&#10095;</button>
     `;
 
     initializeCarousel();
-    
+
     const mapIframe = document.getElementById('map');
     const mapUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=${encodeURIComponent(address)}`;
     mapIframe.src = mapUrl;
@@ -79,42 +77,26 @@ function displayRentalDetails(listing) {
 
 function initializeCarousel() {
     const carousel = document.getElementById('carousel-images');
-    let isDown = false;
-    let startX;
-    let scrollLeft;
+    let scrollPosition = 0;
 
-    carousel.addEventListener('mousedown', (e) => {
-        isDown = true;
-        carousel.classList.add('active');
-        startX = e.pageX - carousel.offsetLeft;
-        scrollLeft = carousel.scrollLeft;
+    const rightButton = document.getElementById('carousel-right');
+    const leftButton = document.getElementById('carousel-left');
+
+    rightButton.addEventListener('click', () => {
+        scrollPosition += carousel.offsetWidth;
+        carousel.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+        });
     });
 
-    carousel.addEventListener('mouseleave', () => {
-        isDown = false;
-        carousel.classList.remove('active');
-    });
-
-    carousel.addEventListener('mouseup', () => {
-        isDown = false;
-        carousel.classList.remove('active');
-    });
-
-    carousel.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - carousel.offsetLeft;
-        const walk = (x - startX) * 3; // scroll-fast
-        carousel.scrollLeft = scrollLeft - walk;
-    });
-
-    // Left and Right Buttons
-    document.getElementById('carousel-left').addEventListener('click', () => {
-        carousel.scrollLeft -= carousel.offsetWidth;
-    });
-
-    document.getElementById('carousel-right').addEventListener('click', () => {
-        carousel.scrollLeft += carousel.offsetWidth;
+    leftButton.addEventListener('click', () => {
+        scrollPosition -= carousel.offsetWidth;
+        if (scrollPosition < 0) scrollPosition = 0;
+        carousel.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+        });
     });
 }
 
