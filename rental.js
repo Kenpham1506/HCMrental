@@ -61,29 +61,10 @@ function displayRentalDetails(listing) {
         <img src="${imageUrl || 'https://via.placeholder.com/600'}" alt="${name || 'No name'}" style="width: 100%; max-width: 600px; height: auto;">
     `;
 
-    // Initialize map after rendering the details
-    initializeMap(address);
-}
-
-function initializeMap(address) {
-    const geocoder = new google.maps.Geocoder();
-    const map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
-        center: { lat: 10.8231, lng: 106.6297 } // Default center (Ho Chi Minh City)
-    });
-
-    geocoder.geocode({ address }, (results, status) => {
-        if (status === 'OK') {
-            map.setCenter(results[0].geometry.location);
-            new google.maps.Marker({
-                map,
-                position: results[0].geometry.location,
-                title: 'Rental Location'
-            });
-        } else {
-            console.error('Geocode was not successful for the following reason: ' + status);
-        }
-    });
+    // Update the map URL
+    const mapIframe = document.getElementById('map');
+    const mapUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=${encodeURIComponent(address)}`;
+    mapIframe.src = mapUrl;
 }
 
 document.addEventListener('DOMContentLoaded', getRentalDetails);
