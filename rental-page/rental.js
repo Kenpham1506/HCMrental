@@ -8,12 +8,7 @@ function getRentalDetails() {
     const id = params.get('id');
 
     fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             const listings = data.values;
             const listing = listings.find(row => row[0] === id);
@@ -62,6 +57,8 @@ function displayRentalDetails(listing) {
         <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
         <p><strong>Status:</strong> ${getStatus(activeDate)}</p>
     `;
+
+    document.getElementById('carousel-images').innerHTML = imagesHtml;
 
     initializeCarousel();
 
