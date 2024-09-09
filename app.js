@@ -59,7 +59,7 @@ function displayListings(listingsToDisplay) {
 
         const listingHtml = `
             <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
-                <h2><a href="rental-page/rental.html?id=${id}">${name || 'No name'}</a></h2>
+                <h2><a href="rental-page/?id=${id}">${name || 'No name'}</a></h2>
                 <p><strong>Address:</strong> ${address || 'No address'}</p>
                 <p><strong>Price:</strong> ${price || 'No price'}</p>
                 <p><strong>Description:</strong> ${description || 'No description'}</p>
