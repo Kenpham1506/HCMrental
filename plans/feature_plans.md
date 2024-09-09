@@ -70,6 +70,7 @@
         - [x] Rental Detail [ ] mobile compatibility
           - [x] Info
           - [x] Map
+            - [x] Google map API
           - [ ] Images
             - [ ] Images carousel
           - [x] Local navigation (Navigation inside the domain doesn't refresh the previous page)
