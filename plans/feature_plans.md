@@ -12,8 +12,10 @@
     - [x] Google Cloud
       - [x] CORS server
       - [x] Google APIs
+    - [x] Image storage and query
+      - [x] Imgur API
 
-  - [ ] Account, Authentication
+  - [x] Account, Authentication
     - [x] Google Oauth 2.0
       - [x] Google APIs
     - [ ] Bans/blacklist
@@ -56,8 +58,8 @@
   
   - [ ] Landing page [ ] mobile compatibility
 
-    - [ ] Listing page [ ] mobile compatibility
-      - [ ] Listing property
+    - [x] Listing page [ ] mobile compatibility
+      - [x] Listing property
         - [x] Filer
         - [x] Sort
         - [x] ID
@@ -65,7 +67,7 @@
         - [x] Status
           - [x] Color-coded
   
-        - [ ] Rental Detail [ ] mobile compatibility
+        - [x] Rental Detail [ ] mobile compatibility
           - [x] Info
           - [x] Map
           - [ ] Images
@@ -82,6 +84,19 @@
 
 ### Host
     
-   
-
-    
+- [ ] Global renter
+  - [ ] Host authentication
+     
+  - [x] Submit rental [x] mobile compatibility
+    - [x] Email authentication
+      - [x] Google Oauth 2.0
+    - [x] Image submission
+      - [x] Imgur API
+     
+  - [x] manage rental [x] mobile compatibility
+    - [x] Email authentication
+      - [x] Google Oauth 2.0
+    - [x] Active date status update
+    - [x] Rented status update
+      - [ ] Calendar
+    - [ ] Edit rental detail
