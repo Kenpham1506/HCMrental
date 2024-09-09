@@ -48,7 +48,10 @@ function displayRentalDetails(listing) {
 
     const [id, name, address, district, price, description, host, phoneNumber, email, activeDate, imageUrls] = listing;
 
+    // Clean previous carousel content to avoid duplicates
     const rentalDetailDiv = document.getElementById('rental-detail');
+    rentalDetailDiv.innerHTML = ''; // Clear previous contents
+
     const imagesArray = imageUrls ? imageUrls.split(',') : [];
     const imagesHtml = imagesArray.map(url => `<img src="${url.trim()}" alt="${name}" class="carousel-image">`).join('');
 
@@ -66,6 +69,7 @@ function displayRentalDetails(listing) {
         </div>
     `;
 
+    // Initialize carousel after clearing old contents
     initializeCarousel();
 
     const mapIframe = document.getElementById('map');
