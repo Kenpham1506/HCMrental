@@ -80,12 +80,14 @@ footer {
 .carousel-images {
     display: flex;
     transition: transform 0.5s ease;
+    width: 100%;
 }
 
 .carousel-image {
     min-width: 100%;
     max-width: 100%;
-    height: auto;
+    height: 400px;
+    object-fit: cover;
 }
 
 .carousel-button {
