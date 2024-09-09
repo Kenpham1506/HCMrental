@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rental Details</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Updated path -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
@@ -12,25 +12,29 @@
     </header>
 
     <main>
+        <!-- Rental details on the left -->
         <div id="rental-detail" class="rental-detail"></div>
-        <div id="carousel-container">
-            <div class="carousel-images" id="carousel-images"></div>
-            <button class="carousel-button left" id="carousel-left">&#10094;</button>
-            <button class="carousel-button right" id="carousel-right">&#10095;</button>
-        </div>
-        <div id="map-container">
-            <iframe id="map" class="map" frameborder="0" style="border:0;" allowfullscreen></iframe>
+
+        <!-- Carousel and map side by side -->
+        <div id="right-panel">
+            <div id="carousel-container">
+                <div class="carousel-images" id="carousel-images"></div>
+                <button class="carousel-button left" id="carousel-left">&#10094;</button>
+                <button class="carousel-button right" id="carousel-right">&#10095;</button>
+            </div>
+
+            <div id="map-container">
+                <iframe id="map" class="map" frameborder="0" style="border:0;" allowfullscreen></iframe>
+            </div>
         </div>
     </main>
     
-    <main>
-        <button onclick="handleBackButton()">Back to Listings</button>
-    </main>
-    
+    <button class="back-button" onclick="handleBackButton()">Back to Listings</button>
+
     <footer>
         <p>&copy; 2024 Ken Pham. All rights reserved.</p>
     </footer>
 
-    <script src="rental.js"></script> <!-- Updated path -->
+    <script src="rental.js"></script>
 </body>
 </html>
