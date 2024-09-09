@@ -8,7 +8,12 @@ function getRentalDetails() {
     const id = params.get('id');
 
     fetch(url)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             const listings = data.values;
             const listing = listings.find(row => row[0] === id);
@@ -56,12 +61,18 @@ function displayRentalDetails(listing) {
         <p><strong>Phone Number:</strong> ${phoneNumber || 'No phone number'}</p>
         <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
         <p><strong>Status:</strong> ${getStatus(activeDate)}</p>
+        <div class="carousel-container">
+            <div class="carousel-images" id="carousel-images">
+                ${imagesHtml}
+            </div>
+            <button class="carousel-button left" id="carousel-left">&#10094;</button>
+            <button class="carousel-button right" id="carousel-right">&#10095;</button>
+        </div>
     `;
-
-    document.getElementById('carousel-images').innerHTML = imagesHtml;
 
     initializeCarousel();
 
+    // Load the map
     const mapIframe = document.getElementById('map');
     const mapUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=${encodeURIComponent(address)}`;
     mapIframe.src = mapUrl;
@@ -75,19 +86,16 @@ function initializeCarousel() {
 
     carousel.addEventListener('mousedown', (e) => {
         isDown = true;
-        carousel.classList.add('active');
         startX = e.pageX - carousel.offsetLeft;
         scrollLeft = carousel.scrollLeft;
     });
 
     carousel.addEventListener('mouseleave', () => {
         isDown = false;
-        carousel.classList.remove('active');
     });
 
     carousel.addEventListener('mouseup', () => {
         isDown = false;
-        carousel.classList.remove('active');
     });
 
     carousel.addEventListener('mousemove', (e) => {
@@ -105,6 +113,15 @@ function initializeCarousel() {
     document.getElementById('carousel-right').addEventListener('click', () => {
         carousel.scrollLeft += carousel.offsetWidth;
     });
+}
+
+function handleBackButton() {
+    const referrer = document.referrer;
+    if (referrer.includes(window.location.hostname)) {
+        window.history.back();
+    } else {
+        window.location.href = 'https://kenpham1506.github.io/HCMrental/'; // Replace with the actual listings page URL
+    }
 }
 
 document.addEventListener('DOMContentLoaded', getRentalDetails);
