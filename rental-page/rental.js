@@ -94,7 +94,7 @@ function initializeCarousel() {
         if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - carousel.offsetLeft;
-        const walk = (x - startX) * 3; // scroll-fast
+        const walk = (x - startX) * 3;
         carousel.scrollLeft = scrollLeft - walk;
     });
 
