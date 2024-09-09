@@ -48,10 +48,7 @@ function displayRentalDetails(listing) {
 
     const [id, name, address, district, price, description, host, phoneNumber, email, activeDate, imageUrls] = listing;
 
-    // Clean previous carousel content to avoid duplicates
     const rentalDetailDiv = document.getElementById('rental-detail');
-    rentalDetailDiv.innerHTML = ''; // Clear previous contents
-
     const imagesArray = imageUrls ? imageUrls.split(',') : [];
     const imagesHtml = imagesArray.map(url => `<img src="${url.trim()}" alt="${name}" class="carousel-image">`).join('');
 
@@ -64,12 +61,8 @@ function displayRentalDetails(listing) {
         <p><strong>Phone Number:</strong> ${phoneNumber || 'No phone number'}</p>
         <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
         <p><strong>Status:</strong> ${getStatus(activeDate)}</p>
-        <div id="carousel-images" class="carousel-images">
-            ${imagesHtml}
-        </div>
     `;
 
-    // Initialize carousel after clearing old contents
     initializeCarousel();
 
     const mapIframe = document.getElementById('map');
@@ -79,36 +72,42 @@ function displayRentalDetails(listing) {
 
 function initializeCarousel() {
     const carousel = document.getElementById('carousel-images');
-    let scrollPosition = 0;
+    let isDown = false;
+    let startX;
+    let scrollLeft;
 
-    const rightButton = document.getElementById('carousel-right');
-    const leftButton = document.getElementById('carousel-left');
-
-    rightButton.addEventListener('click', () => {
-        scrollPosition += carousel.offsetWidth;
-        carousel.scrollTo({
-            left: scrollPosition,
-            behavior: 'smooth'
-        });
+    carousel.addEventListener('mousedown', (e) => {
+        isDown = true;
+        carousel.classList.add('active');
+        startX = e.pageX - carousel.offsetLeft;
+        scrollLeft = carousel.scrollLeft;
     });
 
-    leftButton.addEventListener('click', () => {
-        scrollPosition -= carousel.offsetWidth;
-        if (scrollPosition < 0) scrollPosition = 0;
-        carousel.scrollTo({
-            left: scrollPosition,
-            behavior: 'smooth'
-        });
+    carousel.addEventListener('mouseleave', () => {
+        isDown = false;
+        carousel.classList.remove('active');
     });
-}
 
-function handleBackButton() {
-    const referrer = document.referrer;
-    if (referrer && referrer.includes(window.location.hostname)) {
-        window.history.back();
-    } else {
-        window.location.href = '/'; // Redirect to the main listings page
-    }
+    carousel.addEventListener('mouseup', () => {
+        isDown = false;
+        carousel.classList.remove('active');
+    });
+
+    carousel.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - carousel.offsetLeft;
+        const walk = (x - startX) * 3; // scroll-fast
+        carousel.scrollLeft = scrollLeft - walk;
+    });
+
+    document.getElementById('carousel-left').addEventListener('click', () => {
+        carousel.scrollLeft -= carousel.offsetWidth;
+    });
+
+    document.getElementById('carousel-right').addEventListener('click', () => {
+        carousel.scrollLeft += carousel.offsetWidth;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', getRentalDetails);
