@@ -1,3 +1,4 @@
+/* General Styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -20,12 +21,12 @@ main {
 
 .rental-detail {
     flex: 2;
-    order: 1; /* Order set to 1 so rental details come first */
+    order: 1; /* Rental details come first */
 }
 
 #map-container {
     flex: 1;
-    order: 2; /* Order set to 2 so map appears after the details */
+    order: 3; /* Map appears last */
     min-width: 300px;
     height: 400px;
 }
@@ -50,7 +51,6 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    
 }
 
 button:hover {
@@ -64,4 +64,51 @@ footer {
     position: fixed;
     width: 100%;
     bottom: 0;
+}
+
+/* Carousel Styling */
+#carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    overflow: hidden;
+    margin-top: 20px;
+    order: 2; /* Carousel appears after details */
+}
+
+.carousel-images {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-image {
+    min-width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 100;
+}
+
+.carousel-button.left {
+    left: 10px;
+}
+
+.carousel-button.right {
+    right: 10px;
+}
+
+.carousel-images.active {
+    cursor: grabbing;
 }
