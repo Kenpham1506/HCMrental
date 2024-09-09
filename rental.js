@@ -1,6 +1,6 @@
-const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s'; // Hosting on GitHub doesn't have any way to hide the Client-ID, so here it is.
+const API_KEY = 'AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s';
 const SPREADSHEET_ID = '1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE';
-const RANGE = 'Sheet1!A2:K'; // Adjust range to include Active column
+const RANGE = 'Sheet1!A2:K';
 
 function getRentalDetails() {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
@@ -16,9 +16,7 @@ function getRentalDetails() {
         })
         .then(data => {
             const listings = data.values;
-            // Find listing by ID
             const listing = listings.find(row => row[0] === id);
-
             displayRentalDetails(listing);
         })
         .catch(error => console.error('Error fetching data:', error));
@@ -62,6 +60,30 @@ function displayRentalDetails(listing) {
         <p><strong>Status:</strong> ${getStatus(activeDate)}</p>
         <img src="${imageUrl || 'https://via.placeholder.com/600'}" alt="${name || 'No name'}" style="width: 100%; max-width: 600px; height: auto;">
     `;
+
+    // Initialize map after rendering the details
+    initializeMap(address);
+}
+
+function initializeMap(address) {
+    const geocoder = new google.maps.Geocoder();
+    const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15,
+        center: { lat: 10.8231, lng: 106.6297 } // Default center (Ho Chi Minh City)
+    });
+
+    geocoder.geocode({ address }, (results, status) => {
+        if (status === 'OK') {
+            map.setCenter(results[0].geometry.location);
+            new google.maps.Marker({
+                map,
+                position: results[0].geometry.location,
+                title: 'Rental Location'
+            });
+        } else {
+            console.error('Geocode was not successful for the following reason: ' + status);
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', getRentalDetails);
