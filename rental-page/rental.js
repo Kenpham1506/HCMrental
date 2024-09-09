@@ -76,7 +76,7 @@ function handleBackButton() {
         window.history.back();
     } else {
         // If not from listing or another page in the domain, redirect to the listing page
-        window.location.href = '/index.html'; // Adjust the path as needed for your domain structure
+        window.location.href = '/HCMrental/index.html'; // Adjust the path as needed for your domain structure
     }
 }
 
