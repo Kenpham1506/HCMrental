@@ -46,9 +46,12 @@ function displayRentalDetails(listing) {
         return;
     }
 
-    const [id, name, address, district, price, description, host, phoneNumber, email, activeDate, imageUrl] = listing;
+    const [id, name, address, district, price, description, host, phoneNumber, email, activeDate, imageUrls] = listing;
 
     const rentalDetailDiv = document.getElementById('rental-detail');
+    const imagesArray = imageUrls ? imageUrls.split(',') : [];
+    const imagesHtml = imagesArray.map(url => `<img src="${url.trim()}" alt="${name}" class="carousel-image">`).join('');
+
     rentalDetailDiv.innerHTML = `
         <h2>${name || 'No name'}</h2>
         <p><strong>Address:</strong> ${address || 'No address'}</p>
@@ -58,26 +61,61 @@ function displayRentalDetails(listing) {
         <p><strong>Phone Number:</strong> ${phoneNumber || 'No phone number'}</p>
         <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
         <p><strong>Status:</strong> ${getStatus(activeDate)}</p>
-        <img src="${imageUrl || 'https://via.placeholder.com/600'}" alt="${name || 'No name'}" style="width: 100%; max-width: 600px; height: auto;">
+        <div class="carousel-container">
+            <div class="carousel-images" id="carousel-images">
+                ${imagesHtml}
+            </div>
+            <button class="carousel-button left" id="carousel-left">&#10094;</button>
+            <button class="carousel-button right" id="carousel-right">&#10095;</button>
+        </div>
     `;
 
-    // Update the map URL
+    initializeCarousel();
+    
     const mapIframe = document.getElementById('map');
     const mapUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=${encodeURIComponent(address)}`;
     mapIframe.src = mapUrl;
 }
 
-function handleBackButton() {
-    const referrer = document.referrer;
-    const currentDomain = window.location.origin;
+function initializeCarousel() {
+    const carousel = document.getElementById('carousel-images');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
 
-    // If the referrer is from the same domain and contains 'listing' in the URL, go back
-    if (referrer && referrer.startsWith(currentDomain)) {
-        window.history.back();
-    } else {
-        // If not from listing or another page in the domain, redirect to the listing page
-        window.location.href = '/HCMrental/index.html'; // Adjust the path as needed for your domain structure
-    }
+    carousel.addEventListener('mousedown', (e) => {
+        isDown = true;
+        carousel.classList.add('active');
+        startX = e.pageX - carousel.offsetLeft;
+        scrollLeft = carousel.scrollLeft;
+    });
+
+    carousel.addEventListener('mouseleave', () => {
+        isDown = false;
+        carousel.classList.remove('active');
+    });
+
+    carousel.addEventListener('mouseup', () => {
+        isDown = false;
+        carousel.classList.remove('active');
+    });
+
+    carousel.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - carousel.offsetLeft;
+        const walk = (x - startX) * 3; // scroll-fast
+        carousel.scrollLeft = scrollLeft - walk;
+    });
+
+    // Left and Right Buttons
+    document.getElementById('carousel-left').addEventListener('click', () => {
+        carousel.scrollLeft -= carousel.offsetWidth;
+    });
+
+    document.getElementById('carousel-right').addEventListener('click', () => {
+        carousel.scrollLeft += carousel.offsetWidth;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', getRentalDetails);
