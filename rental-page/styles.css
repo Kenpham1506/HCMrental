@@ -21,12 +21,12 @@ main {
 
 .rental-detail {
     flex: 2;
-    order: 1; /* Rental details come first */
+    order: 1;
 }
 
 #map-container {
     flex: 1;
-    order: 3; /* Map appears last */
+    order: 3;
     min-width: 300px;
     height: 400px;
 }
@@ -34,11 +34,6 @@ main {
 .map {
     width: 100%;
     height: 100%;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
 }
 
 button {
@@ -61,9 +56,7 @@ footer {
     background-color: #f7f7f7;
     text-align: center;
     padding: 10px;
-    position: fixed;
     width: 100%;
-    bottom: 0;
 }
 
 /* Carousel Styling */
@@ -74,13 +67,14 @@ footer {
     height: 400px;
     overflow: hidden;
     margin-top: 20px;
-    order: 2; /* Carousel appears after details */
 }
 
 .carousel-images {
     display: flex;
     transition: transform 0.5s ease;
     width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 .carousel-image {
