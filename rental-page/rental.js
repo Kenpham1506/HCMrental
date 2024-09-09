@@ -64,8 +64,6 @@ function displayRentalDetails(listing) {
         <div id="carousel-images" class="carousel-images">
             ${imagesHtml}
         </div>
-        <button class="carousel-button left" id="carousel-left">&#10094;</button>
-        <button class="carousel-button right" id="carousel-right">&#10095;</button>
     `;
 
     initializeCarousel();
@@ -98,6 +96,15 @@ function initializeCarousel() {
             behavior: 'smooth'
         });
     });
+}
+
+function handleBackButton() {
+    const referrer = document.referrer;
+    if (referrer && referrer.includes(window.location.hostname)) {
+        window.history.back();
+    } else {
+        window.location.href = '/'; // Redirect to the main listings page
+    }
 }
 
 document.addEventListener('DOMContentLoaded', getRentalDetails);
