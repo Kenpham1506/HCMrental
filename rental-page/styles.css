@@ -14,21 +14,25 @@ header {
 
 main {
     display: flex;
-    flex-wrap: wrap;
     margin: 20px;
     gap: 20px;
 }
 
 .rental-detail {
     flex: 2;
-    order: 1;
+}
+
+/* New container for the carousel and map */
+#right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
 }
 
 #map-container {
-    flex: 1;
-    order: 3;
-    min-width: 300px;
     height: 400px;
+    width: 100%;
 }
 
 .map {
@@ -36,52 +40,23 @@ main {
     height: 100%;
 }
 
-button {
-    display: block;
-    margin-top: 20px;
-    margin-bottom: 80px;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
-footer {
-    background-color: #f7f7f7;
-    text-align: center;
-    padding: 10px;
-    width: 100%;
-}
-
 /* Carousel Styling */
 #carousel-container {
     position: relative;
     width: 100%;
-    max-width: 600px;
-    height: 400px;
+    height: 300px;
     overflow: hidden;
-    margin-top: 20px;
 }
 
 .carousel-images {
     display: flex;
     transition: transform 0.5s ease;
-    width: 100%;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
 }
 
 .carousel-image {
     min-width: 100%;
     max-width: 100%;
-    height: 400px;
-    object-fit: cover;
+    height: auto;
 }
 
 .carousel-button {
@@ -107,4 +82,27 @@ footer {
 
 .carousel-images.active {
     cursor: grabbing;
+}
+
+.back-button {
+    margin: 20px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background-color: #218838;
+}
+
+footer {
+    background-color: #f7f7f7;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
 }
