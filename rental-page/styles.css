@@ -3,7 +3,6 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 header {
@@ -15,9 +14,9 @@ header {
 
 main {
     display: flex;
+    flex-wrap: wrap;
     margin: 20px;
     gap: 20px;
-    flex-wrap: nowrap; /* Ensure content doesn't wrap */
 }
 
 .rental-detail {
@@ -25,31 +24,41 @@ main {
     order: 1;
 }
 
-#right-panel {
+/* Map container */
+#map-container {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    order: 2;
+    min-width: 300px;
+    height: 400px;
+    margin-top: 20px;
 }
 
+.map {
+    width: 100%;
+    height: 100%;
+}
+
+/* Carousel Styling */
 #carousel-container {
     position: relative;
     width: 100%;
-    max-width: 600px; /* Adjust as needed */
-    height: 400px; /* Adjust as needed */
+    max-width: 600px;
+    height: 400px;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .carousel-images {
     display: flex;
     transition: transform 0.5s ease;
+    width: 100%;
+    height: 100%;
 }
 
 .carousel-image {
     min-width: 100%;
-    height: auto;
+    max-width: 100%;
+    height: 400px;
+    object-fit: cover; /* Ensure the image covers the container */
 }
 
 .carousel-button {
@@ -61,7 +70,7 @@ main {
     border: none;
     padding: 10px;
     cursor: pointer;
-    font-size: 20px; /* Adjust as needed */
+    font-size: 24px;
     z-index: 100;
 }
 
@@ -73,19 +82,14 @@ main {
     right: 10px;
 }
 
-#map-container {
-    height: 400px; /* Adjust as needed */
-    width: 100%;
+.carousel-images.active {
+    cursor: grabbing;
 }
 
-.map {
-    width: 100%;
-    height: 100%;
-}
-
-.back-button {
+/* Button Styling */
+button {
     display: block;
-    margin: 20px auto;
+    margin-top: 20px;
     padding: 10px 20px;
     background-color: #28a745;
     color: white;
@@ -94,7 +98,7 @@ main {
     cursor: pointer;
 }
 
-.back-button:hover {
+button:hover {
     background-color: #218838;
 }
 
@@ -102,7 +106,27 @@ footer {
     background-color: #f7f7f7;
     text-align: center;
     padding: 10px;
-    position: fixed;
-    width: 100%;
+    position: relative;
     bottom: 0;
+    width: 100%;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+    }
+
+    #map-container {
+        order: 3;
+        height: 300px;
+    }
+
+    .carousel-images {
+        height: 300px;
+    }
+
+    .carousel-image {
+        height: 300px;
+    }
 }
