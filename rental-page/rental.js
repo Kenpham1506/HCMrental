@@ -72,7 +72,7 @@ function handleBackButton() {
     const currentDomain = window.location.origin;
 
     // If the referrer is from the same domain and contains 'listing' in the URL, go back
-    if (referrer && referrer.startsWith(currentDomain) {
+    if (referrer && referrer.startsWith(currentDomain)) {
         window.history.back();
     } else {
         // If not from listing or another page in the domain, redirect to the listing page
