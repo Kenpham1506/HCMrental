@@ -71,8 +71,8 @@
           - [x] Info
           - [x] Map
             - [x] Google map API
-          - [ ] Images
-            - [ ] Images carousel
+          - [x] Images
+            - [x] Images carousel
           - [x] Local navigation (Navigation inside the domain doesn't refresh the previous page)
           - [ ] Detail Status
             - [ ] Rented until
