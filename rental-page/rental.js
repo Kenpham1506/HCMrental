@@ -52,6 +52,7 @@ function displayRentalDetails(listing) {
     const imagesArray = imageUrls ? imageUrls.split(',') : [];
     const imagesHtml = imagesArray.map(url => `<img src="${url.trim()}" alt="${name}" class="carousel-image">`).join('');
 
+    // Display rental details
     rentalDetailDiv.innerHTML = `
         <h2>${name || 'No name'}</h2>
         <p><strong>Address:</strong> ${address || 'No address'}</p>
@@ -61,22 +62,57 @@ function displayRentalDetails(listing) {
         <p><strong>Phone Number:</strong> ${phoneNumber || 'No phone number'}</p>
         <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
         <p><strong>Status:</strong> ${getStatus(activeDate)}</p>
-        <div class="carousel-container" id="carousel-container">
-            ${imagesHtml}
-        </div>
     `;
 
+    // Insert carousel images into the container
+    const carouselContainer = document.getElementById('carousel-images');
+    carouselContainer.innerHTML = imagesHtml;
+
+    // Initialize carousel
+    initializeCarousel();
+
+    // Set up map
     const mapIframe = document.getElementById('map');
     const mapUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=${encodeURIComponent(address)}`;
     mapIframe.src = mapUrl;
 }
 
+// Initialize carousel functionality
+function initializeCarousel() {
+    const carousel = document.getElementById('carousel-images');
+    let currentIndex = 0;
+    const images = carousel.getElementsByClassName('carousel-image');
+    
+    // Left button click handler
+    document.getElementById('carousel-left').addEventListener('click', () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+        }
+    });
+
+    // Right button click handler
+    document.getElementById('carousel-right').addEventListener('click', () => {
+        if (currentIndex < images.length - 1) {
+            currentIndex++;
+            updateCarousel();
+        }
+    });
+
+    // Function to update the visible image based on currentIndex
+    function updateCarousel() {
+        const offset = -currentIndex * 100; // Each image takes up 100% of container
+        carousel.style.transform = `translateX(${offset}%)`;
+    }
+}
+
+// Handle the back button behavior
 function handleBackButton() {
     const referrer = document.referrer;
     if (referrer.includes(window.location.hostname)) {
         window.history.back();
     } else {
-        window.location.href = 'https://kenpham1506.github.io/HCMrental/'; // Replace with the actual listings page URL
+        window.location.href = 'https://kenpham1506.github.io/HCMrental/'; // Replace with actual listings page URL
     }
 }
 
