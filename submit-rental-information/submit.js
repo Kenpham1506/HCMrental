@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (result.status === 'success') {
                         alert('Rental information submitted successfully!');
                         form.reset();
-                        submittingIndicator.style.display = 'none'; // Hide submitting indicator
+                        submittingIndicator.textContent = 'Rental information submitted successfully!'; // Hide submitting indicator
                     } else {
                         alert('Failed to submit rental information.');
                     }
