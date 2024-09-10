@@ -20,10 +20,11 @@ header h1 {
 
 .filter-form {
     margin: 20px auto;
-    max-width: 600px;
+    max-width: 80%px;
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .filter-form label {
