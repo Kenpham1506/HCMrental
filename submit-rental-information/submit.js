@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const status = document.getElementById('status');
     const emailField = document.getElementById('email');
     const submittingIndicator = document.getElementById('submittingIndicator');
+    const submitButton = document.getElementById('submitButton'); // Submit Button
+    const signOutButton = document.getElementById('signOutButton'); // Sign-out Button
     let userEmail = '';
 
     // Initialize Google Sign-In
@@ -53,7 +55,19 @@ document.addEventListener('DOMContentLoaded', function () {
         status.textContent = 'You are logged in as ' + email;
         status.style.color = 'green'; // Set the color to green
         document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
+        signOutButton.style.display = 'inline'; // Show sign-out button
     }
+
+    // Sign-out functionality
+    signOutButton.addEventListener('click', function () {
+        localStorage.removeItem('userEmail'); // Clear user email from storage
+        userEmail = '';
+        emailField.value = '';
+        status.textContent = 'You have signed out.';
+        status.style.color = 'orange';
+        document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button
+        signOutButton.style.display = 'none'; // Hide sign-out button
+    });
 
     // Function to scroll to the top where the message is displayed
     function scrollToMessage() {
@@ -87,6 +101,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             try {
+                // Disable the submit button to prevent multiple submissions
+                submitButton.disabled = true;
                 submittingIndicator.textContent = 'Submitting, please wait...';
                 submittingIndicator.style.color = 'orange';
                 scrollToMessage(); // Scroll to message
@@ -150,6 +166,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 submittingIndicator.textContent = 'An error occurred while submitting the form.';
                 submittingIndicator.style.color = 'red';
                 scrollToMessage(); // Scroll to message
+            } finally {
+                // Re-enable the submit button after the request completes
+                submitButton.disabled = false;
             }
         });
     }
