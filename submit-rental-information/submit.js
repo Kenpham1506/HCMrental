@@ -55,6 +55,11 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
     }
 
+    // Function to scroll to the top where the message is displayed
+    function scrollToMessage() {
+        submittingIndicator.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     // Handle form submission
     if (form) {
         form.addEventListener('submit', async function (event) {
@@ -63,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!userEmail) {
                 status.textContent = 'You must be logged in to submit the form.';
                 status.style.color = 'red'; // Set the color to red
+                scrollToMessage(); // Scroll to message
                 return;
             }
 
@@ -83,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 submittingIndicator.textContent = 'Submitting, please wait...';
                 submittingIndicator.style.color = 'orange';
+                scrollToMessage(); // Scroll to message
 
                 const imgurClientId = 'e56f8a4b47c6eee';
                 const formData = new FormData();
@@ -125,22 +132,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     if (result.status === 'success') {
                         form.reset();
-                        submittingIndicator.textContent = propertyName + 'Rental information submitted successfully!'; // Hide submitting indicator
+                        submittingIndicator.textContent = propertyName + ' Rental information submitted successfully!';
                         submittingIndicator.style.color = 'green';
+                        scrollToMessage(); // Scroll to message
                     } else {
                         submittingIndicator.textContent = 'Failed to submit rental information.';
                         submittingIndicator.style.color = 'red';
+                        scrollToMessage(); // Scroll to message
                     }
                 } else {
                     submittingIndicator.textContent = 'Failed to upload image to Imgur.';
                     submittingIndicator.style.color = 'red';
+                    scrollToMessage(); // Scroll to message
                 }
             } catch (error) {
                 console.error('Error submitting form:', error);
                 submittingIndicator.textContent = 'An error occurred while submitting the form.';
                 submittingIndicator.style.color = 'red';
-            } finally {
-
+                scrollToMessage(); // Scroll to message
             }
         });
     }
