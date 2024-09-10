@@ -85,6 +85,6 @@ form button:hover {
 }
 
 #submittingIndicator {
-    color: #ffc107;
+    color: orange;
     font-weight: bold;
 }
