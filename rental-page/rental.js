@@ -106,13 +106,23 @@ function initializeCarousel() {
         carousel.scrollLeft = scrollLeft - walk;
     });
 
-    document.getElementById('carousel-left').addEventListener('click', () => {
-        carousel.scrollLeft -= carousel.offsetWidth;
-    });
+    // Only attach one instance of the button handlers
+    const leftButton = document.getElementById('carousel-left');
+    const rightButton = document.getElementById('carousel-right');
+    
+    if (!leftButton.hasAttribute('listener-attached')) {
+        leftButton.addEventListener('click', () => {
+            carousel.scrollLeft -= carousel.offsetWidth;
+        });
+        leftButton.setAttribute('listener-attached', true);
+    }
 
-    document.getElementById('carousel-right').addEventListener('click', () => {
-        carousel.scrollLeft += carousel.offsetWidth;
-    });
+    if (!rightButton.hasAttribute('listener-attached')) {
+        rightButton.addEventListener('click', () => {
+            carousel.scrollLeft += carousel.offsetWidth;
+        });
+        rightButton.setAttribute('listener-attached', true);
+    }
 }
 
 function handleBackButton() {
