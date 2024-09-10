@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rental Details</title>
     <link rel="stylesheet" href="styles.css"> <!-- Updated path -->
 </head>
@@ -12,15 +12,17 @@
     </header>
 
     <main>
+        <!-- Rental Information -->
         <div id="rental-detail" class="rental-detail"></div>
 
-        <!-- Carousel section -->
-        <div id="carousel-container" class="carousel-container">
+        <!-- Carousel for Images -->
+        <div class="carousel-container">
             <div class="carousel-images" id="carousel-images"></div>
             <button class="carousel-button left" id="carousel-left">&#10094;</button>
             <button class="carousel-button right" id="carousel-right">&#10095;</button>
         </div>
 
+        <!-- Map -->
         <div id="map-container">
             <iframe id="map" class="map" frameborder="0" style="border:0;" allowfullscreen></iframe>
         </div>
@@ -29,11 +31,11 @@
     <main>
         <button onclick="handleBackButton()">Back to Listings</button>
     </main>
-
+    
     <footer>
         <p>&copy; 2024 Ken Pham. All rights reserved.</p>
     </footer>
 
-    <script src="rental.js"></script> <!-- Updated path -->
+    <script src="rental.js"></script>
 </body>
 </html>
