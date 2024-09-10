@@ -61,68 +61,14 @@ function displayRentalDetails(listing) {
         <p><strong>Phone Number:</strong> ${phoneNumber || 'No phone number'}</p>
         <p><strong>Email:</strong> <a href="mailto:${email || '#'}">${email || 'No email'}</a></p>
         <p><strong>Status:</strong> ${getStatus(activeDate)}</p>
-        <div class="carousel-container">
-            <div class="carousel-images" id="carousel-images">
-                ${imagesHtml}
-            </div>
-            <button class="carousel-button left" id="carousel-left">&#10094;</button>
-            <button class="carousel-button right" id="carousel-right">&#10095;</button>
+        <div class="carousel-container" id="carousel-container">
+            ${imagesHtml}
         </div>
     `;
 
-    initializeCarousel();
-
-    // Load the map
     const mapIframe = document.getElementById('map');
     const mapUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=${encodeURIComponent(address)}`;
     mapIframe.src = mapUrl;
-}
-
-function initializeCarousel() {
-    const carousel = document.getElementById('carousel-images');
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    carousel.addEventListener('mousedown', (e) => {
-        isDown = true;
-        startX = e.pageX - carousel.offsetLeft;
-        scrollLeft = carousel.scrollLeft;
-    });
-
-    carousel.addEventListener('mouseleave', () => {
-        isDown = false;
-    });
-
-    carousel.addEventListener('mouseup', () => {
-        isDown = false;
-    });
-
-    carousel.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - carousel.offsetLeft;
-        const walk = (x - startX) * 3;
-        carousel.scrollLeft = scrollLeft - walk;
-    });
-
-    // Only attach one instance of the button handlers
-    const leftButton = document.getElementById('carousel-left');
-    const rightButton = document.getElementById('carousel-right');
-    
-    if (!leftButton.hasAttribute('listener-attached')) {
-        leftButton.addEventListener('click', () => {
-            carousel.scrollLeft -= carousel.offsetWidth;
-        });
-        leftButton.setAttribute('listener-attached', true);
-    }
-
-    if (!rightButton.hasAttribute('listener-attached')) {
-        rightButton.addEventListener('click', () => {
-            carousel.scrollLeft += carousel.offsetWidth;
-        });
-        rightButton.setAttribute('listener-attached', true);
-    }
 }
 
 function handleBackButton() {
