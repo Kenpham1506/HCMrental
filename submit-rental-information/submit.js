@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('rentalForm');
     const status = document.getElementById('status');
     const emailField = document.getElementById('email');
@@ -26,9 +26,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const idToken = response.credential;
             const decodedToken = jwt_decode(idToken);
             userEmail = decodedToken.email;
-            emailField.value = userEmail;
-            status.textContent = 'You are logged in as ' + userEmail;
-            status.style.color = 'green'; // Set the color to green
+
+            // Store user email in localStorage for persistence
+            localStorage.setItem('userEmail', userEmail);
+
+            displayLoggedInState(userEmail);
         } catch (error) {
             console.error('Error decoding token:', error);
             status.textContent = 'Failed to log in. Please try again.';
@@ -36,9 +38,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Check if the user is already logged in (persistent)
+    function checkLoginState() {
+        const storedEmail = localStorage.getItem('userEmail');
+        if (storedEmail) {
+            userEmail = storedEmail;
+            displayLoggedInState(userEmail);
+        }
+    }
+
+    // Display logged-in state
+    function displayLoggedInState(email) {
+        emailField.value = email;
+        status.textContent = 'You are logged in as ' + email;
+        status.style.color = 'green'; // Set the color to green
+        document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
+    }
+
     // Handle form submission
     if (form) {
-        form.addEventListener('submit', async function(event) {
+        form.addEventListener('submit', async function (event) {
             event.preventDefault();
 
             if (!userEmail) {
@@ -107,7 +126,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         alert('Rental information submitted successfully!');
                         form.reset();
                         emailField.value = '';
-                        userEmail = '';
                         status.textContent = '';
                         submittingIndicator.style.display = 'none'; // Hide submitting indicator
                     } else {
@@ -124,6 +142,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Check login state on page load
+    checkLoginState();
 
     // Load Google Sign-In library
     const script = document.createElement('script');
