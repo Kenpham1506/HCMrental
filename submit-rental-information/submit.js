@@ -82,6 +82,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             try {
                 submittingIndicator.style.display = 'block'; // Show submitting indicator
+                submittingIndicator.textContent = 'Submitting, please wait...';
+                submittingIndicator.style.color = 'orange';
 
                 const imgurClientId = 'e56f8a4b47c6eee';
                 const formData = new FormData();
@@ -125,16 +127,23 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (result.status === 'success') {
                         alert('Rental information submitted successfully!');
                         form.reset();
-                        submittingIndicator.textContent = 'Rental information submitted successfully!'; // Hide submitting indicator
+                        submittingIndicator.textContent = propertyName + 'Rental information submitted successfully!'; // Hide submitting indicator
+                        submittingIndicator.style.color = 'green';
                     } else {
                         alert('Failed to submit rental information.');
+                        submittingIndicator.textContent = 'Failed to submit rental information.';
+                        submittingIndicator.style.color = 'red';
                     }
                 } else {
                     alert('Failed to upload image to Imgur.');
+                    submittingIndicator.textContent = 'Failed to upload image to Imgur.';
+                    submittingIndicator.style.color = 'red';
                 }
             } catch (error) {
                 console.error('Error submitting form:', error);
                 alert('An error occurred while submitting the form.');
+                submittingIndicator.textContent = 'An error occurred while submitting the form.';
+                submittingIndicator.style.color = 'red';
             } finally {
 
             }
