@@ -58,7 +58,7 @@
   
   - [ ] Landing page [ ] mobile compatibility
 
-    - [x] Listing page [ ] mobile compatibility
+    - [x] Listing page [x] mobile compatibility
       - [x] Listing property
         - [x] Filer
         - [x] Sort
@@ -67,7 +67,7 @@
         - [x] Status
           - [x] Color-coded
   
-        - [x] Rental Detail [ ] mobile compatibility
+        - [x] Rental Detail [x] mobile compatibility
           - [x] Info
           - [x] Map
             - [x] Google map API
