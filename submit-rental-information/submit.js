@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error submitting form:', error);
                 alert('An error occurred while submitting the form.');
             } finally {
-                submittingIndicator.style.display = 'none'; // Hide submitting indicator
+
             }
         });
     }
