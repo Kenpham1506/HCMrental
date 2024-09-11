@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Declare and initialize variables inside DOMContentLoaded
     let userEmail = '';
 
     // Initialize Google Sign-In after the Google Sign-In script has loaded
@@ -53,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         location.reload(); // Reload page to reset rentals
     });
 
+    // Fetch user rentals from Google Sheets API
     async function fetchUserRentals(email) {
         const url = `https://sheets.googleapis.com/v4/spreadsheets/1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE/values/Sheet1!A2:K?key=AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s`;
 
@@ -65,9 +65,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Display rentals for the logged-in user
     function displayUserRentals(rentals, email) {
         const rentalList = document.getElementById('rental-list');
-        rentalList.innerHTML = '';
+        rentalList.innerHTML = ''; // Clear the list
 
         const currentDate = new Date();
 
@@ -102,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Status:</strong> ${statusHTML}</p>
                     <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
+                    <div id="rentedDateContainer-${id}" class="rented-date-container"></div>
                     <hr> <!-- Divider between each rental -->
                 `;
                 rentalList.appendChild(rentalDiv);
@@ -109,6 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Set Active Date - Immediate submission
     window.setActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
         const body = {
@@ -132,28 +135,61 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
-        const rentedDate = document.getElementById('rentedDateInput').value;
-        if (!rentedDate) return;
+    // Create calendar and submit button when "Set Rented" is clicked
+    window.setRentedDate = function(id) {
+        const rentedDateContainer = document.getElementById(`rentedDateContainer-${id}`);
+        
+        // Avoid adding duplicate form if it already exists
+        if (rentedDateContainer.querySelector('.rented-form')) return;
+        
+        // Create the calendar input and submit button dynamically
+        rentedDateContainer.innerHTML = `
+            <div class="rented-form">
+                <label for="rentedDateInput-${id}">Select Rented Date: </label>
+                <input type="date" id="rentedDateInput-${id}">
+                <button id="submitRentedDate-${id}" class="submit-rented-btn">Submit</button>
+            </div>
+        `;
 
+        // Add event listener for the submit button
+        document.getElementById(`submitRentedDate-${id}`).addEventListener('click', function() {
+            const rentedDate = document.getElementById(`rentedDateInput-${id}`).value;
+            if (!rentedDate) {
+                alert('Please select a date.');
+                return;
+            }
+
+            // Call the backend API to update the rented date
+            updateRentedDate(id, rentedDate);
+        });
+    };
+
+    // Function to send the rented date to the server
+    function updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail, rentedDate) {
         const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
-        const body = { id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail, active: rentedDate };
 
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
-            });
+        const body = { 
+            id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
+            active: rentedDate 
+        };
 
-            const result = await response.json();
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        })
+        .then(response => response.json())
+        .then(result => {
             if (result.status === 'success') {
                 alert('Rented date updated successfully');
+            } else {
+                alert('Failed to update rented date');
             }
-        } catch (error) {
+        })
+        .catch(error => {
             console.error('Error updating rented date:', error);
-        }
-    };
+        });
+    }
 
     // Initialize Google Sign-In script
     const script = document.createElement('script');
