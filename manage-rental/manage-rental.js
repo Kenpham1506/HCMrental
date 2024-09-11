@@ -77,16 +77,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
                     if (activeDateObj > currentDate) {
-                        statusHTML = '<span style="color: blue;">• Rented</span>';
+                        statusHTML = '<span class="dot blue"></span>Rented';
                     } else if (daysDiff < 30) {
-                        statusHTML = '<span style="color: green;">• Active</span>';
+                        statusHTML = '<span class="dot green"></span>Active';
                     } else if (daysDiff < 90) {
-                        statusHTML = '<span style="color: orange;">• Pending</span>';
+                        statusHTML = '<span class="dot orange"></span>Pending';
                     } else {
-                        statusHTML = '<span style="color: red;">• Inactive</span>';
+                        statusHTML = '<span class="dot red"></span>Inactive';
                     }
                 } else {
-                    statusHTML = '<span style="color: gray;">• No active date</span>';
+                    statusHTML = '<span class="dot gray"></span>No active date';
                 }
 
                 const rentalDiv = document.createElement('div');
