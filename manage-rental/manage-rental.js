@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Function to send the rented date to the server
-    function updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail, rentedDate) {
+    function updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate) {
         const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
 
         const body = { 
