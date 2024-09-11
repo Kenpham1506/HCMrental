@@ -84,7 +84,22 @@ main {
     color: #007bff;
 }
 
-/* Ensure text next to the dot also matches the color */
+.status-text green{
+    color: #28a745;
+}
+
+.status-text orange{
+    color: #fd7e14;
+}
+
+.status-text red{
+    color: #dc3545;
+}
+
+.status-text blue{
+    color: #007bff;
+}
+
 .status-text {
     display: inline-block;
     margin-left: 5px;
