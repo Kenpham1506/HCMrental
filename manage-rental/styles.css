@@ -84,19 +84,19 @@ main {
     color: #007bff;
 }
 
-.status-text green{
+.status-text.green {
     color: #28a745;
 }
 
-.status-text orange{
+.status-text.orange {
     color: #fd7e14;
 }
 
-.status-text red{
+.status-text.red {
     color: #dc3545;
 }
 
-.status-text blue{
+.status-text.blue {
     color: #007bff;
 }
 
