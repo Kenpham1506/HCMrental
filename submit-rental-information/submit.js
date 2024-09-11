@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const status = document.getElementById('status');
     const emailField = document.getElementById('email');
     const submittingIndicator = document.getElementById('submittingIndicator');
-    const submitButton = document.getElementById('submitButton'); // Submit Button
-    const signOutButton = document.getElementById('signOutButton'); // Sign-out Button
+    const submitButton = document.getElementById('submitButton');
+    const signOutButton = document.getElementById('signOutButton'); // Sign-out button
     let userEmail = '';
 
     // Initialize Google Sign-In
@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
             { theme: 'outline', size: 'large' }  // Customize the button
         );
 
-        google.accounts.id.prompt(); // Display the prompt
+        // Only prompt if the user is not logged in
+        if (!localStorage.getItem('userEmail')) {
+            google.accounts.id.prompt(); // Display the prompt
+        }
     }
 
     // Handle the Google Sign-In response
@@ -67,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
         status.style.color = 'orange';
         document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button
         signOutButton.style.display = 'none'; // Hide sign-out button
+        google.accounts.id.prompt(); // Re-prompt Google sign-in after signing out
     });
 
     // Function to scroll to the top where the message is displayed
