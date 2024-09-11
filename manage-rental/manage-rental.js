@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Price:</strong> ${price}</p>
                     <p><strong>Status:</strong> ${statusHTML}</p>
                     <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
-                    <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
+                    <button onclick="openRentedDatePicker('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                     <hr> <!-- Divider between each rental -->
                 `;
                 rentalList.appendChild(rentalDiv);
@@ -105,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Set Active/Rented Date Functions (as they are)
     window.setActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
         const body = {
@@ -129,12 +128,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
-        const rentedDate = prompt('Enter the rental end date (YYYY-MM-DD)');
+    window.openRentedDatePicker = function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+        const rentedDatePicker = document.createElement('input');
+        rentedDatePicker.type = 'date';
+        rentedDatePicker.id = 'rentedDatePicker';
+        rentedDatePicker.style.position = 'absolute';
+        rentedDatePicker.style.top = '10px';
+        rentedDatePicker.style.left = '10px';
+        rentedDatePicker.style.zIndex = '1000';
+
+        rentedDatePicker.addEventListener('change', function() {
+            const rentedDate = rentedDatePicker.value;
+            if (rentedDate) {
+                setRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate);
+                document.body.removeChild(rentedDatePicker); // Remove picker after date is selected
+            }
+        });
+
+        document.body.appendChild(rentedDatePicker);
+        rentedDatePicker.focus();
+    };
+
+    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate) {
         if (!rentedDate) return;
 
         const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
-        const body = { id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail, active: rentedDate };
+        const body = { id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail, rentedDate };
 
         try {
             const response = await fetch(url, {
@@ -145,16 +164,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const result = await response.json();
             if (result.status === 'success') {
-                alert('Rented date updated successfully');
+                alert('Rented date set successfully');
             }
         } catch (error) {
-            console.error('Error updating rental status:', error);
+            console.error('Error setting rented date:', error);
         }
     };
 
-    // Load Google Sign-In library
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
-    script.onload = initGoogleSignIn;
-    document.head.appendChild(script);
+    initGoogleSignIn(); // Initialize Google Sign-In on page load
 });
