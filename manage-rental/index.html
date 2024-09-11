@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Rentals</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Flatpickr CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Remove Flatpickr CSS -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> -->
 </head>
 <body>
     <header>
@@ -18,12 +18,13 @@
 
     <main>
         <div id="rental-list"></div>
-        <!-- Date input field for setting rented date -->
-        <input type="text" id="rentedDateInput" placeholder="Select Rented Date">
+        <!-- Restore previous date input field if it was removed -->
+        <!-- <input type="text" id="rentedDateInput" placeholder="Select Rented Date"> -->
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Remove Flatpickr JS -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> -->
     <script src="manage-rental.js"></script>
 </body>
 </html>
