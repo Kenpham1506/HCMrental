@@ -44,12 +44,13 @@
 ## Frontend
 
 - [ ] Sidebar
-- [ ] Domain login/out
+- [x] Domain login/out
 - [ ] Navigation
   - [ ] Navigation Bar
   - [ ] Local navigation (Navigation inside the domain doesn't refresh the previous page)
 - [ ] Ads/premium features
 - [ ] Logo
+- [ ] Uniform design
    
 ### Renter
 
@@ -99,5 +100,5 @@
       - [x] Google Oauth 2.0
     - [x] Active date status update
     - [x] Rented status update
-      - [ ] Calendar
+      - [x] Calendar
     - [ ] Edit rental detail
