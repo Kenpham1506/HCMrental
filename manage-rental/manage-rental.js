@@ -1,10 +1,12 @@
 let userEmail = '';
 
 document.addEventListener('DOMContentLoaded', function() {
+    const signOutButton = document.getElementById('signOutButton');
+
     // Initialize Google Sign-In
     function initGoogleSignIn() {
         google.accounts.id.initialize({
-            client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com', // Your actual Google Client ID
+            client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com', // Your Google Client ID
             callback: handleCredentialResponse
         });
 
@@ -13,19 +15,41 @@ document.addEventListener('DOMContentLoaded', function() {
             { theme: 'outline', size: 'large' }
         );
 
-        google.accounts.id.prompt(); // Display the prompt
+        const storedEmail = localStorage.getItem('userEmail');
+        if (storedEmail) {
+            userEmail = storedEmail;
+            displayLoggedInState(userEmail);
+        } else {
+            google.accounts.id.prompt(); // Display the prompt if not logged in
+        }
     }
 
     function handleCredentialResponse(response) {
         const idToken = response.credential;
         const decodedToken = jwt_decode(idToken);
         userEmail = decodedToken.email;
-        document.getElementById('user-email').innerText = `Logged in as: ${userEmail}`;
-        fetchUserRentals(userEmail);
+        localStorage.setItem('userEmail', userEmail);
+        displayLoggedInState(userEmail);
     }
 
+    function displayLoggedInState(email) {
+        document.getElementById('user-email').innerText = `Logged in as: ${email}`;
+        document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
+        signOutButton.style.display = 'inline'; // Show sign-out button
+        fetchUserRentals(email);
+    }
+
+    // Handle Sign-out
+    signOutButton.addEventListener('click', function() {
+        localStorage.removeItem('userEmail');
+        userEmail = '';
+        document.getElementById('user-email').innerText = '';
+        signOutButton.style.display = 'none';
+        document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button again
+        location.reload(); // Reload page to reset rentals
+    });
+
     async function fetchUserRentals(email) {
-        // Use Google Sheets API directly with the provided API key
         const url = `https://sheets.googleapis.com/v4/spreadsheets/1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE/values/Sheet1!A2:K?key=AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s`;
 
         try {
@@ -42,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
         rentalList.innerHTML = '';
 
         const currentDate = new Date();
-        
+
         rentals.forEach((rental) => {
             const [id, propertyName, address, district, price, description, host, phone, rentalEmail, activeDate, imageUrl] = rental;
             if (rentalEmail === email) {
@@ -51,18 +75,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     const activeDateObj = new Date(activeDate);
                     const timeDiff = currentDate - activeDateObj;
                     const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-                    
+
                     if (activeDateObj > currentDate) {
-                        // Future date (Rented)
                         statusHTML = '<span style="color: blue;">• Rented</span>';
                     } else if (daysDiff < 30) {
-                        // Less than a month (Active)
                         statusHTML = '<span style="color: green;">• Active</span>';
                     } else if (daysDiff < 90) {
-                        // More than a month but less than 3 months (Pending)
                         statusHTML = '<span style="color: orange;">• Pending</span>';
                     } else {
-                        // More than 3 months (Inactive)
                         statusHTML = '<span style="color: red;">• Inactive</span>';
                     }
                 } else {
@@ -70,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 const rentalDiv = document.createElement('div');
+                rentalDiv.className = 'rental-item'; // Add class for styling
                 rentalDiv.innerHTML = `
                     <h3>${propertyName}</h3>
                     <p><strong>Address:</strong> ${address}</p>
@@ -77,37 +98,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Status:</strong> ${statusHTML}</p>
                     <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
+                    <hr> <!-- Divider between each rental -->
                 `;
                 rentalList.appendChild(rentalDiv);
             }
         });
     }
 
-    // Define setActiveDate and setRentedDate globally
+    // Set Active/Rented Date Functions (as they are)
     window.setActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
-        // Use your CORS server for the Google Apps Script API
         const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
-
         const body = {
-            id,
-            propertyName,
-            address,
-            price,
-            imageUrl,
-            description,
-            host,
-            phone,
-            district,
-            email: rentalEmail,
-            active: new Date().toISOString().split('T')[0] // Set current date as Active
+            id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
+            active: new Date().toISOString().split('T')[0]
         };
 
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body),
             });
 
@@ -124,29 +133,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const rentedDate = prompt('Enter the rental end date (YYYY-MM-DD)');
         if (!rentedDate) return;
 
-        // Use your CORS server for the Google Apps Script API
         const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
-
-        const body = {
-            id,
-            propertyName,
-            address,
-            price,
-            imageUrl,
-            description,
-            host,
-            phone,
-            district,
-            email: rentalEmail,
-            active: rentedDate // Set future date as the rented end date
-        };
+        const body = { id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail, active: rentedDate };
 
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body),
             });
 
@@ -159,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // Load Google Sign-In script
+    // Load Google Sign-In library
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
     script.onload = initGoogleSignIn;
