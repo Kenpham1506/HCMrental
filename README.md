@@ -1,6 +1,6 @@
 # HCMrental
 
-- HCMrental listing page: https://kenpham1506.github.io/HCMrental/
+- HCMrental listing page: https://kenpham1506.github.io/HCMrental/rental-listing
 
   &#x21B3; HCMrental rental page:  https://kenpham1506.github.io/HCMrental/rental-page
   
