@@ -1,12 +1,13 @@
-let userEmail = '';
-
 document.addEventListener('DOMContentLoaded', function() {
-    const signOutButton = document.getElementById('signOutButton');
+    // Initialize Flatpickr
+    flatpickr("#rentedDateInput", {
+        dateFormat: "Y-m-d",
+    });
 
     // Initialize Google Sign-In
     function initGoogleSignIn() {
         google.accounts.id.initialize({
-            client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com', // Your Google Client ID
+            client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
             callback: handleCredentialResponse
         });
 
@@ -97,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Price:</strong> ${price}</p>
                     <p><strong>Status:</strong> ${statusHTML}</p>
                     <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
-                    <button onclick="openRentedDatePicker('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
+                    <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                     <hr> <!-- Divider between each rental -->
                 `;
                 rentalList.appendChild(rentalDiv);
@@ -128,48 +129,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    window.openRentedDatePicker = function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
-        const rentedDatePicker = document.createElement('input');
-        rentedDatePicker.type = 'date';
-        rentedDatePicker.id = 'rentedDatePicker';
-        rentedDatePicker.style.position = 'absolute';
-        rentedDatePicker.style.top = '10px';
-        rentedDatePicker.style.left = '10px';
-        rentedDatePicker.style.zIndex = '1000';
-
-        rentedDatePicker.addEventListener('change', function() {
-            const rentedDate = rentedDatePicker.value;
-            if (rentedDate) {
-                setRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate);
-                document.body.removeChild(rentedDatePicker); // Remove picker after date is selected
-            }
-        });
-
-        document.body.appendChild(rentedDatePicker);
-        rentedDatePicker.focus();
-    };
-
-    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate) {
+    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+        const rentedDate = document.getElementById('rentedDateInput').value;
         if (!rentedDate) return;
 
         const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
-        const body = { id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail, rentedDate };
+        const body = { id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail, active: rentedDate };
 
         try {
             const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
-            });
-
-            const result = await response.json();
-            if (result.status === 'success') {
-                alert('Rented date set successfully');
-            }
-        } catch (error) {
-            console.error('Error setting rented date:', error);
-        }
-    };
-
-    initGoogleSignIn(); // Initialize Google Sign-In on page load
-});
+                method:
