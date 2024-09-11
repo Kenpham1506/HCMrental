@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Create calendar and submit button when "Set Rented" is clicked
-    window.setRentedDate = function(id) {
+    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const rentedDateContainer = document.getElementById(`rentedDateContainer-${id}`);
         
         // Avoid adding duplicate form if it already exists
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Call the backend API to update the rented date
-            updateRentedDate(id, rentedDate);
+            updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate);
         });
     };
 
