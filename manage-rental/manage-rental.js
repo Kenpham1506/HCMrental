@@ -138,4 +138,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             const response = await fetch(url, {
-                method:
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                alert('Rented date updated successfully');
+            }
+        } catch (error) {
+            console.error('Error updating rented date:', error);
+        }
+    };
+
+    // Initialize Google Sign-In
+    initGoogleSignIn();
+});
