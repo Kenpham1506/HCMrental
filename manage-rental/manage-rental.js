@@ -1,9 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Flatpickr
-    flatpickr("#rentedDateInput", {
-        dateFormat: "Y-m-d",
-    });
-
     // Initialize Google Sign-In
     function initGoogleSignIn() {
         google.accounts.id.initialize({
