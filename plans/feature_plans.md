@@ -1,104 +1,111 @@
-# Feature plans
+# 📅 **Feature Plans**
 
-## Backend and operation
+## ⚙️ **Backend and Operations**
 
-- [x] Global backend/operation
-
-  - [x] Hosting, Domain
-    - [x] Github page
-      - [x] Github Action
-  
-  - [x] Data storage and query
+- ### Hosting and Infrastructure
+  - [x] **Hosting, Domain**
+    - [x] **GitHub Pages**
+      - [x] **GitHub Actions** (Automated deployment)
+  - [x] **Data Storage and Query**
     - [x] Google Cloud
-      - [x] CORS server
-      - [x] Google APIs
-    - [x] Image storage and query
-      - [x] Imgur API
+      - [x] CORS Server
+      - [x] Google APIs (Integration)
+    - [x] **Image Storage** 
+      - [x] Imgur API (For image uploads)
 
-  - [x] Account, Authentication
-    - [x] Google Oauth 2.0
-      - [x] Google APIs
-    - [ ] Bans/blacklist
-      - [ ] Email bans
-      - [ ] IP bans
-      - [ ] Address bans
+- ### Authentication
+  - [x] **Account Authentication**
+    - [x] Google OAuth 2.0
+      - [x] Google APIs (Google login integration)
+  - [ ] **Bans/Blacklist**
+    - [ ] Email bans
+    - [ ] IP bans
+    - [ ] Address bans
 
-  - [ ] Security and secrete
-    - [ ] Hidden APIs/Credential (GitHub page has limited secure tools to hide secrets)
-    - [x] Report vulnerability channel
-      - [x] GitHub Issue/Security
-    - [ ] DDOS prevention (Please don't drain my bank account)
-    - [ ] Middle man attack
-    - [ ] Payload injection
+- ### Security
+  - [ ] **API/Credential Security**
+    - [ ] Hidden APIs (Handling secret keys securely)
+    - [x] Vulnerability Reporting
+      - [x] GitHub Issues/Security
+    - [ ] **Attack Prevention**
+      - [ ] DDoS Protection
+      - [ ] Middle-Man Attack Prevention
+      - [ ] Payload Injection Prevention
 
-  - [ ] Wiki
-    - [ ] GitHub Wiki
-    - [ ] Code documentation
-    - [ ] Code comment
-    - [x] Plans
+- ### Documentation
+  - [ ] **Wiki Documentation**
+    - [ ] GitHub Wiki (Setup and structure)
+    - [ ] Code Documentation (For future devs)
+    - [ ] Code Comments (In-line code comments)
+    - [x] **Plans**
       - [x] Structure plans
       - [x] Feature plans
-    - [x] Bug/Issue Documentation
-      - [x] GitHub Issue
+    - [x] **Bug Tracking**
+      - [x] GitHub Issue Tracker
 
-## Frontend
+---
 
-- [ ] Sidebar
-- [x] Domain login/out
-- [ ] Navigation
-  - [ ] Navigation Bar
-  - [ ] Local navigation (Navigation inside the domain doesn't refresh the previous page)
-- [ ] Ads/premium features
-- [ ] Logo
-- [ ] Uniform design
-   
-### Renter
+## 🖥️ **Frontend**
 
-- [ ] Global renter
-  - [ ] Renter authentication
-  
-  - [ ] Landing page [ ] mobile compatibility
+- [ ] **Sidebar** (Global navigation)
+- [x] **Domain Login/Logout** (Persistent sessions)
+- [ ] **Navigation**
+  - [ ] Navigation Bar (Main navigation)
+  - [ ] Local Navigation (Avoids full page refresh)
+- [ ] **Ads/Premium Features** (Design and placement)
+- [ ] **Logo Design**
+- [ ] **Uniform Design** (Consistent visual style)
 
-    - [x] Listing page [x] mobile compatibility
-      - [x] Listing property
-        - [x] Filer
-        - [x] Sort
-        - [x] ID
-        - [x] Info
-        - [x] Status
-          - [x] Color-coded
-  
-        - [x] Rental Detail [x] mobile compatibility
-          - [x] Info
-          - [x] Map
-            - [x] Google map API
-          - [x] Images
-            - [x] Images carousel
-          - [x] Local navigation (Navigation inside the domain doesn't refresh the previous page)
-          - [ ] Detail Status
-            - [ ] Rented until
-          - [ ] Call to action
-            - [ ] Email
-            - [ ] Phone
-            - [ ] Text
-            - [ ] Rent now
-              - [ ] Calendar
+---
 
-### Host
-    
-- [ ] Global renter
-  - [ ] Host authentication
-     
-  - [x] Submit rental [x] mobile compatibility
-    - [x] Email authentication
-      - [x] Google Oauth 2.0
-    - [x] Image submission
-      - [x] Imgur API
-     
-  - [x] manage rental [x] mobile compatibility
-    - [x] Email authentication
-      - [x] Google Oauth 2.0
-    - [x] Active date status update
-    - [x] Rented status update
-      - [x] Calendar
-    - [ ] Edit rental detail
+### 👥 **Renter Section**
+
+- [ ] **Renter Authentication**
+- [ ] **Landing Page** 
+  - [ ] Mobile Compatibility
+- [x] **Listing Page**
+  - [x] Mobile Compatibility
+  - [x] **Property Listings**
+    - [x] Filter Options
+    - [x] Sorting Options
+    - [x] Unique ID Display
+    - [x] Property Info
+    - [x] Status Display
+      - [x] Color-coded Status
+  - [x] **Rental Details**
+    - [x] Mobile Compatibility
+    - [x] Property Info
+    - [x] **Map Integration**
+      - [x] Google Maps API
+    - [x] **Images**
+      - [x] Carousel for Property Images
+    - [x] Local Navigation
+    - [ ] **Detailed Status**
+      - [ ] Rented Until (End date display)
+    - [ ] **Call to Action**
+      - [ ] Email
+      - [ ] Phone Number
+      - [ ] Text Message
+      - [ ] Rent Now (CTA)
+        - [ ] Calendar Integration (For selecting dates)
+
+---
+
+### 🏠 **Host Section**
+
+- [ ] **Host Authentication**
+- [x] **Submit Rental**
+  - [x] Mobile Compatibility
+  - [x] **Email Authentication**
+    - [x] Google OAuth 2.0
+  - [x] **Image Submission**
+    - [x] Imgur API Integration
+
+- [x] **Manage Rental**
+  - [x] Mobile Compatibility
+  - [x] **Email Authentication**
+    - [x] Google OAuth 2.0
+  - [x] **Active Date Status Update**
+  - [x] **Rented Status Update**
+    - [x] Calendar Integration
+  - [ ] Edit Rental Details (Editing rental information)
