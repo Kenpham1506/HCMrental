@@ -1,12 +1,15 @@
+/* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif; /* Updated font */
     margin: 0;
     padding: 0;
-    background-color: #f7f7f7;
+    background-color: #f5f5f5; /* Background as per the guide */
+    line-height: 1.5;
 }
 
+/* Header */
 header {
-    background-color: #007bff;
+    background-color: #3498db; /* Primary color */
     padding: 20px;
     text-align: center;
     color: white;
@@ -14,28 +17,35 @@ header {
 }
 
 header h1 {
+    font-size: 32px; /* H1 size */
     margin: 0;
-    font-size: 28px;
+    text-align: center;
 }
 
+/* Buttons */
 button {
     padding: 10px 20px;
     margin: 5px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px; /* Rounded corners */
     cursor: pointer;
 }
 
-#sign-in-btn {
-    background-color: #28a745;
+.button-primary {
+    background-color: #3498db; /* Primary color */
     color: white;
 }
 
-#sign-out-btn {
-    background-color: #dc3545;
+.button-secondary {
+    background-color: #2ecc71; /* Secondary color */
     color: white;
 }
 
+button:hover {
+    opacity: 0.9; /* Hover effect */
+}
+
+/* Main Section */
 main {
     padding: 20px;
     max-width: 800px;
@@ -45,17 +55,33 @@ main {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Rental List */
 .rental-item {
     border: 1px solid #ddd;
-    padding: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
+
+.rental-item h3 {
+    font-size: 24px; /* H2 size */
     margin-bottom: 10px;
 }
 
-.rental-item img {
-    width: 200px;
-    height: auto;
+.rental-item p {
+    font-size: 16px; /* Body text size */
+    color: #666666;
 }
 
+/* Image Styling */
+.rental-item img {
+    width: 100%; /* Responsive image */
+    height: auto;
+    border-radius: 8px; /* Rounded corners for images */
+}
+
+/* Status Dots and Text */
 .dot {
     display: inline-block;
     width: 10px;
@@ -66,22 +92,23 @@ main {
 
 .dot.green {
     background-color: #28a745;
-    color: #28a745;
 }
 
 .dot.orange {
     background-color: #fd7e14;
-    color: #fd7e14;
 }
 
 .dot.red {
     background-color: #dc3545;
-    color: #dc3545;
 }
 
 .dot.blue {
-    background-color: #007bff;
-    color: #007bff;
+    background-color: #3498db;
+}
+
+.status-text {
+    display: inline-block;
+    margin-left: 5px;
 }
 
 .status-text.green {
@@ -97,10 +124,28 @@ main {
 }
 
 .status-text.blue {
-    color: #007bff;
+    color: #3498db;
 }
 
-.status-text {
-    display: inline-block;
-    margin-left: 5px;
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 26px; /* Adjusted for smaller screens */
+    }
+
+    .rental-item h3 {
+        font-size: 20px;
+    }
+
+    .rental-item p {
+        font-size: 14px;
+    }
+
+    main {
+        padding: 15px;
+    }
+
+    button {
+        padding: 8px 16px;
+    }
 }
