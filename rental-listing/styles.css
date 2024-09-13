@@ -90,11 +90,6 @@ footer {
     transform: scale(1.05); /* Slight zoom on hover */
 }
 
-/* Typography */
-h1, h2 {
-    color: #333333; /* Dark gray for headings */
-}
-
 body, p {
     font-size: 16px; /* Body text size for desktop */
 }
