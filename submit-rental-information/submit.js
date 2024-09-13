@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const submittingIndicator = document.getElementById('submittingIndicator');
     const submitButton = document.getElementById('submitButton');
     const signOutButton = document.getElementById('signOutButton');
+    const loggedInAsLabel = document.getElementById('loggedInAs'); // New label for displaying logged-in user email
     let userEmail = '';
 
     // Initialize Google Sign-In
@@ -61,6 +62,9 @@ document.addEventListener('DOMContentLoaded', function () {
             status.textContent = 'You are logged in as ' + email;
             status.style.color = 'green'; // Set the color to green
         }
+        if (loggedInAsLabel) {
+            loggedInAsLabel.textContent = 'Logged in as: ' + email; // Set the label to show email
+        }
         const signInButton = document.getElementById('g_id_signin');
         if (signInButton) {
             signInButton.style.display = 'none'; // Hide sign-in button
@@ -81,6 +85,9 @@ document.addEventListener('DOMContentLoaded', function () {
             if (status) {
                 status.textContent = 'You have signed out.';
                 status.style.color = 'orange';
+            }
+            if (loggedInAsLabel) {
+                loggedInAsLabel.textContent = 'Logged out'; // Update label on sign-out
             }
             const signInButton = document.getElementById('g_id_signin');
             if (signInButton) {
