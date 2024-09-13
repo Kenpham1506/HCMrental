@@ -98,10 +98,6 @@ form input, form textarea, form button {
     font-size: 16px;
 }
 
-form input, form textarea {
-    width: 100%;
-}
-
 form button {
     background-color: #3498db;
     color: #ffffff;
