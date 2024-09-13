@@ -16,16 +16,16 @@
         <div class="auth-container">
             <div id="g_id_signin"></div>
             <input type="email" id="email" placeholder="Email" readonly>
-            <button id="signOutButton" style="display: none;">Sign Out</button> <!-- Sign-out Button -->
+            <button id="signOutButton" class="button secondary" style="display: none;">Sign Out</button>
         </div>
 
         <!-- Status indicator -->
-        <div id="status"></div>
+        <div id="status" class="status"></div>
         <!-- Submitting indicator -->
-        <div id="submittingIndicator"></div>
+        <div id="submittingIndicator" class="submitting-indicator"></div>
 
         <!-- Form for submitting rental information -->
-        <form id="rentalForm">
+        <form id="rentalForm" class="form">
             <label for="propertyName">Property Name</label>
             <input type="text" id="propertyName" name="propertyName" required>
 
@@ -50,7 +50,7 @@
             <label for="image">Image</label>
             <input type="file" id="image" name="image" required>
 
-            <button type="submit" id="submitButton">Submit</button> <!-- Submit Button -->
+            <button type="submit" id="submitButton" class="button primary">Submit</button>
         </form>
     </main>
 
