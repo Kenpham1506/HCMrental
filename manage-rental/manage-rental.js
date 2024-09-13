@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             google.accounts.id.renderButton(
                 document.getElementById('g_id_signin'),
-                { theme: 'outline', size: 'large' } // Standard Google Sign-In button
+                { theme: 'outline', size: 'large' }
             );
 
             const storedEmail = localStorage.getItem('userEmail');
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayLoggedInState(email) {
         document.getElementById('user-email').innerText = `Logged in as: ${email}`;
         document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
-        document.getElementById('signOutButton').style.display = 'inline'; // Show sign-out button
+        signOutButton.style.display = 'inline'; // Show sign-out button
         fetchUserRentals(email);
     }
 
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.removeItem('userEmail');
         userEmail = '';
         document.getElementById('user-email').innerText = '';
-        document.getElementById('signOutButton').style.display = 'none';
+        signOutButton.style.display = 'none';
         document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button again
         location.reload(); // Reload page to reset rentals
     });
@@ -152,8 +152,8 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         // Add event listener for the submit button
-        document.getElementById(`submitRentedDate-${id}`).addEventListener('click', function() {
-            const rentedDate = document.getElementById(`rentedDateInput-${id}`).value;
+        document.getElementById(submitRentedDate-${id}).addEventListener('click', function() {
+            const rentedDate = document.getElementById(rentedDateInput-${id}).value;
             if (!rentedDate) {
                 alert('Please select a date.');
                 return;
@@ -183,14 +183,17 @@ document.addEventListener('DOMContentLoaded', function() {
             if (result.status === 'success') {
                 alert('Rented date updated successfully');
             } else {
-                alert('Error updating rented date');
+                alert('Failed to update rented date');
             }
         })
         .catch(error => {
             console.error('Error updating rented date:', error);
-            alert('Error updating rented date');
         });
     }
 
-    initGoogleSignIn();
+    // Initialize Google Sign-In script
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.onload = initGoogleSignIn;
+    document.head.appendChild(script);
 });
