@@ -9,18 +9,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 callback: handleCredentialResponse
             });
 
-            google.accounts.id.renderButton(
-                document.getElementById('g_id_signin'),
-                { theme: 'outline', size: 'large' }
-            );
-
             const storedEmail = localStorage.getItem('userEmail');
             if (storedEmail) {
                 userEmail = storedEmail;
                 displayLoggedInState(userEmail);
-            } else {
-                google.accounts.id.prompt(); // Display the prompt if not logged in
             }
+
+            // Attach click event to custom button
+            const customGoogleBtn = document.getElementById('custom-google-btn');
+            customGoogleBtn.addEventListener('click', function() {
+                google.accounts.id.prompt(); // Manually trigger the Google Sign-In prompt
+            });
         } else {
             console.error('Google Sign-In library not loaded.');
         }
@@ -36,8 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function displayLoggedInState(email) {
         document.getElementById('user-email').innerText = `Logged in as: ${email}`;
-        document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
-        signOutButton.style.display = 'inline'; // Show sign-out button
+        document.getElementById('custom-google-btn').style.display = 'none'; // Hide custom sign-in button
+        document.getElementById('signOutButton').style.display = 'inline'; // Show sign-out button
         fetchUserRentals(email);
     }
 
@@ -47,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.removeItem('userEmail');
         userEmail = '';
         document.getElementById('user-email').innerText = '';
-        signOutButton.style.display = 'none';
-        document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button again
+        document.getElementById('signOutButton').style.display = 'none';
+        document.getElementById('custom-google-btn').style.display = 'block'; // Show sign-in button again
         location.reload(); // Reload page to reset rentals
     });
 
