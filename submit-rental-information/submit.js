@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const emailField = document.getElementById('email');
     const submittingIndicator = document.getElementById('submittingIndicator');
     const submitButton = document.getElementById('submitButton');
-    const signOutButton = document.getElementById('signOutButton'); // Sign-out button
+    const signOutButton = document.getElementById('signOutButton');
     let userEmail = '';
 
     // Initialize Google Sign-In
@@ -54,28 +54,50 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Display logged-in state
     function displayLoggedInState(email) {
-        emailField.value = email;
-        status.textContent = 'You are logged in as ' + email;
-        status.style.color = 'green'; // Set the color to green
-        document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
-        signOutButton.style.display = 'inline'; // Show sign-out button
+        if (emailField) {
+            emailField.value = email;
+        }
+        if (status) {
+            status.textContent = 'You are logged in as ' + email;
+            status.style.color = 'green'; // Set the color to green
+        }
+        const signInButton = document.getElementById('g_id_signin');
+        if (signInButton) {
+            signInButton.style.display = 'none'; // Hide sign-in button
+        }
+        if (signOutButton) {
+            signOutButton.style.display = 'inline'; // Show sign-out button
+        }
     }
 
     // Sign-out functionality
-    signOutButton.addEventListener('click', function () {
-        localStorage.removeItem('userEmail'); // Clear user email from storage
-        userEmail = '';
-        emailField.value = '';
-        status.textContent = 'You have signed out.';
-        status.style.color = 'orange';
-        document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button
-        signOutButton.style.display = 'none'; // Hide sign-out button
-        google.accounts.id.prompt(); // Re-prompt Google sign-in after signing out
-    });
+    if (signOutButton) {
+        signOutButton.addEventListener('click', function () {
+            localStorage.removeItem('userEmail'); // Clear user email from storage
+            userEmail = '';
+            if (emailField) {
+                emailField.value = '';
+            }
+            if (status) {
+                status.textContent = 'You have signed out.';
+                status.style.color = 'orange';
+            }
+            const signInButton = document.getElementById('g_id_signin');
+            if (signInButton) {
+                signInButton.style.display = 'block'; // Show sign-in button
+            }
+            if (signOutButton) {
+                signOutButton.style.display = 'none'; // Hide sign-out button
+            }
+            google.accounts.id.prompt(); // Re-prompt Google sign-in after signing out
+        });
+    }
 
     // Function to scroll to the top where the message is displayed
     function scrollToMessage() {
-        submittingIndicator.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (submittingIndicator) {
+            submittingIndicator.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
 
     // Handle form submission
@@ -84,8 +106,10 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault();
 
             if (!userEmail) {
-                status.textContent = 'You must be logged in to submit the form.';
-                status.style.color = 'red'; // Set the color to red
+                if (status) {
+                    status.textContent = 'You must be logged in to submit the form.';
+                    status.style.color = 'red'; // Set the color to red
+                }
                 scrollToMessage(); // Scroll to message
                 return;
             }
@@ -106,9 +130,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             try {
                 // Disable the submit button to prevent multiple submissions
-                submitButton.disabled = true;
-                submittingIndicator.textContent = 'Submitting, please wait...';
-                submittingIndicator.style.color = 'orange';
+                if (submitButton) {
+                    submitButton.disabled = true;
+                }
+                if (submittingIndicator) {
+                    submittingIndicator.textContent = 'Submitting, please wait...';
+                    submittingIndicator.style.color = 'orange';
+                }
                 scrollToMessage(); // Scroll to message
 
                 const imgurClientId = 'e56f8a4b47c6eee';
@@ -152,27 +180,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     if (result.status === 'success') {
                         form.reset();
-                        submittingIndicator.textContent = propertyName + ' Rental information submitted successfully!';
-                        submittingIndicator.style.color = 'green';
+                        if (submittingIndicator) {
+                            submittingIndicator.textContent = propertyName + ' Rental information submitted successfully!';
+                            submittingIndicator.style.color = 'green';
+                        }
                         scrollToMessage(); // Scroll to message
                     } else {
-                        submittingIndicator.textContent = 'Failed to submit rental information.';
-                        submittingIndicator.style.color = 'red';
+                        if (submittingIndicator) {
+                            submittingIndicator.textContent = 'Failed to submit rental information.';
+                            submittingIndicator.style.color = 'red';
+                        }
                         scrollToMessage(); // Scroll to message
                     }
                 } else {
-                    submittingIndicator.textContent = 'Failed to upload image to Imgur.';
-                    submittingIndicator.style.color = 'red';
+                    if (submittingIndicator) {
+                        submittingIndicator.textContent = 'Failed to upload image to Imgur.';
+                        submittingIndicator.style.color = 'red';
+                    }
                     scrollToMessage(); // Scroll to message
                 }
             } catch (error) {
                 console.error('Error submitting form:', error);
-                submittingIndicator.textContent = 'An error occurred while submitting the form.';
-                submittingIndicator.style.color = 'red';
+                if (submittingIndicator) {
+                    submittingIndicator.textContent = 'An error occurred while submitting the form.';
+                    submittingIndicator.style.color = 'red';
+                }
                 scrollToMessage(); // Scroll to message
             } finally {
                 // Re-enable the submit button after the request completes
-                submitButton.disabled = false;
+                if (submitButton) {
+                    submitButton.disabled = false;
+                }
             }
         });
     }
