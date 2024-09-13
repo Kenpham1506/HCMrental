@@ -58,13 +58,9 @@ main {
 }
 
 footer {
-    background: #333; /* Dark background for footer */
-    color: white;
     text-align: center;
     padding: 10px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    background-color: #f5f5f5;
 }
 
 #listings {
