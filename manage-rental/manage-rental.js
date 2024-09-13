@@ -152,8 +152,8 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         // Add event listener for the submit button
-        document.getElementById(submitRentedDate-${id}).addEventListener('click', function() {
-            const rentedDate = document.getElementById(rentedDateInput-${id}).value;
+        document.getElementById(`submitRentedDate-${id}`).addEventListener('click', function() {
+            const rentedDate = document.getElementById(`rentedDateInput-${id}`).value;
             if (!rentedDate) {
                 alert('Please select a date.');
                 return;
