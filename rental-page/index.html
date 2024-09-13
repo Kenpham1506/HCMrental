@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rental Details</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Updated path -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Rental Details</h1>
+        <div class="header-content">
+            <h1>Rental Details</h1>
+            <button class="header-button" onclick="handleBackButton()">Back to Listings</button>
+        </div>
     </header>
 
     <main>
@@ -27,11 +30,7 @@
             <iframe id="map" class="map" frameborder="0" style="border:0;" allowfullscreen></iframe>
         </div>
     </main>
-    
-    <div class="back-button-container">
-        <button onclick="handleBackButton()">Back to Listings</button>
-    </div>
-    
+
     <footer>
         <p>&copy; 2024 Ken Pham. All rights reserved.</p>
     </footer>
