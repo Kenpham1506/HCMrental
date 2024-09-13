@@ -23,7 +23,7 @@ header h1 {
 }
 
 /* Buttons */
-button, #custom-google-btn {
+button {
     padding: 10px 20px;
     margin: 5px;
     border: none;
@@ -31,12 +31,13 @@ button, #custom-google-btn {
     cursor: pointer;
 }
 
-.button-primary, #custom-google-btn {
+/* Primary button for Login and Logout */
+.button-primary {
     background-color: #3498db; /* Primary color */
     color: white;
 }
 
-.button-primary:hover, #custom-google-btn:hover {
+.button-primary:hover {
     background-color: #2980b9; /* Darken on hover */
     color: white;
 }
@@ -44,6 +45,26 @@ button, #custom-google-btn {
 .button-secondary {
     background-color: #2ecc71; /* Secondary color */
     color: white;
+}
+
+button:hover {
+    opacity: 0.9; /* Hover effect */
+}
+
+/* Override Google Sign-In Button */
+#g_id_signin div {
+    width: auto !important;
+    background-color: #3498db !important; /* Match primary button color */
+    color: white !important; /* White text */
+    padding: 10px 20px !important; /* Consistent padding */
+    border-radius: 6px !important; /* Rounded corners */
+    text-align: center !important;
+    display: inline-block !important;
+    font-size: 16px !important; /* Button text size */
+}
+
+#g_id_signin div:hover {
+    background-color: #2980b9 !important; /* Darken on hover */
 }
 
 /* Main Section */
@@ -146,7 +167,7 @@ main {
         padding: 15px;
     }
 
-    button, #custom-google-btn {
+    button {
         padding: 8px 16px;
     }
 }
