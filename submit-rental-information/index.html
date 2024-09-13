@@ -8,24 +8,22 @@
 </head>
 <body>
     <header>
+        <div class="auth-container">
+            <div id="g_id_signin"></div>
+            <input type="email" id="email" placeholder="Email" readonly>
+            <button id="signOutButton" style="display: none;">Sign Out</button> <!-- Sign-out Button -->
+        </div>
         <h1>Submit Rental Information</h1>
     </header>
 
     <main>
-        <!-- Auth container with Google sign-in and email display -->
-        <div class="auth-container">
-            <div id="g_id_signin"></div>
-            <input type="email" id="email" placeholder="Email" readonly>
-            <button id="signOutButton" class="button secondary" style="display: none;">Sign Out</button>
-        </div>
-
         <!-- Status indicator -->
-        <div id="status" class="status"></div>
+        <div id="status"></div>
         <!-- Submitting indicator -->
-        <div id="submittingIndicator" class="submitting-indicator"></div>
+        <div id="submittingIndicator"></div>
 
         <!-- Form for submitting rental information -->
-        <form id="rentalForm" class="form">
+        <form id="rentalForm">
             <label for="propertyName">Property Name</label>
             <input type="text" id="propertyName" name="propertyName" required>
 
@@ -50,7 +48,7 @@
             <label for="image">Image</label>
             <input type="file" id="image" name="image" required>
 
-            <button type="submit" id="submitButton" class="button primary">Submit</button>
+            <button type="submit" id="submitButton">Submit</button> <!-- Submit Button -->
         </form>
     </main>
 
