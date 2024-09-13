@@ -13,16 +13,37 @@ body {
 header {
     background-color: #3498db;
     padding: 20px;
-    text-align: center;
     color: white;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
+/* Auth container styling */
+.auth-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#email {
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 150px; /* Adjust width if needed */
+}
+
+/* Header h1 styling */
 header h1 {
     margin: 0;
     font-size: 28px;
+    text-align: center;
 }
 
+/* Main styling */
 main {
     padding: 20px;
     max-width: 800px;
@@ -32,40 +53,29 @@ main {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Auth container styling */
-.auth-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-#email {
-    margin-left: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-}
-
 /* Form styling */
-.form {
+form {
     display: grid;
     gap: 15px;
 }
 
-.form label {
+form label {
     font-weight: bold;
     color: #333;
 }
 
-.form input, .form textarea, .form button {
+form input, form textarea, form button {
     padding: 12px;
     border: 1px solid #cccccc;
     border-radius: 4px;
     font-size: 16px;
 }
 
-.form button {
+form input, form textarea {
+    width: 100%;
+}
+
+form button {
     background-color: #3498db;
     color: #ffffff;
     border: none;
@@ -76,17 +86,18 @@ main {
     border-radius: 6px;
 }
 
-.form button:hover {
+form button:hover {
     background-color: #2980b9;
 }
 
-.status, .submitting-indicator {
+#status {
     font-weight: bold;
     margin-bottom: 20px;
 }
 
-.submitting-indicator {
+#submittingIndicator {
     color: orange;
+    font-weight: bold;
 }
 
 /* Secondary button style */
