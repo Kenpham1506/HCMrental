@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Rental Information</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script> <!-- Google Sign-In Script -->
 </head>
 <body>
     <header>
+        <h1>Submit Rental Information</h1>
         <div class="auth-container">
             <div id="g_id_signin"></div>
-            <input type="email" id="email" placeholder="Email" readonly>
-            <button id="signOutButton" style="display: none;">Sign Out</button> <!-- Sign-out Button -->
+            <p id="user-email"></p>
+            <button id="signOutButton" class="button-primary" style="display:none;">Sign Out</button> <!-- Sign-out Button -->
         </div>
-        <h1>Submit Rental Information</h1>
     </header>
 
     <main>
@@ -48,9 +49,13 @@
             <label for="image">Image</label>
             <input type="file" id="image" name="image" required>
 
-            <button type="submit" id="submitButton">Submit</button> <!-- Submit Button -->
+            <button type="submit" class="button-primary">Submit</button> <!-- Submit Button -->
         </form>
     </main>
+
+    <footer>
+        <p>&copy; 2024 Ken Pham. All rights reserved.</p>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script src="submit.js"></script>
