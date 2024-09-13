@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Rentals</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script> <!-- Google Sign-In Script -->
 </head>
 <body>
     <header>
-        <h1>Manage Rentals</h1>
+        <h1>Manage Your Rentals</h1>
+        <div id="g_id_signin"></div>
+        <p id="user-email"></p>
+        <button id="signOutButton" class="button-primary" style="display:none;">Sign Out</button> <!-- Sign-out Button -->
     </header>
 
     <main>
-        <div id="g_id_signin"></div> <!-- Google Sign-In Button -->
-        <div id="user-email"></div> <!-- Display logged-in user email -->
-        <button id="signOutButton" style="display: none;">Sign Out</button>
-        <div id="rental-list"></div> <!-- Container for rental items -->
+        <div id="rental-list"></div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script src="manage-rental.js"></script>
 </body>
 </html>
