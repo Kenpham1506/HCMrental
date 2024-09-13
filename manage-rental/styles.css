@@ -23,7 +23,7 @@ header {
 
 /* Google Sign-In Button */
 #g_id_signin {
-    margin-bottom: 10px; /* Space between button and other content */
+    margin-top: 20px; /* Space between button and other content */
 }
 
 /* Header Title */
