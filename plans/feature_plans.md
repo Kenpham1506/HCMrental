@@ -26,7 +26,6 @@
 - **Security**
   - [ ] **API/Credential Security**
     - [ ] Hidden APIs (Handling secret keys securely)
-      - *Suggestion:* Use environment variables for secrets and ensure they are not exposed.
     - [x] Vulnerability Reporting
       - [x] GitHub Issues/Security
     - [ ] **Attack Prevention**
