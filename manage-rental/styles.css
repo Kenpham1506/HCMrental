@@ -1,157 +1,125 @@
 /* General Styles */
 body {
-    font-family: 'Roboto', sans-serif; /* Updated font */
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5; /* Background as per the guide */
+    background-color: #f5f5f5;
     line-height: 1.5;
 }
 
 /* Header */
 header {
-    background-color: #3498db; /* Primary color */
-    padding: 20px;
-    text-align: center;
+    background-color: #3498db;
+    padding: 10px;
     color: white;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
-    height: 150px; /* Adjust height as needed */
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
 }
 
-/* Google Sign-In Button */
-#g_id_signin {
-    margin-top: 20px; /* Space between button and other content */
+.header-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+/* Left-side menu button */
+.menu-button {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.menu-button:hover {
+    opacity: 0.8;
 }
 
 /* Header Title */
 header h1 {
-    font-size: 32px; /* H1 size */
+    font-size: 24px;
     margin: 0;
-    text-align: center;
+    flex: 1;
+    text-align: left;
+    padding-left: 20px;
 }
 
-/* Buttons */
-button {
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    border-radius: 6px; /* Rounded corners */
+/* User account options on the right */
+.user-options {
+    display: flex;
+    align-items: center;
+}
+
+#user-email {
+    margin-right: 10px;
+}
+
+.account-button {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.account-button:hover {
+    opacity: 0.8;
+}
+
+/* Slide-out panels */
+.side-menu, .account-panel {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+    background-color: #3498db;
+    color: white;
+    padding-top: 60px;
+}
+
+.side-menu {
+    left: 0;
+}
+
+.account-panel {
+    right: 0;
+}
+
+/* Close button inside panels */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 36px;
     cursor: pointer;
 }
 
-.button-primary {
-    background-color: #3498db; /* Primary color */
+.side-menu a, .account-panel p {
+    padding: 10px 20px;
+    text-decoration: none;
+    display: block;
     color: white;
 }
 
-.button-secondary {
-    background-color: #2ecc71; /* Secondary color */
-    color: white;
-}
-
-button:hover {
-    opacity: 0.9; /* Hover effect */
-}
-
-/* Main Section */
-main {
-    padding: 20px;
-    max-width: 800px;
-    margin: 30px auto;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Rental List */
-.rental-item {
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Shadow effect */
-}
-
-.rental-item h3 {
-    font-size: 24px; /* H2 size */
-    margin-bottom: 10px;
-}
-
-.rental-item p {
-    font-size: 16px; /* Body text size */
-    color: #666666;
-}
-
-/* Image Styling */
-.rental-item img {
-    width: 100%; /* Responsive image */
-    height: auto;
-    border-radius: 8px; /* Rounded corners for images */
-}
-
-/* Status Dots and Text */
-.dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 5px;
-}
-
-.dot.green {
-    background-color: #28a745;
-}
-
-.dot.orange {
-    background-color: #fd7e14;
-}
-
-.dot.red {
-    background-color: #dc3545;
-}
-
-.dot.blue {
-    background-color: #3498db;
-}
-
-.status-text {
-    display: inline-block;
-    margin-left: 5px;
-}
-
-.status-text.green {
-    color: #28a745;
-}
-
-.status-text.orange {
-    color: #fd7e14;
-}
-
-.status-text.red {
-    color: #dc3545;
-}
-
-.status-text.blue {
-    color: #3498db;
-}
-
-footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #f5f5f5;
+.side-menu a:hover, .account-panel button:hover {
+    background-color: #2980b9;
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     header h1 {
-        font-size: 26px; /* Adjusted for smaller screens */
+        font-size: 20px;
     }
 
     .rental-item h3 {
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .rental-item p {
@@ -160,9 +128,5 @@ footer {
 
     main {
         padding: 15px;
-    }
-
-    button {
-        padding: 8px 16px;
     }
 }
