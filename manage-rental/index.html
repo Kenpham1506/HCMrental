@@ -9,11 +9,31 @@
 </head>
 <body>
     <header>
-        <h1>Manage Your Rentals</h1>
-        <div id="g_id_signin"></div>
-        <p id="user-email"></p>
-        <button id="signOutButton" class="button-primary" style="display:none;">Sign Out</button> <!-- Sign-out Button -->
+        <div class="header-container">
+            <button id="menuButton" class="menu-button">&#9776;</button> <!-- Left-side menu button -->
+            <h1>Manage Your Rentals</h1>
+            <div id="userOptions" class="user-options">
+                <p id="user-email"></p>
+                <button id="accountButton" class="account-button">Account</button> <!-- Right-side account button -->
+            </div>
+        </div>
     </header>
+
+    <!-- Left-side sliding navigation panel -->
+    <nav id="sideMenu" class="side-menu">
+        <button class="close-btn" id="closeMenu">&times;</button>
+        <a href="#">Home</a>
+        <a href="#">My Rentals</a>
+        <a href="#">New Rental</a>
+        <a href="#">Messages</a>
+    </nav>
+
+    <!-- Right-side sliding account panel -->
+    <nav id="accountPanel" class="account-panel">
+        <button class="close-btn" id="closeAccount">&times;</button>
+        <p>Account Options</p>
+        <button id="signOutButton" class="button-primary">Sign Out</button> <!-- Sign-out Button -->
+    </nav>
 
     <main>
         <div id="rental-list"></div>
