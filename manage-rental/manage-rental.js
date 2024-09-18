@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     let userEmail = '';
 
     // Initialize Google Sign-In after the Google Sign-In script has loaded
@@ -37,17 +37,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayLoggedInState(email) {
         document.getElementById('user-email').innerText = `Logged in as: ${email}`;
         document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
-        signOutButton.style.display = 'inline'; // Show sign-out button
+        document.getElementById('signOutButton').style.display = 'inline'; // Show sign-out button
         fetchUserRentals(email);
     }
 
     // Handle Sign-out
-    const signOutButton = document.getElementById('signOutButton');
-    signOutButton.addEventListener('click', function() {
+    document.getElementById('signOutButton').addEventListener('click', function () {
         localStorage.removeItem('userEmail');
         userEmail = '';
         document.getElementById('user-email').innerText = '';
-        signOutButton.style.display = 'none';
+        document.getElementById('signOutButton').style.display = 'none';
         document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button again
         location.reload(); // Reload page to reset rentals
     });
@@ -112,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Set Active Date - Immediate submission
-    window.setActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+    window.setActiveDate = async function (id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
@@ -136,12 +135,12 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Create calendar and submit button when "Set Rented" is clicked
-    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+    window.setRentedDate = async function (id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const rentedDateContainer = document.getElementById(`rentedDateContainer-${id}`);
-        
+
         // Avoid adding duplicate form if it already exists
         if (rentedDateContainer.querySelector('.rented-form')) return;
-        
+
         // Create the calendar input and submit button dynamically
         rentedDateContainer.innerHTML = `
             <div class="rented-form">
@@ -152,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         // Add event listener for the submit button
-        document.getElementById(`submitRentedDate-${id}`).addEventListener('click', function() {
+        document.getElementById(`submitRentedDate-${id}`).addEventListener('click', function () {
             const rentedDate = document.getElementById(`rentedDateInput-${id}`).value;
             if (!rentedDate) {
                 alert('Please select a date.');
@@ -168,9 +167,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate) {
         const url = `https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec`;
 
-        const body = { 
+        const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
-            active: rentedDate 
+            active: rentedDate
         };
 
         fetch(url, {
@@ -178,18 +177,45 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
         })
-        .then(response => response.json())
-        .then(result => {
-            if (result.status === 'success') {
-                alert('Rented date updated successfully');
-            } else {
-                alert('Failed to update rented date');
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === 'success') {
+                    alert('Rented date updated successfully');
+                } else {
+                    alert('Failed to update rented date');
             }
-        })
-        .catch(error => {
-            console.error('Error updating rented date:', error);
-        });
+            })
+            .catch(error => {
+                console.error('Error updating rented date:', error);
+            });
     }
+
+    // Left-side menu for navigation
+    const leftMenu = `
+        <div class="left-menu">
+            <h3>Navigation</h3>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/listings">My Listings</a></li>
+                <li><a href="/messages">Messages</a></li>
+                <li><a href="/payments">Payments</a></li>
+            </ul>
+        </div>
+    `;
+    document.getElementById('leftMenuContainer').innerHTML = leftMenu;
+
+    // Right-side account options like sign-out and settings
+    const rightMenu = `
+        <div class="right-menu">
+            <h3>Account</h3>
+            <ul>
+                <li><span id="user-email"></span></li>
+                <li><button id="signOutButton" style="display:none;">Sign Out</button></li>
+                <li><a href="/settings">Settings</a></li>
+            </ul>
+        </div>
+    `;
+    document.getElementById('rightMenuContainer').innerHTML = rightMenu;
 
     // Initialize Google Sign-In script
     const script = document.createElement('script');
