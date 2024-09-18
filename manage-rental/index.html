@@ -8,26 +8,21 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script> <!-- Google Sign-In Script -->
 </head>
 <body>
-    <!-- Header Section -->
     <header>
         <h1>Manage Your Rentals</h1>
         <div id="g_id_signin"></div>
         <p id="user-email"></p>
-        <button id="signOutButton" class="button-primary" style="display:none;">Sign Out</button>
+        <button id="signOutButton" class="button-primary" style="display:none;">Sign Out</button> <!-- Sign-out Button -->
     </header>
 
-    <!-- Main Content -->
     <main>
-        <!-- Rental List -->
         <div id="rental-list"></div>
     </main>
     
-    <!-- Footer -->
     <footer>
         <p>&copy; 2024 Ken Pham. All rights reserved.</p>
     </footer>
     
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script src="manage-rental.js"></script>
 </body>
