@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     let userEmail = '';
 
-    // Initialize Google Sign-In after the Google Sign-In script has loaded
+    // Initialize Google Sign-In function
     function initGoogleSignIn() {
         if (typeof google !== 'undefined' && google.accounts) {
             google.accounts.id.initialize({
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                     <div id="rentedDateContainer-${id}" class="rented-date-container"></div>
-                    <hr>
+                    <hr> <!-- Divider between each rental -->
                 `;
                 rentalList.appendChild(rentalDiv);
             }
@@ -138,38 +138,58 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create calendar and submit button when "Set Rented" is clicked
     window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const rentedDateContainer = document.getElementById(`rentedDateContainer-${id}`);
+        
+        // Avoid adding duplicate form if it already exists
+        if (rentedDateContainer.querySelector('.rented-form')) return;
+        
+        // Create the calendar input and submit button dynamically
         rentedDateContainer.innerHTML = `
-            <input type="date" id="rentedDateInput-${id}">
-            <button onclick="submitRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Submit</button>
+            <div class="rented-form">
+                <label for="rentedDateInput-${id}">Select Rented Date: </label>
+                <input type="date" id="rentedDateInput-${id}">
+                <button id="submitRentedDate-${id}" class="submit-rented-btn">Submit</button>
+            </div>
         `;
+
+        // Add event listener for the submit button
+        document.getElementById(`submitRentedDate-${id}`).addEventListener('click', function() {
+            const rentedDate = document.getElementById(`rentedDateInput-${id}`).value;
+            if (!rentedDate) {
+                alert('Please select a date.');
+                return;
+            }
+
+            // Call the backend API to update the rented date
+            updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate);
+        });
     };
 
-    // Submit rented date to Google Sheets
-    window.submitRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
-        const rentedDateInput = document.getElementById(`rentedDateInput-${id}`);
-        const rentedDate = rentedDateInput.value;
-
+    // Function to send the rented date to the server
+    function updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate) {
         const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
             rented: rentedDate
         };
 
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
-            });
-
-            const result = await response.json();
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        })
+        .then(response => response.json())
+        .then(result => {
             if (result.status === 'success') {
                 alert('Rented date updated successfully');
+                location.reload(); // Reload page to reflect changes
             }
-        } catch (error) {
-            console.error('Error updating rental status:', error);
-        }
-    };
+        })
+        .catch(error => console.error('Error updating rented date:', error));
+    }
 
-    initGoogleSignIn();
+    // Load Google Sign-In script and initialize
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.onload = initGoogleSignIn;
+    document.head.appendChild(script);
 });
