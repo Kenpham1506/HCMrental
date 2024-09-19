@@ -3,38 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Your Rentals</title>
+    <title>Manage Rentals</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="manage-rental.js" defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script> <!-- Google Sign-In Script -->
 </head>
 <body>
     <header>
-        <button id="leftMenuBtn" class="menu-btn left-menu-btn">☰</button>
         <h1>Manage Your Rentals</h1>
-        <button id="rightMenuBtn" class="menu-btn right-menu-btn">⚙</button>
-    </header>
-
-    <nav id="leftMenu" class="side-menu left-menu">
-        <button class="close-btn">&times;</button>
-        <a href="#home">Home</a>
-        <a href="#rentals">My Rentals</a>
-        <a href="#add">Add New Rental</a>
-    </nav>
-
-    <nav id="rightMenu" class="side-menu right-menu">
-        <button class="close-btn">&times;</button>
         <div id="g_id_signin"></div>
         <p id="user-email"></p>
-        <button id="signOutButton" style="display: none;">Sign Out</button>
-    </nav>
+        <button id="signOutButton" class="button-primary" style="display:none;">Sign Out</button> <!-- Sign-out Button -->
+    </header>
 
-    <main role="main">
+    <main>
         <div id="rental-list"></div>
     </main>
-
+    
     <footer>
-        <p>© 2024 Ken Pham. All rights reserved.</p>
+        <p>&copy; 2024 Ken Pham. All rights reserved.</p>
     </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script src="manage-rental.js"></script>
 </body>
 </html>
