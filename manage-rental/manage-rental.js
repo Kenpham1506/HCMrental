@@ -193,3 +193,13 @@ document.addEventListener('DOMContentLoaded', function() {
     script.onload = initGoogleSignIn;
     document.head.appendChild(script);
 });
+
+// Function to open the side menu
+function openNav() {
+    document.getElementById("sideMenu").style.width = "250px";
+}
+
+// Function to close the side menu
+function closeNav() {
+    document.getElementById("sideMenu").style.width = "0";
+}
