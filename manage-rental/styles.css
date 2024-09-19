@@ -10,6 +10,49 @@ body {
     box-sizing: border-box;
 }
 
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Left Menu */
+.left-menu {
+    width: 200px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+}
+
+.left-menu h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.left-menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.left-menu ul li {
+    margin-bottom: 10px;
+}
+
+.left-menu ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.left-menu ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Main Content */
+main {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: white;
+}
+
 /* Header */
 header {
     background-color: #3498db;
@@ -17,28 +60,41 @@ header {
     text-align: center;
     color: white;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
-    height: 150px; /* Adjust height as needed */
 }
 
 header h1 {
     font-size: 32px;
     margin: 0;
-    text-align: center;
 }
 
-/* Google Sign-In Button */
-#g_id_signin {
-    margin-top: 20px;
+/* Right Menu */
+.right-menu {
+    width: 200px;
+    background-color: #ecf0f1;
+    padding: 20px;
 }
 
-/* User email styling */
-#user-email {
-    margin-top: 20px;
-    font-weight: bold;
+.right-menu h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.right-menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.right-menu ul li {
+    margin-bottom: 10px;
+}
+
+.right-menu ul li a {
+    color: #333;
+    text-decoration: none;
+}
+
+.right-menu ul li a:hover {
+    text-decoration: underline;
 }
 
 /* Buttons */
@@ -48,25 +104,12 @@ button {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-}
-
-.button-primary {
     background-color: #3498db;
     color: white;
 }
 
-.button-primary:hover {
+button:hover {
     background-color: #2980b9;
-}
-
-/* Main Section */
-main {
-    padding: 20px;
-    max-width: 800px;
-    margin: 30px auto;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Rental List */
@@ -94,52 +137,61 @@ main {
     margin-right: 5px;
 }
 
-.dot.green {
-    background-color: #28a745;
-}
-
-.dot.orange {
-    background-color: #fd7e14;
-}
-
-.dot.red {
-    background-color: #dc3545;
-}
-
-.dot.blue {
-    background-color: #3498db;
-}
+.dot.green { background-color: #28a745; }
+.dot.orange { background-color: #fd7e14; }
+.dot.red { background-color: #dc3545; }
+.dot.blue { background-color: #3498db; }
+.dot.gray { background-color: #6c757d; }
 
 .status-text {
     display: inline-block;
     margin-left: 5px;
 }
 
-.status-text.green {
-    color: #28a745;
-}
-
-.status-text.orange {
-    color: #fd7e14;
-}
-
-.status-text.red {
-    color: #dc3545;
-}
-
-.status-text.blue {
-    color: #3498db;
-}
+.status-text.green { color: #28a745; }
+.status-text.orange { color: #fd7e14; }
+.status-text.red { color: #dc3545; }
+.status-text.blue { color: #3498db; }
+.status-text.gray { color: #6c757d; }
 
 /* Footer */
 footer {
     text-align: center;
     padding: 10px;
     background-color: #f5f5f5;
+    width: 100%;
 }
 
-/* Mobile Responsiveness */
+/* Menu Toggle Button */
+#menu-toggle {
+    display: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .left-menu, .right-menu {
+        width: 100%;
+        display: none;
+    }
+
+    .left-menu.show, .right-menu.show {
+        display: block;
+    }
+
+    #menu-toggle {
+        display: block;
+    }
+
     header h1 {
         font-size: 26px;
     }
@@ -170,4 +222,37 @@ footer {
         font-size: 14px;
         padding: 8px 16px;
     }
+}
+
+/* Google Sign-In Button */
+#g_id_signin {
+    margin-top: 20px;
+}
+
+/* User email styling */
+#user-email {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Rented Date Form */
+.rented-date-container {
+    margin-top: 10px;
+}
+
+.rented-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+}
+
+.rented-form input[type="date"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.submit-rented-btn {
+    align-self: flex-start;
 }
