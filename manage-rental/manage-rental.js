@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayLoggedInState(email) {
         document.getElementById('user-email').innerText = `Logged in as: ${email}`;
         document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
-        signOutButton.style.display = 'inline'; // Show sign-out button
+        document.querySelector('.right-menu').style.display = 'block'; // Show right menu
         fetchUserRentals(email);
     }
 
@@ -47,9 +47,10 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.removeItem('userEmail');
         userEmail = '';
         document.getElementById('user-email').innerText = '';
-        signOutButton.style.display = 'none';
+        document.querySelector('.right-menu').style.display = 'none'; // Hide right menu
         document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button again
-        location.reload(); // Reload page to reset rentals
+        document.getElementById('rental-list').innerHTML = ''; // Clear rental list
+        location.reload(); // Reload page to reset state
     });
 
     // Fetch user rentals from Google Sheets API
@@ -95,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 const rentalDiv = document.createElement('div');
-                rentalDiv.className = 'rental-item'; // Add class for styling
+                rentalDiv.className = 'rental-item';
                 rentalDiv.innerHTML = `
                     <h3>${propertyName}</h3>
                     <p><strong>Address:</strong> ${address}</p>
@@ -104,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                     <div id="rentedDateContainer-${id}" class="rented-date-container"></div>
-                    <hr> <!-- Divider between each rental -->
                 `;
                 rentalList.appendChild(rentalDiv);
             }
@@ -129,6 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.status === 'success') {
                 alert('Active date updated successfully');
+                fetchUserRentals(rentalEmail); // Refresh the rental list
             }
         } catch (error) {
             console.error('Error updating rental status:', error);
@@ -165,27 +166,56 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Function to send the rented date to the server
-    function updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate) {
+    async function updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate) {
         const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
             rented: rentedDate
         };
 
-        fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-        })
-        .then(response => response.json())
-        .then(result => {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+
+            const result = await response.json();
             if (result.status === 'success') {
                 alert('Rented date updated successfully');
-                location.reload(); // Reload page to reflect changes
+                fetchUserRentals(rentalEmail); // Refresh the rental list
             }
-        })
-        .catch(error => console.error('Error updating rented date:', error));
+        } catch (error) {
+            console.error('Error updating rented date:', error);
+        }
     }
+
+    // Handle responsive menu toggle
+    const menuToggle = document.createElement('button');
+    menuToggle.textContent = 'Menu';
+    menuToggle.id = 'menu-toggle';
+    menuToggle.addEventListener('click', toggleMenu);
+    document.querySelector('header').prepend(menuToggle);
+
+    function toggleMenu() {
+        const leftMenu = document.querySelector('.left-menu');
+        const rightMenu = document.querySelector('.right-menu');
+        leftMenu.classList.toggle('show');
+        rightMenu.classList.toggle('show');
+    }
+
+    // Adjust layout for small screens
+    function handleResponsiveLayout() {
+        const container = document.querySelector('.container');
+        if (window.innerWidth <= 768) {
+            container.classList.add('mobile-layout');
+        } else {
+            container.classList.remove('mobile-layout');
+        }
+    }
+
+    window.addEventListener('resize', handleResponsiveLayout);
+    handleResponsiveLayout(); // Initial call
 
     // Load Google Sign-In script and initialize
     const script = document.createElement('script');
