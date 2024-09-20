@@ -10,7 +10,7 @@
 <body>
     <!-- Main content -->
     <header>
-        <!-- Side Navigation Menu -->
+        <!-- Left Side Navigation Menu -->
         <div id="sideMenu" class="side-menu">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <a href="#home">Home</a>
@@ -19,13 +19,25 @@
             <a href="#profile">Profile</a>
         </div>
 
-        <!-- Open Menu Button -->
+        <!-- Open Left Menu Button -->
         <span class="open-nav" onclick="openNav()">&#9776;</span>
 
         <h1>Manage Your Rentals</h1>
+
+        <!-- Right Side Account Menu Button -->
+        <div class="account-menu-button" onclick="openAccountMenu()">&#9776;</div>
+
+        <!-- Right Side Account Menu -->
+        <div id="accountMenu" class="account-menu">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeAccountMenu()">&times;</a>
+            <a href="#accountSettings">Account Settings</a>
+            <a href="#personalSite">My Personal Site</a>
+            <a href="javascript:void(0)" id="signOutOption" onclick="signOut()">Sign Out</a>
+        </div>
+
         <div id="g_id_signin"></div>
         <p id="user-email"></p>
-        <button id="signOutButton" class="button-primary" style="display:none;">Sign Out</button> <!-- Sign-out Button -->
+        <button id="signOutButton" class="button-primary" style="display:none;" onclick="signOut()">Sign Out</button>
     </header>
 
     <main>
