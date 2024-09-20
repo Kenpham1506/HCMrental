@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
         signOutButton.style.display = 'inline'; // Show sign-out button
         fetchUserRentals(email);
+
+        // Show account settings menu option
+        document.getElementById('accountSettingsOption').style.display = 'block'; 
     }
 
     // Handle Sign-out
@@ -49,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('user-email').innerText = '';
         signOutButton.style.display = 'none';
         document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button again
+        document.getElementById('accountSettingsOption').style.display = 'none'; // Hide account settings option
         location.reload(); // Reload page to reset rentals
     });
 
@@ -177,15 +181,17 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
         })
-        .then(response => response.json())
-        .then(result => {
-            if (result.status === 'success') {
-                alert('Rented date updated successfully');
-                location.reload(); // Reload page to reflect changes
-            }
-        })
-        .catch(error => console.error('Error updating rented date:', error));
-    }
+
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Rented date updated successfully');
+        }
+    })
+    .catch(error => {
+        console.error('Error updating rented date:', error);
+    });
+}
 
     // Load Google Sign-In script and initialize
     const script = document.createElement('script');
