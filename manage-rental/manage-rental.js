@@ -196,10 +196,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Function to open the side menu
 function openNav() {
-    document.getElementById("sideMenu").style.width = "250px";
+    document.getElementById("sideMenu").classList.add("open"); // Add class to open the menu
 }
 
 // Function to close the side menu
 function closeNav() {
-    document.getElementById("sideMenu").style.width = "0";
+    document.getElementById("sideMenu").classList.remove("open"); // Remove class to close the menu
 }
