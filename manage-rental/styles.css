@@ -31,7 +31,7 @@ header h1 {
     text-align: center;
 }
 
-/* Open Menu Button (moved to the left) */
+/* Left Open Menu Button */
 .open-nav {
     font-size: 30px;
     cursor: pointer;
@@ -39,6 +39,16 @@ header h1 {
     padding: 10px;
     position: absolute;
     left: 20px; /* Adjusted left positioning */
+}
+
+/* Right Account Menu Button */
+.account-menu-button {
+    font-size: 30px;
+    cursor: pointer;
+    color: white; /* Set to white to match the header */
+    padding: 10px;
+    position: absolute;
+    right: 20px; /* Positioned to the right */
 }
 
 /* Google Sign-In Button (right side) */
@@ -152,7 +162,7 @@ footer {
     background-color: #f5f5f5;
 }
 
-/* The Side Menu (hidden by default) */
+/* The Left Side Menu (hidden by default) */
 .side-menu {
     height: 100%;
     width: 0;
@@ -166,8 +176,22 @@ footer {
     padding-top: 60px;
 }
 
+/* The Right Side Account Menu */
+.account-menu {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
 /* Menu links */
-.side-menu a {
+.side-menu a, .account-menu a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -177,25 +201,27 @@ footer {
 }
 
 /* Hover effect */
-.side-menu a:hover {
+.side-menu a:hover, .account-menu a:hover {
     color: #f1f1f1;
 }
 
-/* Close button */
-.side-menu .closebtn {
+/* Close buttons */
+.side-menu .closebtn, .account-menu .closebtn {
     position: absolute;
     top: 0;
-    right: 25px;
     font-size: 36px;
+}
+
+/* Left Close button */
+.side-menu .closebtn {
+    right: 25px;
     margin-left: 50px;
 }
 
-/* Open button (outside the menu) */
-.open-nav {
-    font-size: 30px;
-    cursor: pointer;
-    color: #111;
-    padding: 10px;
+/* Right Close button */
+.account-menu .closebtn {
+    left: 25px;
+    margin-right: 50px;
 }
 
 /* Responsive header for smaller screens */
@@ -213,8 +239,7 @@ footer {
         margin: 10px 0;
     }
 
-    /* Adjust button placement on smaller screens */
-    .open-nav {
+    .open-nav, .account-menu-button {
         position: static;
         margin-bottom: 10px;
     }
