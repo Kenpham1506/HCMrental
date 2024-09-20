@@ -201,7 +201,7 @@ footer {
 /* Responsive header for smaller screens */
 @media (max-width: 768px) {
     header {
-        flex-direction: column;
+        flex-direction: row;
         align-items: flex-start;
         height: auto;
     }
