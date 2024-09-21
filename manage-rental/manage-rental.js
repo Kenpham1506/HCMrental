@@ -201,8 +201,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 }
 
-// Initialize Google Sign-In when the page loads
-initGoogleSignIn();
+    // Load Google Sign-In script and initialize
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.onload = initGoogleSignIn;
+    document.head.appendChild(script);
 });
 
 function openleftSideMenu() {
