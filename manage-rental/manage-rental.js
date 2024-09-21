@@ -40,8 +40,9 @@ document.addEventListener('DOMContentLoaded', function() {
         signOutButton.style.display = 'inline'; // Show sign-out button
         fetchUserRentals(email);
 
-        // Show account settings menu option
+        // Show account settings option in both menus
         document.getElementById('accountSettingsOption').style.display = 'block'; 
+        document.getElementById('accountSettingsOptionRight').style.display = 'block'; 
     }
 
     // Handle Sign-out
@@ -52,7 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('user-email').innerText = '';
         signOutButton.style.display = 'none';
         document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button again
-        document.getElementById('accountSettingsOption').style.display = 'none'; // Hide account settings option
+
+        // Hide account settings option in both menus
+        document.getElementById('accountSettingsOption').style.display = 'none'; 
+        document.getElementById('accountSettingsOptionRight').style.display = 'none'; 
+
         location.reload(); // Reload page to reset rentals
     });
 
@@ -172,25 +177,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate) {
         const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
-            id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
-            rented: rentedDate
-        };
-
+            id, propertyName, address, price,imageUrl, description, host, phone, district, email: rentalEmail, rented: rentedDate };
         fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-        })
-
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    })
     .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
+    .then(result => {
+        if (result.status === 'success') {
             alert('Rented date updated successfully');
         }
     })
-    .catch(error => {
-        console.error('Error updating rented date:', error);
-    });
+    .catch(error => console.error('Error updating rental status:', error));
 }
 
     // Load Google Sign-In script and initialize
@@ -199,13 +198,3 @@ document.addEventListener('DOMContentLoaded', function() {
     script.onload = initGoogleSignIn;
     document.head.appendChild(script);
 });
-
-// Function to open the side menu
-function openNav() {
-    document.getElementById("sideMenu").style.width = "250px"; // Open the menu to 250px
-}
-
-// Function to close the side menu
-function closeNav() {
-    document.getElementById("sideMenu").style.width = "0"; // Close the menu
-}
