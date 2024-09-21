@@ -37,29 +37,36 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayLoggedInState(email) {
         document.getElementById('user-email').innerText = `Logged in as: ${email}`;
         document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
-        signOutButton.style.display = 'inline'; // Show sign-out button
+        const signOutButton = document.getElementById('signOutButton');
+        if (signOutButton) signOutButton.style.display = 'inline'; // Show sign-out button
+
         fetchUserRentals(email);
 
-        // Show account settings option in both menus
-        document.getElementById('accountSettingsOption').style.display = 'block'; 
-        document.getElementById('accountSettingsOptionRight').style.display = 'block'; 
+        // Show account settings options
+        const accountSettingsOption = document.getElementById('accountSettingsOption');
+        const accountSettingsOptionRight = document.getElementById('accountSettingsOptionRight');
+        if (accountSettingsOption) accountSettingsOption.style.display = 'block'; 
+        if (accountSettingsOptionRight) accountSettingsOptionRight.style.display = 'block'; 
     }
 
     // Handle Sign-out
     const signOutButton = document.getElementById('signOutButton');
-    signOutButton.addEventListener('click', function() {
-        localStorage.removeItem('userEmail');
-        userEmail = '';
-        document.getElementById('user-email').innerText = '';
-        signOutButton.style.display = 'none';
-        document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button again
+    if (signOutButton) {
+        signOutButton.addEventListener('click', function() {
+            localStorage.removeItem('userEmail');
+            userEmail = '';
+            document.getElementById('user-email').innerText = '';
+            signOutButton.style.display = 'none';
+            document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button again
 
-        // Hide account settings option in both menus
-        document.getElementById('accountSettingsOption').style.display = 'none'; 
-        document.getElementById('accountSettingsOptionRight').style.display = 'none'; 
+            const accountSettingsOption = document.getElementById('accountSettingsOption');
+            const accountSettingsOptionRight = document.getElementById('accountSettingsOptionRight');
+            if (accountSettingsOption) accountSettingsOption.style.display = 'none'; 
+            if (accountSettingsOptionRight) accountSettingsOptionRight.style.display = 'none'; 
 
-        location.reload(); // Reload page to reset rentals
-    });
+            location.reload(); // Reload page to reset rentals
+        });
+    }
 
     // Fetch user rentals from Google Sheets API
     async function fetchUserRentals(email) {
@@ -175,10 +182,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to send the rented date to the server
     function updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate) {
-        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
-        const body = {
-            id, propertyName, address, price,imageUrl, description, host, phone, district, email: rentalEmail, rented: rentedDate };
-        fetch(url, {
+        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec'; 
+        const body = { id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail, rented: rentedDate };
+    fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -187,14 +193,14 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(result => {
         if (result.status === 'success') {
             alert('Rented date updated successfully');
+            // Optionally, reload the page or update the UI accordingly
         }
     })
-    .catch(error => console.error('Error updating rental status:', error));
+    .catch(error => {
+        console.error('Error updating rented status:', error);
+    });
 }
 
-    // Load Google Sign-In script and initialize
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
-    script.onload = initGoogleSignIn;
-    document.head.appendChild(script);
+// Initialize Google Sign-In when the page loads
+initGoogleSignIn();
 });
