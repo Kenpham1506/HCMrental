@@ -14,55 +14,31 @@ body {
 header {
     background-color: #3498db;
     padding: 20px;
+    text-align: center;
     color: white;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    position: relative;
-    height: 100px; /* Adjusted height */
+    height: 150px;
 }
 
-/* Centering the title */
 header h1 {
-    font-size: 28px;
+    font-size: 32px;
     margin: 0;
-    flex-grow: 1;
     text-align: center;
 }
 
-/* Left Open Menu Button */
-.open-nav {
-    font-size: 30px;
-    cursor: pointer;
-    color: white; /* Set to white to match the header */
-    padding: 10px;
-    position: absolute;
-    left: 20px; /* Adjusted left positioning */
-}
-
-/* Right Account Menu Button */
-.account-menu-button {
-    font-size: 30px;
-    cursor: pointer;
-    color: white; /* Set to white to match the header */
-    padding: 10px;
-    position: absolute;
-    right: 20px; /* Positioned to the right */
-}
-
-/* Google Sign-In Button (right side) */
+/* Google Sign-In Button */
 #g_id_signin {
-    margin-left: auto;
-    margin-top: 0;
-    margin-right: 20px;
+    margin-top: 20px;
 }
 
-/* User email styling (right side) */
+/* User email styling */
 #user-email {
+    margin-top: 20px;
     font-weight: bold;
-    text-align: right;
-    margin-right: 20px;
 }
 
 /* Buttons */
@@ -162,36 +138,20 @@ footer {
     background-color: #f5f5f5;
 }
 
-/* The Left Side Menu (hidden by default) */
+/* The Side Menu (hidden by default) */
 .side-menu {
     height: 100%;
     width: 0;
     position: fixed;
     z-index: 1;
     top: 0;
-    left: 0;
     background-color: #111;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
 }
 
-/* The Right Side Account Menu */
-.account-menu {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    right: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-}
-
-/* Menu links */
-.side-menu a, .account-menu a {
+.side-menu a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -200,51 +160,45 @@ footer {
     transition: 0.3s;
 }
 
-/* Hover effect */
-.side-menu a:hover, .account-menu a:hover {
+.side-menu a:hover {
     color: #f1f1f1;
 }
 
-/* Close buttons */
-.side-menu .closebtn, .account-menu .closebtn {
+/* Close button */
+.side-menu .closebtn {
     position: absolute;
     top: 0;
-    font-size: 36px;
-}
-
-/* Left Close button */
-.side-menu .closebtn {
     right: 25px;
+    font-size: 36px;
     margin-left: 50px;
 }
 
-/* Right Close button */
-.account-menu .closebtn {
-    left: 25px;
-    margin-right: 50px;
+/* Open button (outside the menu) */
+.open-nav {
+    font-size: 30px;
+    cursor: pointer;
+    color: #111;
+    padding: 10px;
 }
 
-/* Responsive header for smaller screens */
-@media (max-width: 768px) {
-    header {
-        flex-direction: row;
-        align-items: flex-start;
-        height: auto;
-    }
+/* Left Menu */
+.side-menu.left {
+    left: 0;
+}
 
-    header h1 {
-        font-size: 24px;
-        text-align: center;
-        width: 100%;
-        margin: 10px 0;
-    }
+.open-nav.left {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
 
-    .open-nav, .account-menu-button {
-        position: static;
-        margin-bottom: 10px;
-    }
+/* Right Menu */
+.side-menu.right {
+    right: 0;
+}
 
-    #g_id_signin, #user-email {
-        margin: 10px 0;
-    }
+.open-nav.right {
+    position: absolute;
+    right: 20px;
+    top: 20px;
 }
