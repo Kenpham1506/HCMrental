@@ -212,3 +212,11 @@ function openleftSideMenu() {
 function closeleftSideMenu() {
     document.getElementById("leftSideMenu").style.width = "0"; // Close the side navigation
 }
+
+function openrightSideMenu() {
+    document.getElementById("rightSideMenu").style.width = "250px"; // Open the side navigation (example logic)
+}
+
+function closerightSideMenu() {
+    document.getElementById("rightSideMenu").style.width = "0"; // Close the side navigation
+}
