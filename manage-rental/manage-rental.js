@@ -205,10 +205,10 @@ document.addEventListener('DOMContentLoaded', function() {
 initGoogleSignIn();
 });
 
-function openNav() {
+function openleftSideMenu() {
     document.getElementById("leftSideMenu").style.width = "250px"; // Open the side navigation (example logic)
 }
 
-function closeNav() {
+function closeleftSideMenu() {
     document.getElementById("leftSideMenu").style.width = "0"; // Close the side navigation
 }
