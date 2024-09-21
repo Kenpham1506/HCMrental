@@ -12,7 +12,7 @@
     <header>
         <!-- Left Side Navigation Menu -->
         <div id="leftSideMenu" class="side-menu left">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav('leftSideMenu')">&times;</a>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeleftSideMenu()">&times;</a>
             <a href="#home">Home</a>
             <a href="#myRentals">My Rentals</a>
             <a href="#addRental">Add Rental</a>
@@ -21,14 +21,14 @@
 
         <!-- Right Side Navigation Menu -->
         <div id="rightSideMenu" class="side-menu right">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav('rightSideMenu')">&times;</a>
+            <a href="javascript:void(0)" class="closebtn" onclick="closerightSideMenu()">&times;</a>
             <a href="#accountSettings">Account Settings</a>
             <a href="javascript:void(0)" id="signOutLink">Sign Out</a> <!-- Sign-out link -->
         </div>
 
         <!-- Open Menu Buttons -->
-        <span class="open-nav left" onclick="openNav('leftSideMenu')">&#9776;</span>
-        <span class="open-nav right" onclick="openNav('rightSideMenu')">&#9776;</span>
+        <span class="open-nav left" onclick="openleftSideMenu()">&#9776;</span>
+        <span class="open-nav right" onclick="openrightSideMenu()">&#9776;</span>
 
         <h1>Manage Your Rentals</h1>
         <div id="g_id_signin"></div>
