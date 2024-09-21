@@ -204,3 +204,11 @@ document.addEventListener('DOMContentLoaded', function() {
 // Initialize Google Sign-In when the page loads
 initGoogleSignIn();
 });
+
+function openNav() {
+    document.getElementById("leftSideMenu").style.width = "250px"; // Open the side navigation (example logic)
+}
+
+function closeNav() {
+    document.getElementById("leftSideMenu").style.width = "0"; // Close the side navigation
+}
