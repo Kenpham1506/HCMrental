@@ -34,7 +34,7 @@ header h1 {
 #g_id_signin {
     position: absolute; /* Positioning */
     top: 10px; /* Adjust these values */
-    left: 10px; /* Adjust these values */
+    right: 10px; /* Adjust these values */
     display: none; /* Hide by default */
 }
 
