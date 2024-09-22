@@ -23,22 +23,21 @@
         <div id="rightSideMenu" class="side-menu right">
             <a href="javascript:void(0)" class="closebtn" onclick="closerightSideMenu()">&times;</a>
             <a href="#accountSettings">Account Settings</a>
+            <div id="g_id_signin" style="text-align: center; margin-top: 20px;"></div> <!-- Google Sign-In button -->
+            <div id="user-avatar"></div>
+            <div id="user-email"></div>
             <a href="javascript:void(0)" id="signOutButton" style="display: none;">Sign Out</a> <!-- Sign-out link -->
         </div>
 
         <!-- Open Menu Buttons -->
         <span class="open-nav left" onclick="openleftSideMenu()">&#9776;</span>
         
-        <!-- Placeholder for either the Google Sign-In button or the user's avatar -->
+        <!-- Placeholder for user avatar -->
         <span id="user-avatar-container">
             <span id="user-avatar" class="open-nav right" onclick="openrightSideMenu()"></span>
         </span>
 
-        <!-- Google Sign-In button (initially shown) -->
-        <div id="g_id_signin"></div>
-
         <h1>Manage Your Rentals</h1>
-        <p id="user-email"></p>
     </header>
 
     <main>
