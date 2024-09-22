@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Rentals</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script> <!-- Google Sign-In Script -->
 </head>
 <body>
@@ -23,21 +24,22 @@
         <div id="rightSideMenu" class="side-menu right">
             <a href="javascript:void(0)" class="closebtn" onclick="closerightSideMenu()">&times;</a>
             <a href="#accountSettings">Account Settings</a>
-            <div id="g_id_signin" style="text-align: center; margin-top: 20px;"></div> <!-- Google Sign-In button -->
-            <div id="user-avatar"></div>
-            <div id="user-email"></div>
             <a href="javascript:void(0)" id="signOutButton" style="display: none;">Sign Out</a> <!-- Sign-out link -->
         </div>
 
         <!-- Open Menu Buttons -->
         <span class="open-nav left" onclick="openleftSideMenu()">&#9776;</span>
         
-        <!-- Placeholder for user avatar -->
+        <!-- Placeholder for either the Google Sign-In button or the user's avatar -->
         <span id="user-avatar-container">
             <span id="user-avatar" class="open-nav right" onclick="openrightSideMenu()"></span>
         </span>
 
+        <!-- Google Sign-In button (initially shown) -->
+        <div id="g_id_signin"></div>
+
         <h1>Manage Your Rentals</h1>
+        <p id="user-email"></p>
     </header>
 
     <main>
@@ -48,8 +50,6 @@
         <p>&copy; 2024 Ken Pham. All rights reserved.</p>
     </footer>
     
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script src="manage-rental.js"></script>
-
 </body>
 </html>
