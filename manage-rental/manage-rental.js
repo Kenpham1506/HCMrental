@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
             userAvatar = storedAvatar;
             displayLoggedInState(userEmail, userAvatar);
         } else {
-            google.accounts.id.prompt(); // Prompt if not logged in
+            displayLoggedOutState(); // Call this function to ensure proper state
         }
     }
 
@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const userAvatarContainer = document.getElementById('user-avatar');
         if (avatar) {
             userAvatarContainer.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
+            userAvatarContainer.style.pointerEvents = 'auto'; // Enable interactions
         } else {
             userAvatarContainer.innerHTML = '';
         }
@@ -71,14 +72,16 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('g_id_signin').style.display = 'block';
         document.getElementById('rightSideMenu').style.display = 'none';
 
-        // Show Google Sign-In button and hide it visually
+        // Reset user avatar and disable interaction
         const userAvatarContainer = document.getElementById('user-avatar');
         userAvatarContainer.innerHTML = ''; // Clear any previous avatar
-        userAvatarContainer.appendChild(document.getElementById('g_id_signin')); // Show the Sign-In button
-        document.getElementById('g_id_signin').style.position = 'absolute'; // Set position to absolute
-        document.getElementById('g_id_signin').style.top = '10px'; // Adjust position as needed
-        document.getElementById('g_id_signin').style.left = '10px'; // Adjust position as needed
-        document.getElementById('g_id_signin').style.pointerEvents = 'auto'; // Ensure it is interactive
+        userAvatarContainer.style.pointerEvents = 'none'; // Disable interactions
+
+        // Position the Google Sign-In button
+        const signInButton = document.getElementById('g_id_signin');
+        signInButton.style.position = 'absolute'; // Position as needed
+        signInButton.style.top = '10px'; // Adjust position
+        signInButton.style.left = '10px'; // Adjust position
     }
 
     // Sign out logic
