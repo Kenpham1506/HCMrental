@@ -1,92 +1,153 @@
-# **HCMrental Website Style Guide**
+# HCMrental Website Style Guide
 
-## **1. Typography**
+This document serves as a uniform design guide for the HCMrental platform to ensure visual and functional consistency across all pages and devices.
 
-- **Font Family**: Choose a legible, modern sans-serif font like **Roboto**, **Lato**, or **Open Sans**.
+---
+
+## **Typography**
+
+- **Primary Font**: Arial, sans-serif
+- **Secondary Font**: Helvetica, sans-serif
 - **Font Sizes**:
-  - **Heading 1 (H1)**: 28-32px on Desktop, 22-26px on Mobile.
-  - **Heading 2 (H2)**: 24-28px on Desktop, 20-24px on Mobile.
-  - **Body Text**: 16-18px on Desktop, 14-16px on Mobile.
-  - **Button Text**: 14-16px on both Mobile and Desktop.
-- **Font Weight**: Use bold for headings and regular for body text.
-- **Line Height**: 1.5 for readability.
-- **Text Alignment**: Left-aligned for body text, center for headings when necessary.
+  - Headings (H1, H2, H3, etc.):
+    - H1: 36px
+    - H2: 30px
+    - H3: 24px
+  - Body Text: 16px
+  - Buttons: 14px (Bold)
 
-## **2. Colors**
+- **Font Colors**:
+  - Primary Text Color: #333333 (Dark Gray)
+  - Secondary Text Color: #666666 (Medium Gray)
+  - Link Color: #1a73e8 (Google Blue)
+  - Error Color: #d32f2f (Red)
 
-- **Primary Color**: Choose a strong and calming color like **#3498db** (blue) or **#27ae60** (green).
-- **Secondary Color**: Complementary to the primary, like **#2980b9** (dark blue) or **#2ecc71** (light green).
-- **Accent Colors**: Use sparingly for highlights or buttons, like **#e74c3c** (red) or **#f39c12** (yellow).
-- **Text Colors**:
-  - Headings: **#333333** (dark gray)
-  - Body Text: **#666666** (medium gray)
-  - Muted Text: **#999999** (light gray)
-- **Background Color**: Use white **#ffffff** or very light shades of gray like **#f5f5f5** for a clean look.
+---
 
-## **3. Buttons and Interactions**
+## **Color Palette**
 
-- **Primary Buttons**: Use the primary color for buttons, with white text. For example, **#3498db** button with **#ffffff** text.
-  - Hover Effect: Darken by 10-15%.
-- **Secondary Buttons**: Use the secondary color, with hover effects that lighten or darken by 10-15%.
-- **Button Shape**: Rounded corners (4-6px radius) for a modern, soft look.
-- **Padding**: 10px vertical and 20px horizontal for standard buttons.
+| Color           | Hex     | Usage                         |
+|-----------------|---------|-------------------------------|
+| Primary Blue    | #1a73e8 | Buttons, Links, Active States |
+| Secondary Blue  | #0c47b7 | Hover Effects, Highlights     |
+| Background Gray | #f5f5f5 | Page Background               |
+| White           | #ffffff | Containers, Modals            |
+| Accent Orange   | #ff6d00 | Alerts, Warnings              |
+| Success Green   | #43a047 | Success States, Notifications |
 
-## **4. Layout and Spacing**
+---
 
-- **Grid System**: Use a 12-column grid for responsive design.
-  - Desktop: Columns should span the entire width of the page, with 10-15px margins.
-  - Mobile: Collapse columns into stacked sections for easy navigation.
-- **Spacing**:
-  - Between sections: 40px on Desktop, 20px on Mobile.
-  - Inside sections (padding): 20px on Desktop, 10px on Mobile.
-- **Content Alignment**: Center key content, left-align text-heavy content for readability.
+## **Buttons**
 
-## **5. Icons and Imagery**
+- **Primary Button**: 
+  - Background: Primary Blue (#1a73e8)
+  - Text Color: White (#ffffff)
+  - Hover Background: Secondary Blue (#0c47b7)
+  - Border Radius: 5px
+  - Padding: 10px 20px
 
-- **Icons**: Use a clean and modern icon set, such as **Material Icons** or **FontAwesome**.
-  - Size: 24px for standard icons, 16px for smaller icons.
-  - Color: Follow the primary or secondary color scheme.
-- **Images**:
-  - Use high-quality images (web-optimized).
-  - Maintain a 4:3 aspect ratio for property photos.
-  - Implement a responsive image carousel for property listings.
-- **Hover Effects**: Slight zoom-in effect on images (scale 1.05) to add interactivity.
+- **Secondary Button**: 
+  - Background: White (#ffffff)
+  - Border: 2px solid Primary Blue (#1a73e8)
+  - Text Color: Primary Blue
+  - Hover Background: Light Gray (#eeeeee)
 
-## **6. Forms and Inputs**
+---
+
+## **Form Elements**
 
 - **Input Fields**:
-  - Border Color: Use light gray borders (**#cccccc**) with a slight rounded corner (4px).
-  - Focus State: Border changes to primary color on focus, with a soft shadow for accessibility.
-  - Input Padding: 12px for comfortable touch interaction on Mobile.
-- **Submit Buttons**: Primary color buttons for actions like submitting forms or signing in.
+  - Background: White (#ffffff)
+  - Border: 1px solid #cccccc
+  - Border Radius: 4px
+  - Padding: 10px
 
-## **7. Mobile Responsiveness**
+- **Validation States**:
+  - Error: Border: 1px solid Error Red (#d32f2f), Background: #fdecea
+  - Success: Border: 1px solid Success Green (#43a047), Background: #e7f5e8
+
+---
+
+## **Icons**
+
+- **Icon Color**:
+  - Primary Icon: #1a73e8
+  - Error Icon: #d32f2f
+  - Success Icon: #43a047
+
+---
+
+## **Layout & Spacing**
+
+- **Grid**: 
+  - 12-column responsive grid
+  - Gutters: 20px
+
+- **Padding & Margins**:
+  - Section Padding: 40px (desktop), 20px (mobile)
+  - Component Spacing: 20px between elements
+
+---
+
+## **Navigation**
+
+- **Left-Side Menu**:
+  - Background: Primary Blue (#1a73e8)
+  - Text: White (#ffffff)
+  - Hover: Secondary Blue (#0c47b7)
+
+- **Right-Side Menu**:
+  - Background: White (#ffffff)
+  - Text: Primary Blue (#1a73e8)
+  - Hover: Background Gray (#f5f5f5)
+
+---
+
+## **Mobile Responsiveness**
 
 - **Breakpoints**:
-  - **Desktop**: 1024px and above.
-  - **Tablet**: 768px to 1024px.
-  - **Mobile**: 320px to 768px.
-- **Navigation**:
-  - Use a **hamburger menu** on mobile to collapse navigation.
-  - Sticky navigation bar on mobile for easier access to key sections.
-- **Touch Targets**: Ensure buttons and links are at least 48px in height for easy tapping.
+  - Mobile: Up to 767px
+  - Tablet: 768px to 1024px
+  - Desktop: 1025px and up
 
-## **8. Visual Hierarchy**
+- **Font Sizes**:
+  - Mobile Headings: Scale down 20%
+  - Mobile Body Text: 14px
 
-- **Headings**: Use a clear visual hierarchy (H1 > H2 > H3) with consistent font sizes and colors.
-- **Call-to-Action (CTA)**: Bold and colorful to stand out (e.g., “Rent Now” buttons in primary color).
-- **Whitespace**: Ensure adequate whitespace between elements for clarity and ease of navigation.
+- **Menu**:
+  - Left-Side Menu: Collapsible on mobile
+  - Right-Side Menu: Opens full-screen overlay on mobile
 
-## **9. Cards and Listings**
+---
 
-- **Property Cards**:
-  - Use a clean card layout with a shadow effect for elevation.
-  - Include image, title, price, location, and status in a structured layout.
-  - Responsive: Stack elements vertically on mobile.
-- **Status Indicators**: Use color-coding (e.g., green for available, red for rented) for property availability.
+## **Media & Images**
 
-## **10. Accessibility**
+- **Image Formats**:
+  - Use .jpg or .png for property images
+  - Icon formats should be .svg for scalability
 
-- **Contrast Ratio**: Ensure text and background colors have sufficient contrast (minimum 4.5:1 for body text).
-- **Alt Text**: Use descriptive alt text for images, especially for property photos.
-- **Keyboard Navigation**: Ensure all buttons and interactive elements can be navigated using the keyboard.
+- **Image Sizes**:
+  - Thumbnails: 150x150px
+  - Full-width images: 100% width with max-height: 500px
+
+---
+
+## **Google Sign-In Button**
+
+- **Positioning**: 
+  - Right-side menu (when open)
+  - Mobile: Positioned at the top of the right-side overlay
+
+- **Style**:
+  - Background: White (#ffffff)
+  - Text: #4285f4 (Google Blue)
+  - Border: 1px solid #dddddd
+
+---
+
+## **Footer**
+
+- **Background**: Dark Gray (#333333)
+- **Text Color**: White (#ffffff)
+- **Links**: Primary Blue (#1a73e8), underline on hover
+- **Padding**: 30px
