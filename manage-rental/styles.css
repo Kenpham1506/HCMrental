@@ -30,6 +30,13 @@ header h1 {
     text-align: center;
 }
 
+/* Google Sign-In Button */
+#g_id_signin {
+    display: block;
+    margin-top: 20px;
+    text-align: center; /* Center the button */
+}
+
 /* User email styling */
 #user-email {
     margin-top: 20px;
