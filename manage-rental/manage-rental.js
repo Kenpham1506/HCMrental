@@ -71,10 +71,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('g_id_signin').style.display = 'block';
         document.getElementById('rightSideMenu').style.display = 'none';
 
-        // Set Google Sign-In button as the user avatar
+        // Show Google Sign-In button and hide it visually
         const userAvatarContainer = document.getElementById('user-avatar');
         userAvatarContainer.innerHTML = ''; // Clear any previous avatar
         userAvatarContainer.appendChild(document.getElementById('g_id_signin')); // Show the Sign-In button
+        document.getElementById('g_id_signin').style.position = 'absolute'; // Set position to absolute
+        document.getElementById('g_id_signin').style.top = '10px'; // Adjust position as needed
+        document.getElementById('g_id_signin').style.left = '10px'; // Adjust position as needed
+        document.getElementById('g_id_signin').style.pointerEvents = 'auto'; // Ensure it is interactive
     }
 
     // Sign out logic
