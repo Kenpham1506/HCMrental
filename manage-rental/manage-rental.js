@@ -39,22 +39,47 @@ document.addEventListener('DOMContentLoaded', function() {
         displayLoggedInState(userEmail, userAvatar);
     }
 
-    function displayLoggedInState(email, avatar) {
-        document.getElementById('user-email').innerText = `Logged in as: ${email}`;
-        document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
-        const signOutButton = document.getElementById('signOutButton');
-        if (signOutButton) signOutButton.style.display = 'inline'; // Show sign-out button
-
-        // Display the avatar in the right open-nav position
-        const userAvatarContainer = document.getElementById('user-avatar');
-        if (avatar) {
-            userAvatarContainer.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
-        } else {
-            userAvatarContainer.innerHTML = ''; // Clear the avatar if not available
-        }
-
-        fetchUserRentals(email);
+function displayLoggedInState(email, avatar) {
+    document.getElementById('user-email').innerText = `Logged in as: ${email}`;
+    
+    // Hide Google Sign-In button and display avatar
+    document.getElementById('g_id_signin').style.display = 'none'; 
+    const signOutButton = document.getElementById('signOutButton');
+    if (signOutButton) signOutButton.style.display = 'inline'; 
+    
+    // Show right-side menu and avatar
+    document.getElementById('rightSideMenu').style.display = 'block';
+    const userAvatarContainer = document.getElementById('user-avatar');
+    if (avatar) {
+        userAvatarContainer.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
+    } else {
+        userAvatarContainer.innerHTML = '';
     }
+
+    fetchUserRentals(email);
+}
+
+// Handle logged out state - hide right menu and show Google Sign-In
+function displayLoggedOutState() {
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userAvatar'); 
+    
+    document.getElementById('user-email').innerText = '';
+    document.getElementById('g_id_signin').style.display = 'block';
+    
+    // Hide right-side menu
+    document.getElementById('rightSideMenu').style.display = 'none';
+    
+    const userAvatarContainer = document.getElementById('user-avatar');
+    userAvatarContainer.innerHTML = ''; 
+}
+
+// Update sign out logic to call `displayLoggedOutState`
+signOutButton.addEventListener('click', function() {
+    displayLoggedOutState();
+    location.reload(); // Optionally, reload the page to reset rentals
+});
+
 
     // Handle Sign-out
     const signOutButton = document.getElementById('signOutButton');
