@@ -28,7 +28,14 @@
 
         <!-- Open Menu Buttons -->
         <span class="open-nav left" onclick="openleftSideMenu()">&#9776;</span>
-        <span class="open-nav right" onclick="openrightSideMenu()">&#9776;</span>
+        
+        <!-- Placeholder for either the Google Sign-In button or the user's avatar -->
+        <span id="user-avatar-container">
+        <span id="user-avatar" class="open-nav right" onclick="openrightSideMenu()"></span>
+        </span>
+
+        <!-- Google Sign-In button (initially shown) -->
+        <div id="g_id_signin"></div>
 
         <h1>Manage Your Rentals</h1>
         <div id="g_id_signin"></div>
