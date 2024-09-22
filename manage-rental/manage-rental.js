@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     let userEmail = '';
+    let userAvatar = ''; // Add a variable to store the user's avatar URL
 
     // Initialize Google Sign-In function
     function initGoogleSignIn() {
@@ -15,9 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
             );
 
             const storedEmail = localStorage.getItem('userEmail');
+            const storedAvatar = localStorage.getItem('userAvatar'); // Fetch stored avatar
             if (storedEmail) {
                 userEmail = storedEmail;
-                displayLoggedInState(userEmail);
+                userAvatar = storedAvatar;
+                displayLoggedInState(userEmail, userAvatar);
             } else {
                 google.accounts.id.prompt(); // Display the prompt if not logged in
             }
@@ -30,23 +33,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const idToken = response.credential;
         const decodedToken = jwt_decode(idToken);
         userEmail = decodedToken.email;
+        userAvatar = decodedToken.picture; // Get the user's avatar picture
         localStorage.setItem('userEmail', userEmail);
-        displayLoggedInState(userEmail);
+        localStorage.setItem('userAvatar', userAvatar); // Store the avatar URL
+        displayLoggedInState(userEmail, userAvatar);
     }
 
-    function displayLoggedInState(email) {
+    function displayLoggedInState(email, avatar) {
         document.getElementById('user-email').innerText = `Logged in as: ${email}`;
         document.getElementById('g_id_signin').style.display = 'none'; // Hide sign-in button
         const signOutButton = document.getElementById('signOutButton');
         if (signOutButton) signOutButton.style.display = 'inline'; // Show sign-out button
 
-        fetchUserRentals(email);
+        // Display the avatar in the right open-nav position
+        const userAvatarContainer = document.getElementById('user-avatar');
+        if (avatar) {
+            userAvatarContainer.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
+        } else {
+            userAvatarContainer.innerHTML = ''; // Clear the avatar if not available
+        }
 
-        // Show account settings options
-        const accountSettingsOption = document.getElementById('accountSettingsOption');
-        const accountSettingsOptionRight = document.getElementById('accountSettingsOptionRight');
-        if (accountSettingsOption) accountSettingsOption.style.display = 'block'; 
-        if (accountSettingsOptionRight) accountSettingsOptionRight.style.display = 'block'; 
+        fetchUserRentals(email);
     }
 
     // Handle Sign-out
@@ -54,15 +61,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (signOutButton) {
         signOutButton.addEventListener('click', function() {
             localStorage.removeItem('userEmail');
+            localStorage.removeItem('userAvatar'); // Clear stored avatar
             userEmail = '';
+            userAvatar = '';
             document.getElementById('user-email').innerText = '';
             signOutButton.style.display = 'none';
             document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button again
 
-            const accountSettingsOption = document.getElementById('accountSettingsOption');
-            const accountSettingsOptionRight = document.getElementById('accountSettingsOptionRight');
-            if (accountSettingsOption) accountSettingsOption.style.display = 'none'; 
-            if (accountSettingsOptionRight) accountSettingsOptionRight.style.display = 'none'; 
+            // Clear the avatar
+            document.getElementById('user-avatar').innerHTML = '';
 
             location.reload(); // Reload page to reset rentals
         });
