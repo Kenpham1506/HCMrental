@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     let userEmail = '';
-    let userAvatar = ''; // Add a variable to store the user's avatar URL
+    let userAvatar = ''; // Variable to store the user's avatar URL
 
     // Initialize Google Sign-In function
     function initGoogleSignIn() {
@@ -39,47 +39,40 @@ document.addEventListener('DOMContentLoaded', function() {
         displayLoggedInState(userEmail, userAvatar);
     }
 
-function displayLoggedInState(email, avatar) {
-    document.getElementById('user-email').innerText = `Logged in as: ${email}`;
-    
-    // Hide Google Sign-In button and display avatar
-    document.getElementById('g_id_signin').style.display = 'none'; 
-    const signOutButton = document.getElementById('signOutButton');
-    if (signOutButton) signOutButton.style.display = 'inline'; 
-    
-    // Show right-side menu and avatar
-    document.getElementById('rightSideMenu').style.display = 'block';
-    const userAvatarContainer = document.getElementById('user-avatar');
-    if (avatar) {
-        userAvatarContainer.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
-    } else {
-        userAvatarContainer.innerHTML = '';
+    function displayLoggedInState(email, avatar) {
+        document.getElementById('user-email').innerText = `Logged in as: ${email}`;
+        
+        // Hide Google Sign-In button and display avatar
+        document.getElementById('g_id_signin').style.display = 'none'; 
+        const signOutButton = document.getElementById('signOutButton');
+        if (signOutButton) signOutButton.style.display = 'inline'; 
+        
+        // Show right-side menu and avatar
+        document.getElementById('rightSideMenu').style.display = 'block';
+        const userAvatarContainer = document.getElementById('user-avatar');
+        if (avatar) {
+            userAvatarContainer.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
+        } else {
+            userAvatarContainer.innerHTML = '';
+        }
+
+        fetchUserRentals(email);
     }
 
-    fetchUserRentals(email);
-}
-
-// Handle logged out state - hide right menu and show Google Sign-In
-function displayLoggedOutState() {
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userAvatar'); 
-    
-    document.getElementById('user-email').innerText = '';
-    document.getElementById('g_id_signin').style.display = 'block';
-    
-    // Hide right-side menu
-    document.getElementById('rightSideMenu').style.display = 'none';
-    
-    const userAvatarContainer = document.getElementById('user-avatar');
-    userAvatarContainer.innerHTML = ''; 
-}
-
-// Update sign out logic to call `displayLoggedOutState`
-signOutButton.addEventListener('click', function() {
-    displayLoggedOutState();
-    location.reload(); // Optionally, reload the page to reset rentals
-});
-
+    // Handle logged-out state - hide right menu and show Google Sign-In
+    function displayLoggedOutState() {
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userAvatar'); 
+        
+        document.getElementById('user-email').innerText = '';
+        document.getElementById('g_id_signin').style.display = 'block';
+        
+        // Hide right-side menu
+        document.getElementById('rightSideMenu').style.display = 'none';
+        
+        const userAvatarContainer = document.getElementById('user-avatar');
+        userAvatarContainer.innerHTML = ''; 
+    }
 
     // Handle Sign-out
     const signOutButton = document.getElementById('signOutButton');
@@ -96,6 +89,7 @@ signOutButton.addEventListener('click', function() {
             // Clear the avatar
             document.getElementById('user-avatar').innerHTML = '';
 
+            displayLoggedOutState();
             location.reload(); // Reload page to reset rentals
         });
     }
@@ -195,43 +189,41 @@ signOutButton.addEventListener('click', function() {
             <div class="rented-form">
                 <label for="rentedDateInput-${id}">Select Rented Date: </label>
                 <input type="date" id="rentedDateInput-${id}">
-                <button id="submitRentedDate-${id}" class="submit-rented-btn">Submit</button>
+                <button onclick="submitRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Submit</button>
             </div>
         `;
-
-        // Add event listener for the submit button
-        document.getElementById(`submitRentedDate-${id}`).addEventListener('click', function() {
-            const rentedDate = document.getElementById(`rentedDateInput-${id}`).value;
-            if (!rentedDate) {
-                alert('Please select a date.');
-                return;
-            }
-
-            // Call the backend API to update the rented date
-            updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate);
-        });
     };
 
-    // Function to send the rented date to the server
-    function updateRentedDate(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, rentedDate) {
-        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec'; 
-        const body = { id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail, rented: rentedDate };
-    fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-    })
-    .then(response => response.json())
-    .then(result => {
-        if (result.status === 'success') {
-            alert('Rented date updated successfully');
-            // Optionally, reload the page or update the UI accordingly
+    // Submit the rented date
+    window.submitRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+        const rentedDate = document.getElementById(`rentedDateInput-${id}`).value;
+        
+        if (!rentedDate) {
+            alert('Please select a valid rented date');
+            return;
         }
-    })
-    .catch(error => {
-        console.error('Error updating rented status:', error);
-    });
-}
+
+        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
+        const body = {
+            id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
+            rented: rentedDate
+        };
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                alert('Rented date updated successfully');
+            }
+        } catch (error) {
+            console.error('Error updating rented date:', error);
+        }
+    };
 
     // Load Google Sign-In script and initialize
     const script = document.createElement('script');
