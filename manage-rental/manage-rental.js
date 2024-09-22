@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Position the Google Sign-In button
         const signInButton = document.getElementById('g_id_signin');
         signInButton.style.position = 'absolute'; // Position as needed
-        signInButton.style.top = '10px'; // Adjust position
-        signInButton.style.right = '10px'; // Adjust position
+        signInButton.style.top = '40px'; // Adjust position
+        signInButton.style.right = '30px'; // Adjust position
     }
 
     // Sign out logic
