@@ -70,8 +70,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('user-email').innerText = '';
         document.getElementById('g_id_signin').style.display = 'block';
         document.getElementById('rightSideMenu').style.display = 'none';
-        document.getElementById('user-avatar').innerHTML = '';
-        document.getElementById('rental-list').innerHTML = ''; // Clear rental list
+
+        // Set Google Sign-In button as the user avatar
+        const userAvatarContainer = document.getElementById('user-avatar');
+        userAvatarContainer.innerHTML = ''; // Clear any previous avatar
+        userAvatarContainer.appendChild(document.getElementById('g_id_signin')); // Show the Sign-In button
     }
 
     // Sign out logic
@@ -224,17 +227,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Side menu functions
 function openleftSideMenu() {
-    document.getElementById("leftSideMenu").style.width = "250px"; // Open left side menu
+    document.getElementById("leftSideMenu").style.width = "250px";
 }
 
 function closeleftSideMenu() {
-    document.getElementById("leftSideMenu").style.width = "0"; // Close left side menu
+    document.getElementById("leftSideMenu").style.width = "0";
 }
 
 function openrightSideMenu() {
-    document.getElementById("rightSideMenu").style.width = "250px"; // Open right side menu
+    document.getElementById("rightSideMenu").style.width = "250px";
 }
 
 function closerightSideMenu() {
-    document.getElementById("rightSideMenu").style.width = "0"; // Close right side menu
+    document.getElementById("rightSideMenu").style.width = "0";
 }
