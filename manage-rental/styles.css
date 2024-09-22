@@ -168,12 +168,18 @@ footer {
 }
 
 /* Close button */
-.side-menu .closebtn {
+.side-menu .closebtnleft {
     position: absolute;
     top: 0;
     right: 25px;
     font-size: 36px;
-    margin-left: 50px;
+}
+
+.side-menu .closebtnright {
+    position: absolute;
+    top: 0;
+    left: 25px;
+    font-size: 36px;
 }
 
 /* Open button (outside the menu) */
