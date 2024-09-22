@@ -32,9 +32,10 @@ header h1 {
 
 /* Google Sign-In Button */
 #g_id_signin {
-    display: block;
-    margin-top: 20px;
-    text-align: center; /* Center the button */
+    position: absolute; /* Positioning */
+    top: 10px; /* Adjust these values */
+    left: 10px; /* Adjust these values */
+    display: none; /* Hide by default */
 }
 
 /* User email styling */
