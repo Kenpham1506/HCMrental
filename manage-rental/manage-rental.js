@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     let userEmail = '';
-    let userAvatar = ''; // Variable to store the user's avatar URL
+    let userAvatar = '';
 
-    // Initialize Google Sign-In function
+    // Initialize Google Sign-In
     function initGoogleSignIn() {
         if (typeof google !== 'undefined' && google.accounts) {
             google.accounts.id.initialize({
@@ -15,17 +15,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 { theme: 'outline', size: 'large' }
             );
 
-            const storedEmail = localStorage.getItem('userEmail');
-            const storedAvatar = localStorage.getItem('userAvatar'); // Fetch stored avatar
-            if (storedEmail) {
-                userEmail = storedEmail;
-                userAvatar = storedAvatar;
-                displayLoggedInState(userEmail, userAvatar);
-            } else {
-                google.accounts.id.prompt(); // Display the prompt if not logged in
-            }
+            checkUserStatus(); // Check login status on load
         } else {
             console.error('Google Sign-In library not loaded.');
+        }
+    }
+
+    function checkUserStatus() {
+        const storedEmail = localStorage.getItem('userEmail');
+        const storedAvatar = localStorage.getItem('userAvatar');
+
+        if (storedEmail) {
+            userEmail = storedEmail;
+            userAvatar = storedAvatar;
+            displayLoggedInState(userEmail, userAvatar);
+        } else {
+            google.accounts.id.prompt(); // Prompt if not logged in
         }
     }
 
@@ -33,21 +38,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const idToken = response.credential;
         const decodedToken = jwt_decode(idToken);
         userEmail = decodedToken.email;
-        userAvatar = decodedToken.picture; // Get the user's avatar picture
+        userAvatar = decodedToken.picture;
+
         localStorage.setItem('userEmail', userEmail);
-        localStorage.setItem('userAvatar', userAvatar); // Store the avatar URL
+        localStorage.setItem('userAvatar', userAvatar);
+
         displayLoggedInState(userEmail, userAvatar);
     }
 
     function displayLoggedInState(email, avatar) {
         document.getElementById('user-email').innerText = `Logged in as: ${email}`;
-        
-        // Hide Google Sign-In button and display avatar
-        document.getElementById('g_id_signin').style.display = 'none'; 
+        document.getElementById('g_id_signin').style.display = 'none';
         const signOutButton = document.getElementById('signOutButton');
-        if (signOutButton) signOutButton.style.display = 'inline'; 
-        
-        // Show right-side menu and avatar
+        if (signOutButton) signOutButton.style.display = 'inline';
+
         document.getElementById('rightSideMenu').style.display = 'block';
         const userAvatarContainer = document.getElementById('user-avatar');
         if (avatar) {
@@ -59,36 +63,24 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchUserRentals(email);
     }
 
-    // Handle logged-out state - hide right menu and show Google Sign-In
     function displayLoggedOutState() {
         localStorage.removeItem('userEmail');
-        localStorage.removeItem('userAvatar'); 
-        
+        localStorage.removeItem('userAvatar');
+
         document.getElementById('user-email').innerText = '';
         document.getElementById('g_id_signin').style.display = 'block';
-        
-        // Hide right-side menu
         document.getElementById('rightSideMenu').style.display = 'none';
-        
-        const userAvatarContainer = document.getElementById('user-avatar');
-        userAvatarContainer.innerHTML = ''; 
+        document.getElementById('user-avatar').innerHTML = '';
+        document.getElementById('rental-list').innerHTML = ''; // Clear rental list
     }
 
-    // Handle Sign-out
+    // Sign out logic
     const signOutButton = document.getElementById('signOutButton');
     if (signOutButton) {
         signOutButton.addEventListener('click', function() {
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('userAvatar'); // Clear stored avatar
-            userEmail = '';
-            userAvatar = '';
-            document.getElementById('user-email').innerText = '';
-            signOutButton.style.display = 'none';
-            document.getElementById('g_id_signin').style.display = 'block'; // Show sign-in button again
-
-            // Clear the avatar
-            document.getElementById('user-avatar').innerHTML = '';
-
+            google.accounts.id.revoke(userEmail, (done) => {
+                console.log('User signed out.');
+            });
             displayLoggedOutState();
             location.reload(); // Reload page to reset rentals
         });
@@ -110,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Display rentals for the logged-in user
     function displayUserRentals(rentals, email) {
         const rentalList = document.getElementById('rental-list');
-        rentalList.innerHTML = ''; // Clear the list
+        rentalList.innerHTML = '';
 
         const currentDate = new Date();
 
@@ -120,8 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 let statusHTML = '';
                 if (activeDate) {
                     const activeDateObj = new Date(activeDate);
-                    const timeDiff = currentDate - activeDateObj;
-                    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                    const daysDiff = Math.floor((currentDate - activeDateObj) / (1000 * 60 * 60 * 24));
 
                     if (activeDateObj > currentDate) {
                         statusHTML = '<span class="dot blue"></span><span class="status-text blue">Rented</span>';
@@ -137,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 const rentalDiv = document.createElement('div');
-                rentalDiv.className = 'rental-item'; // Add class for styling
+                rentalDiv.className = 'rental-item';
                 rentalDiv.innerHTML = `
                     <h3>${propertyName}</h3>
                     <p><strong>Address:</strong> ${address}</p>
@@ -146,14 +137,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                     <div id="rentedDateContainer-${id}" class="rented-date-container"></div>
-                    <hr> <!-- Divider between each rental -->
+                    <hr>
                 `;
                 rentalList.appendChild(rentalDiv);
             }
         });
     }
 
-    // Set Active Date - Immediate submission
+    // Set Active Date
     window.setActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
@@ -177,14 +168,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // Create calendar and submit button when "Set Rented" is clicked
+    // Create calendar and submit button for Rented Date
     window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const rentedDateContainer = document.getElementById(`rentedDateContainer-${id}`);
-        
-        // Avoid adding duplicate form if it already exists
+
+        // Avoid duplicate form
         if (rentedDateContainer.querySelector('.rented-form')) return;
-        
-        // Create the calendar input and submit button dynamically
+
         rentedDateContainer.innerHTML = `
             <div class="rented-form">
                 <label for="rentedDateInput-${id}">Select Rented Date: </label>
@@ -197,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Submit the rented date
     window.submitRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const rentedDate = document.getElementById(`rentedDateInput-${id}`).value;
-        
+
         if (!rentedDate) {
             alert('Please select a valid rented date');
             return;
@@ -225,25 +215,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // Load Google Sign-In script and initialize
+    // Load Google Sign-In script
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
     script.onload = initGoogleSignIn;
     document.head.appendChild(script);
 });
 
+// Side menu functions
 function openleftSideMenu() {
-    document.getElementById("leftSideMenu").style.width = "250px"; // Open the side navigation (example logic)
+    document.getElementById("leftSideMenu").style.width = "250px"; // Open left side menu
 }
 
 function closeleftSideMenu() {
-    document.getElementById("leftSideMenu").style.width = "0"; // Close the side navigation
+    document.getElementById("leftSideMenu").style.width = "0"; // Close left side menu
 }
 
 function openrightSideMenu() {
-    document.getElementById("rightSideMenu").style.width = "250px"; // Open the side navigation (example logic)
+    document.getElementById("rightSideMenu").style.width = "250px"; // Open right side menu
 }
 
 function closerightSideMenu() {
-    document.getElementById("rightSideMenu").style.width = "0"; // Close the side navigation
+    document.getElementById("rightSideMenu").style.width = "0"; // Close right side menu
 }
