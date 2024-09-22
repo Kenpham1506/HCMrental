@@ -17,7 +17,7 @@
     
      - &#x21B3; HCMrental listing page: https://kenpham1506.github.io/HCMrental/rental-listing
 
-       - &#x21B3; HCMrental rental page:  https://kenpham1506.github.io/HCMrental/listing/rental-page
+       - &#x21B3; HCMrental rental page:  https://kenpham1506.github.io/HCMrental/rental-listing/rental-page
   
      - &#x21B3; HCMrental submit page:  https://kenpham1506.github.io/HCMrental/rental-submit
 
