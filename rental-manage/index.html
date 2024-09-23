@@ -30,7 +30,22 @@
         <!-- Right Side Navigation Menu -->
         <div id="rightSideMenu" class="side-menu right">
             <a href="javascript:void(0)" class="closebtnright" onclick="closerightSideMenu()">&times;</a>
-            <a href="#accountSettings">Account Settings</a>
+
+            <!-- Divider after close button -->
+            <hr class="menu-divider">
+            
+            <!-- User avatar in the right side menu -->
+            <div id="user-avatar-right"></div>
+            
+            <!-- Divider between avatar and email -->
+            <hr class="menu-divider">
+            
+            <!-- User email inside the right side menu -->
+            <p id="user-email"></p>
+            
+            <!-- Divider between email and Sign Out button -->
+            <hr class="menu-divider">
+
             <a href="javascript:void(0)" id="signOutButton" style="display: none;">Sign Out</a> <!-- Sign-out link -->
         </div>
 
@@ -46,7 +61,6 @@
         <div id="g_id_signin"></div>
 
         <h1>Rental Manage</h1>
-        <p id="user-email"></p>
     </header>
 
     <main>
