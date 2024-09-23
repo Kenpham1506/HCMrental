@@ -182,6 +182,12 @@ footer {
     font-size: 36px;
 }
 
+/* Menu divider line */
+.menu-divider {
+    border: 1px solid #818181;
+    margin: 10px 0;
+}
+
 /* Open button (outside the menu) */
 .open-nav {
     font-size: 30px;
