@@ -38,12 +38,6 @@ header h1 {
     display: none; /* Hide by default */
 }
 
-/* User email styling */
-#user-email {
-    margin-top: 20px;
-    font-weight: bold;
-}
-
 /* Buttons */
 button {
     padding: 10px 20px;
@@ -220,13 +214,22 @@ footer {
 }
 
 /* Avatar styles */
-#user-avatar img {
+#user-avatar img, #user-avatar-right img {
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
     cursor: pointer;
+    display: block;
+    margin: 0 auto;
 }
 
 #user-avatar-container {
     display: inline-block;
+}
+
+#user-email {
+    text-align: center;
+    color: #f1f1f1;
+    font-size: 18px;
+    margin: 10px 0;
 }
