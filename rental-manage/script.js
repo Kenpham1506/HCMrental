@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function displayLoggedInState(email, avatar) {
-        document.getElementById('user-email').innerText = `Logged in as: ${email}`;
+        document.getElementById('user-email').innerText = `${email}`;
         document.getElementById('g_id_signin').style.display = 'none';
         const signOutButton = document.getElementById('signOutButton');
         if (signOutButton) signOutButton.style.display = 'inline';
