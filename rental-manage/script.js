@@ -153,10 +153,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
                     <p><strong>Status:</strong> ${statusHTML}</p>
-                    <button id="set-active-btn-${id}" class="button-primary" onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
-                    <button id="set-rented-btn-${id}" class="button-primary" onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
+                    <button id="set-active-btn-${id}" class="button-active" onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
+                    <button id="set-rented-btn-${id}" class="button-rented" onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}', this)">Set Rented</button>
                     <button id="set-inactive-btn-${id}" class="button-inactive" onclick="setInactiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Inactive</button>
-                    <div id="rentedDateContainer-${id}" class="rented-date-container"></div>
+                    <div id="rentedDateContainer-${id}" class="rented-date-container" style="display:none;"></div>
                     <hr>
                 `;
                 rentalList.appendChild(rentalDiv);
@@ -200,16 +200,18 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Set Rented Date
-    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, button) {
         const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const rentedDate = new Date().toISOString().split('T')[0]; // Current date for rented date
 
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
-            active: rentedDate
+            rented: rentedDate
         };
 
-        const button = document.getElementById(`set-rented-btn-${id}`);
+        const rentedDateContainer = document.getElementById(`rentedDateContainer-${id}`);
+        rentedDateContainer.style.display = rentedDateContainer.style.display === 'none' ? 'block' : 'none';
+
         button.style.backgroundColor = 'grey';
         button.style.color = 'white';
         button.innerHTML = 'Loading...';
@@ -225,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (result.status === 'success') {
                 button.innerHTML = 'Rented Set';
                 button.disabled = true; // Disable the button after success
-                document.getElementById(`rentedDateContainer-${id}`).innerHTML = `Rented Date: ${rentedDate}`; // Show rented date
+                rentedDateContainer.innerHTML = `Rented Date: ${rentedDate}`; // Show rented date
                 console.log('Rented date set successfully:', result);
             } else {
                 button.innerHTML = 'Error';
@@ -244,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
-            active: inactiveDate
+            inactive: inactiveDate
         };
 
         const button = document.getElementById(`set-inactive-btn-${id}`);
@@ -273,6 +275,11 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error setting inactive date:', error);
         }
     };
+
+    // Set button styles for different actions
+    document.querySelectorAll('.button-active').forEach(btn => btn.style.backgroundColor = 'green');
+    document.querySelectorAll('.button-rented').forEach(btn => btn.style.backgroundColor = 'blue');
+    document.querySelectorAll('.button-inactive').forEach(btn => btn.style.backgroundColor = 'red');
 
     // Load Google Sign-In script
     const script = document.createElement('script');
