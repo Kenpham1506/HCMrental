@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     let userEmail = '';
     let userAvatar = '';
 
@@ -47,13 +47,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function displayLoggedInState(email, avatar) {
-        document.getElementById('user-email').innerText = `${email}`;
+        document.getElementById('user-email').innerText = `Logged in as: ${email}`;
         document.getElementById('g_id_signin').style.display = 'none';
         const signOutButton = document.getElementById('signOutButton');
         if (signOutButton) signOutButton.style.display = 'inline';
 
         document.getElementById('rightSideMenu').style.display = 'block';
-
+        
         const userAvatarContainer = document.getElementById('user-avatar');
         if (avatar) {
             userAvatarContainer.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             userAvatarContainer.innerHTML = '';
         }
-
+        
         const userAvatarContainerRight = document.getElementById('user-avatar-right');
         if (avatar) {
             userAvatarContainerRight.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             userAvatarContainerRight.innerHTML = '';
         }
-
+        
         fetchUserRentals(email);
     }
 
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Sign out logic
     const signOutButton = document.getElementById('signOutButton');
     if (signOutButton) {
-        signOutButton.addEventListener('click', function () {
+        signOutButton.addEventListener('click', function() {
             google.accounts.id.revoke(userEmail, (done) => {
                 console.log('User signed out.');
             });
@@ -153,9 +153,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
                     <p><strong>Status:</strong> ${statusHTML}</p>
-                    <button class="button-primary" id="setActive-${id}" onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
-                    <button class="button-primary" id="setRented-${id}" onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
-                    <button class="button-primary" id="setInactive-${id}" onclick="setInactiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Inactive</button>
+                    <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
+                    <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                     <div id="rentedDateContainer-${id}" class="rented-date-container"></div>
                     <hr>
                 `;
@@ -165,65 +164,75 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Set Active Date
-    window.setActiveDate = async function (id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+    window.setActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
             active: new Date().toISOString().split('T')[0]
         };
 
-        await updateRentalStatus(url, body, 'Active');
-    };
-
-    // Set Inactive Date
-    window.setInactiveDate = async function (id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
-        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
-        const body = {
-            id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
-            inactive: '1111-11-11' // Setting the inactive date
-        };
-
-        await updateRentalStatus(url, body, 'Inactive');
-    };
-
-    // Set Rented Date
-    window.setRentedDate = async function (id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
-        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
-        const body = {
-            id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
-            rented: new Date().toISOString().split('T')[0]
-        };
-
-        await updateRentalStatus(url, body, 'Rented');
-    };
-
-    async function updateRentalStatus(url, body, action) {
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
             });
 
-            const data = await response.json();
-            handleUpdateResponse(data, action);
+            const result = await response.json();
+            if (result.status === 'success') {
+                alert('Active date updated successfully');
+            }
         } catch (error) {
             console.error('Error updating rental status:', error);
         }
-    }
+    };
 
-    function handleUpdateResponse(data, action) {
-        if (data.success) {
-            alert(`${action} status updated successfully!`);
-            // Refresh rentals after successful update
-            fetchUserRentals(userEmail);
-        } else {
-            alert(`Failed to update status: ${data.message}`);
+    // Create calendar and submit button for Rented Date
+    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+        const rentedDateContainer = document.getElementById(`rentedDateContainer-${id}`);
+
+        // Avoid duplicate form
+        if (rentedDateContainer.querySelector('.rented-form')) return;
+
+        rentedDateContainer.innerHTML = `
+            <div class="rented-form">
+                <label for="rentedDateInput-${id}">Select Rented Date: </label>
+                <input type="date" id="rentedDateInput-${id}">
+                <button onclick="submitRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Submit</button>
+            </div>
+        `;
+    };
+
+    // Submit the rented date
+    window.submitRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+        const rentedDate = document.getElementById(`rentedDateInput-${id}`).value;
+
+        if (!rentedDate) {
+            alert('Please select a valid rented date');
+            return;
         }
-    }
 
+        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
+        const body = {
+            id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
+            active: rentedDate
+        };
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                alert('Rented date updated successfully');
+            }
+        } catch (error) {
+            console.error('Error updating rented date:', error);
+        }
+    };
 
     // Load Google Sign-In script
     const script = document.createElement('script');
