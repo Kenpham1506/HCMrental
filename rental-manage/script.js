@@ -209,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
             rented: rentedDate
         };
 
+        // Toggle the rented date container visibility
         const rentedDateContainer = document.getElementById(`rentedDateContainer-${id}`);
         rentedDateContainer.style.display = rentedDateContainer.style.display === 'none' ? 'block' : 'none';
 
@@ -277,9 +278,18 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Set button styles for different actions
-    document.querySelectorAll('.button-active').forEach(btn => btn.style.backgroundColor = 'green');
-    document.querySelectorAll('.button-rented').forEach(btn => btn.style.backgroundColor = 'blue');
-    document.querySelectorAll('.button-inactive').forEach(btn => btn.style.backgroundColor = 'red');
+    document.querySelectorAll('.button-active').forEach(btn => {
+        btn.style.backgroundColor = 'green';
+        btn.style.color = 'white'; // Set text color to white for better visibility
+    });
+    document.querySelectorAll('.button-rented').forEach(btn => {
+        btn.style.backgroundColor = 'blue';
+        btn.style.color = 'white'; // Set text color to white for better visibility
+    });
+    document.querySelectorAll('.button-inactive').forEach(btn => {
+        btn.style.backgroundColor = 'red';
+        btn.style.color = 'white'; // Set text color to white for better visibility
+    });
 
     // Load Google Sign-In script
     const script = document.createElement('script');
