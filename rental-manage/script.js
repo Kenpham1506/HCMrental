@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (signOutButton) signOutButton.style.display = 'inline';
 
         document.getElementById('rightSideMenu').style.display = 'block';
+        
         const userAvatarContainer = document.getElementById('user-avatar');
         if (avatar) {
             userAvatarContainer.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
@@ -60,7 +61,15 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             userAvatarContainer.innerHTML = '';
         }
-
+        
+        const userAvatarContainer = document.getElementById('user-avatar-right');
+        if (avatar) {
+            userAvatarContainer.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
+            userAvatarContainer.style.pointerEvents = 'auto'; // Enable interactions
+        } else {
+            userAvatarContainer.innerHTML = '';
+        }
+        
         fetchUserRentals(email);
     }
 
