@@ -62,12 +62,12 @@ document.addEventListener('DOMContentLoaded', function() {
             userAvatarContainer.innerHTML = '';
         }
         
-        const userAvatarContainer = document.getElementById('user-avatar-right');
+        const userAvatarContainerRight = document.getElementById('user-avatar-right');
         if (avatar) {
-            userAvatarContainer.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
-            userAvatarContainer.style.pointerEvents = 'auto'; // Enable interactions
+            userAvatarContainerRight.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
+            userAvatarContainerRight.style.pointerEvents = 'auto'; // Enable interactions
         } else {
-            userAvatarContainer.innerHTML = '';
+            userAvatarContainerRight.innerHTML = '';
         }
         
         fetchUserRentals(email);
