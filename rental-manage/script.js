@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     let userEmail = '';
     let userAvatar = '';
 
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (signOutButton) signOutButton.style.display = 'inline';
 
         document.getElementById('rightSideMenu').style.display = 'block';
-        
+
         const userAvatarContainer = document.getElementById('user-avatar');
         if (avatar) {
             userAvatarContainer.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             userAvatarContainer.innerHTML = '';
         }
-        
+
         const userAvatarContainerRight = document.getElementById('user-avatar-right');
         if (avatar) {
             userAvatarContainerRight.innerHTML = `<img src="${avatar}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;">`;
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             userAvatarContainerRight.innerHTML = '';
         }
-        
+
         fetchUserRentals(email);
     }
 
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Sign out logic
     const signOutButton = document.getElementById('signOutButton');
     if (signOutButton) {
-        signOutButton.addEventListener('click', function() {
+        signOutButton.addEventListener('click', function () {
             google.accounts.id.revoke(userEmail, (done) => {
                 console.log('User signed out.');
             });
@@ -153,10 +153,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
                     <p><strong>Status:</strong> ${statusHTML}</p>
-                    <button id="set-active-btn-${id}" class="button-active" onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
-                    <button id="set-rented-btn-${id}" class="button-rented" onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}', this)">Set Rented</button>
-                    <button id="set-inactive-btn-${id}" class="button-inactive" onclick="setInactiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Inactive</button>
-                    <div id="rentedDateContainer-${id}" class="rented-date-container" style="display:none;"></div>
+                    <button class="button-primary" id="setActive-${id}" onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
+                    <button class="button-primary" id="setRented-${id}" onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
+                    <button class="button-primary" id="setInactive-${id}" onclick="setInactiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Inactive</button>
+                    <div id="rentedDateContainer-${id}" class="rented-date-container"></div>
                     <hr>
                 `;
                 rentalList.appendChild(rentalDiv);
@@ -165,131 +165,65 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Set Active Date
-    window.setActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+    window.setActiveDate = async function (id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
             active: new Date().toISOString().split('T')[0]
         };
 
-        const button = document.getElementById(`set-active-btn-${id}`);
-        button.style.backgroundColor = 'grey';
-        button.style.color = 'white';
-        button.innerHTML = 'Loading...';
-
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
-            });
-
-            const result = await response.json();
-            if (result.status === 'success') {
-                button.innerHTML = 'Active Set';
-                button.disabled = true; // Disable the button after success
-                console.log('Active date set successfully:', result);
-            } else {
-                button.innerHTML = 'Error';
-                console.error('Failed to set active date:', result);
-            }
-        } catch (error) {
-            button.innerHTML = 'Error';
-            console.error('Error setting active date:', error);
-        }
-    };
-
-    // Set Rented Date
-    window.setRentedDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail, button) {
-        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
-        const rentedDate = new Date().toISOString().split('T')[0]; // Current date for rented date
-
-        const body = {
-            id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
-            rented: rentedDate
-        };
-
-        // Toggle the rented date container visibility
-        const rentedDateContainer = document.getElementById(`rentedDateContainer-${id}`);
-        rentedDateContainer.style.display = rentedDateContainer.style.display === 'none' ? 'block' : 'none';
-
-        button.style.backgroundColor = 'grey';
-        button.style.color = 'white';
-        button.innerHTML = 'Loading...';
-
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
-            });
-
-            const result = await response.json();
-            if (result.status === 'success') {
-                button.innerHTML = 'Rented Set';
-                button.disabled = true; // Disable the button after success
-                rentedDateContainer.innerHTML = `Rented Date: ${rentedDate}`; // Show rented date
-                console.log('Rented date set successfully:', result);
-            } else {
-                button.innerHTML = 'Error';
-                console.error('Failed to set rented date:', result);
-            }
-        } catch (error) {
-            button.innerHTML = 'Error';
-            console.error('Error setting rented date:', error);
-        }
+        await updateRentalStatus(url, body, 'Active');
     };
 
     // Set Inactive Date
-    window.setInactiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+    window.setInactiveDate = async function (id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
-        const inactiveDate = '1111-11-11'; // Hardcoded inactive date
-
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
-            inactive: inactiveDate
+            inactive: '1111-11-11' // Setting the inactive date
         };
 
-        const button = document.getElementById(`set-inactive-btn-${id}`);
-        button.style.backgroundColor = 'grey';
-        button.style.color = 'white';
-        button.innerHTML = 'Loading...';
+        await updateRentalStatus(url, body, 'Inactive');
+    };
 
+    // Set Rented Date
+    window.setRentedDate = async function (id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
+        const body = {
+            id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
+            rented: new Date().toISOString().split('T')[0]
+        };
+
+        await updateRentalStatus(url, body, 'Rented');
+    };
+
+    async function updateRentalStatus(url, body, action) {
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
             });
 
-            const result = await response.json();
-            if (result.status === 'success') {
-                button.innerHTML = 'Inactive Set';
-                button.disabled = true; // Disable the button after success
-                console.log('Inactive date set successfully:', result);
-            } else {
-                button.innerHTML = 'Error';
-                console.error('Failed to set inactive date:', result);
-            }
+            const data = await response.json();
+            handleUpdateResponse(data, action);
         } catch (error) {
-            button.innerHTML = 'Error';
-            console.error('Error setting inactive date:', error);
+            console.error('Error updating rental status:', error);
         }
-    };
+    }
 
-    // Set button styles for different actions
-    document.querySelectorAll('.button-active').forEach(btn => {
-        btn.style.backgroundColor = 'green';
-        btn.style.color = 'white'; // Set text color to white for better visibility
-    });
-    document.querySelectorAll('.button-rented').forEach(btn => {
-        btn.style.backgroundColor = 'blue';
-        btn.style.color = 'white'; // Set text color to white for better visibility
-    });
-    document.querySelectorAll('.button-inactive').forEach(btn => {
-        btn.style.backgroundColor = 'red';
-        btn.style.color = 'white'; // Set text color to white for better visibility
-    });
+    function handleUpdateResponse(data, action) {
+        if (data.success) {
+            alert(`${action} status updated successfully!`);
+            // Refresh rentals after successful update
+            fetchUserRentals(userEmail);
+        } else {
+            alert(`Failed to update status: ${data.message}`);
+        }
+    }
+
 
     // Load Google Sign-In script
     const script = document.createElement('script');
