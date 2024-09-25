@@ -8,7 +8,7 @@
 
 - HCMrental manage page:  https://kenpham1506.github.io/HCMrental/rental-manage
 
-# HCMrental*
+# HCMrental Development
 
 - HCMrental listing page: https://kenpham1506-private-organization.github.io/HCMrental/rental-listing
 
