@@ -68,14 +68,23 @@ main {
 
 /* Rental List */
 .rental-item {
-    border-bottom: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 15px;
+    background-color: #ffffff; /* Background color for the "island" effect */
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Light shadow for the box */
+    transition: transform 0.2s ease-in-out; /* Add a smooth hover effect */
+}
+
+.rental-item:hover {
+    transform: translateY(-5px); /* Slight "lift" on hover */
 }
 
 .rental-item h3 {
     margin: 0;
     font-size: 22px;
+    color: #2c3e50;
 }
 
 .rental-item p {
@@ -232,4 +241,68 @@ footer {
     color: #f1f1f1;
     font-size: 18px;
     margin: 10px 0;
+}
+
+/* Added rental item hover effect */
+.rental-item button {
+    margin-top: 10px;
+    background-color: #f1f1f1;
+    border: none;
+    color: #3498db;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.rental-item button:hover {
+    background-color: #3498db;
+    color: #fff;
+}
+
+/* Rental item image */
+.rental-item img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* Carousel Styles */
+.carousel {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.carousel-images {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-images img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.carousel-button.left {
+    left: 10px;
+}
+
+.carousel-button.right {
+    right: 10px;
 }
