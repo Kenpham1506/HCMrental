@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Carousel navigation functions
-    function nextImage(id) {
+    window.nextImage = function(id) {
         const carousel = document.getElementById(`carouselImages-${id}`);
         const images = carousel.querySelectorAll('img');
         let currentIndex = [...images].findIndex(img => img.style.display === 'block');
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
         images[currentIndex].style.display = 'block';
     }
 
-    function prevImage(id) {
+    window.prevImage = function(id) {
         const carousel = document.getElementById(`carouselImages-${id}`);
         const images = carousel.querySelectorAll('img');
         let currentIndex = [...images].findIndex(img => img.style.display === 'block');
