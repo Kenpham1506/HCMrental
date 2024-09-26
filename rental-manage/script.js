@@ -152,11 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3>${propertyName}</h3>
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
-                    <p><strong>Status:</strong> 
-                        <span id="rentalStatus-${rental.id}">
-                            <span class="dot red"></span><span class="status-text red">Inactive</span>
-                        </span>
-                    </p>
+                    <p><strong>Status:</strong> ${statusHTML}</p>
                     <button onclick="submitActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                     <button onclick="submitInactiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Inactive</button>
@@ -166,15 +162,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 rentalList.appendChild(rentalDiv);
             }
         });
-    }
-    
-    // Function to update the status of a single rental in the DOM
-    function updateRentalStatus(id, statusText, statusColorClass) {
-          const rentalStatus = document.querySelector(`#rentalStatus-${id}`);
-        if (rentalStatus) {
-            // Update the status text and color
-            rentalStatus.innerHTML = `<span class="dot ${statusColorClass}"></span><span class="status-text ${statusColorClass}">${statusText}</span>`;
-        }
     }
 
     // Set Active Date
@@ -195,7 +182,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.status === 'success') {
                 alert('Active date updated successfully');
-                updateRentalStatus(id, 'Active', 'green');
             }
         } catch (error) {
             console.error('Error updating rental status:', error);
@@ -246,7 +232,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.status === 'success') {
                 alert('Rented date updated successfully');
-                updateRentalStatus(id, 'Rented', 'blue');
             }
         } catch (error) {
             console.error('Error updating rented date:', error);
@@ -271,7 +256,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.status === 'success') {
                 alert('Inactive date updated successfully');
-                updateRentalStatus(id, 'Inactive', 'red');
             }
         } catch (error) {
             console.error('Error updating rental status:', error);
