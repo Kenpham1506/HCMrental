@@ -158,8 +158,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <hr>
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
-                    <p><strong>Status:</strong> ${statusHTML}</p>
                     <p><strong>Description:</strong> ${description}</p>
+                    <p><strong>Status:</strong> ${statusHTML}</p>
                 
                     <!-- Carousel starts here -->
                     <div class="carousel">
