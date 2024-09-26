@@ -152,7 +152,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3>${propertyName}</h3>
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
-                    <p><strong>Status:</strong> ${statusHTML}</p>
+                    <p><strong>Status:</strong> 
+                        <span id="rentalStatus-${rental.id}">
+                            <span class="dot red"></span><span class="status-text red">Inactive</span>
+                        </span>
+                    </p>
                     <button onclick="submitActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                     <button onclick="submitInactiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Inactive</button>
@@ -164,16 +168,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Function to refresh the rental list after an update
-    async function refreshUserRentals(email) {
-        const url = 'https://sheets.googleapis.com/v4/spreadsheets/1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE/values/Sheet1!A2:K?key=AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s';
-    
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            displayUserRentals(data.values, email);
-        } catch (error) {
-            console.error('Error fetching user rentals:', error);
+    // Function to update the status of a single rental in the DOM
+    function updateRentalStatus(id, statusText, statusColorClass) {
+          const rentalStatus = document.querySelector(`#rentalStatus-${id}`);
+        if (rentalStatus) {
+            // Update the status text and color
+            rentalStatus.innerHTML = `<span class="dot ${statusColorClass}"></span><span class="status-text ${statusColorClass}">${statusText}</span>`;
         }
     }
 
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.status === 'success') {
                 alert('Active date updated successfully');
-                refreshUserRentals(rentalEmail);
+                updateRentalStatus(id, 'Active', 'green');
             }
         } catch (error) {
             console.error('Error updating rental status:', error);
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.status === 'success') {
                 alert('Rented date updated successfully');
-                refreshUserRentals(rentalEmail);
+                updateRentalStatus(id, 'Rented', 'blue');
             }
         } catch (error) {
             console.error('Error updating rented date:', error);
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.status === 'success') {
                 alert('Inactive date updated successfully');
-                refreshUserRentals(rentalEmail);
+                updateRentalStatus(id, 'Inactive', 'red');
             }
         } catch (error) {
             console.error('Error updating rental status:', error);
