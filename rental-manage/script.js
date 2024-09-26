@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Status:</strong> ${statusHTML}</p>
                     <button onclick="submitActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
+                    <button onclick="submitInactiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Inactive</button>
                     <div id="rentedDateContainer-${id}" class="rented-date-container"></div>
                     <hr>
                 `;
@@ -234,6 +235,30 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error('Error updating rented date:', error);
+        }
+    };
+
+    // Set Inactive Date
+    window.submitInactiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
+        const body = {
+            id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
+            active: 11-11-1111
+        };
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                alert('Inactive date updated successfully');
+            }
+        } catch (error) {
+            console.error('Error updating rental status:', error);
         }
     };
 
