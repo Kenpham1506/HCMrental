@@ -153,8 +153,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
                     <p><strong>Status:</strong> ${statusHTML}</p>
-                    <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
+                    <button onclick="submitActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
+                    <button onclick="submitInactiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Inactive</button>
                     <div id="rentedDateContainer-${id}" class="rented-date-container"></div>
                     <hr>
                 `;
@@ -164,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Set Active Date
-    window.setActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+    window.submitActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
@@ -192,7 +193,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const rentedDateContainer = document.getElementById(`rentedDateContainer-${id}`);
 
         // Avoid duplicate form
-        if (rentedDateContainer.querySelector('.rented-form')) return;
+        if (rentedDateContainer.querySelector('.rented-form')) {
+            rentedDateContainer.innerHTML = '';
+            return;
+        }
 
         rentedDateContainer.innerHTML = `
             <div class="rented-form">
@@ -231,6 +235,30 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error('Error updating rented date:', error);
+        }
+    };
+
+    // Set Inactive Date
+    window.submitInactiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
+        const body = {
+            id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
+            active: "0001-01-01"
+        };
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                alert('Inactive date updated successfully');
+            }
+        } catch (error) {
+            console.error('Error updating rental status:', error);
         }
     };
 
