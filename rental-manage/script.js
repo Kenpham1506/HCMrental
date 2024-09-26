@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <button class="carousel-button left" onclick="prevImage('${id}')">&#10094;</button>
                         <button class="carousel-button right" onclick="nextImage('${id}')">&#10095;</button>
                     </div>
-                    
+                
                     <button onclick="submitActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                     <button onclick="submitInactiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Inactive</button>
