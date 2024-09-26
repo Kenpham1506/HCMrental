@@ -149,7 +149,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const rentalDiv = document.createElement('div');
                 rentalDiv.className = 'rental-item';
                 rentalDiv.innerHTML = `
-                    <h3>${propertyName}</h3>
+                    <h3><a href="../rental-page/?id=${id}">${propertyName || 'No name'}</a></h3>
+                    <hr>
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
                     <p><strong>Status:</strong> ${statusHTML}</p>
@@ -157,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                     <button onclick="submitInactiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Inactive</button>
                     <div id="rentedDateContainer-${id}" class="rented-date-container"></div>
-                    <hr>
                 `;
                 rentalList.appendChild(rentalDiv);
             }
@@ -200,6 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         rentedDateContainer.innerHTML = `
             <div class="rented-form">
+                <hr>
                 <label for="rentedDateInput-${id}">Select Rented Date: </label>
                 <input type="date" id="rentedDateInput-${id}">
                 <button onclick="submitRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Submit</button>
