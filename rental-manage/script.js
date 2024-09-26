@@ -182,6 +182,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.status === 'success') {
                 alert('Active date updated successfully');
+                
+                const rentalItem = document.querySelector(`#rental-list div[data-id="${id}"]`);
+                if (rentalItem) {
+                    const statusHTML = '<span class="dot green"></span><span class="status-text green">Active</span>';
+                    rentalItem.querySelector('.status-text').innerHTML = statusHTML;
+                }
             }
         } catch (error) {
             console.error('Error updating rental status:', error);
