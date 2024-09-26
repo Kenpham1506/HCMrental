@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
-            active: 11-11-1111
+            active: "0001-01-01"
         };
 
         try {
