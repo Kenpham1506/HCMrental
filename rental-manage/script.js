@@ -163,6 +163,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Function to refresh the rental list after an update
+    async function refreshUserRentals(email) {
+        const url = 'https://sheets.googleapis.com/v4/spreadsheets/1tr9EYkquStJozfVokqS1Ix_Ugwn7xfhUX9eOu6x5WEE/values/Sheet1!A2:K?key=AIzaSyA4SnI-q5SjQk_g1L-3yCE0yTLu_8nob8s';
+    
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            displayUserRentals(data.values, email);
+        } catch (error) {
+            console.error('Error fetching user rentals:', error);
+        }
+    }
 
     // Set Active Date
     window.submitActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
@@ -182,12 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.status === 'success') {
                 alert('Active date updated successfully');
-                
-                const rentalItem = document.querySelector(`#rental-list div[data-id="${id}"]`);
-                if (rentalItem) {
-                    const statusHTML = '<span class="dot green"></span><span class="status-text green">Active</span>';
-                    rentalItem.querySelector('.status-text').innerHTML = statusHTML;
-                }
+                refreshUserRentals(rentalEmail);
             }
         } catch (error) {
             console.error('Error updating rental status:', error);
@@ -238,6 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.status === 'success') {
                 alert('Rented date updated successfully');
+                refreshUserRentals(rentalEmail);
             }
         } catch (error) {
             console.error('Error updating rented date:', error);
@@ -262,6 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.status === 'success') {
                 alert('Inactive date updated successfully');
+                refreshUserRentals(rentalEmail);
             }
         } catch (error) {
             console.error('Error updating rental status:', error);
