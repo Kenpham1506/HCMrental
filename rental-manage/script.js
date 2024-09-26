@@ -192,7 +192,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const rentedDateContainer = document.getElementById(`rentedDateContainer-${id}`);
 
         // Avoid duplicate form
-        if (rentedDateContainer.querySelector('.rented-form')) return;
+        if (rentedDateContainer.querySelector('.rented-form')) {
+            rentedDateContainer.innerHTML = '';
+            return;
+        }
 
         rentedDateContainer.innerHTML = `
             <div class="rented-form">
