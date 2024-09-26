@@ -122,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayUserRentals(rentals, email) {
         const rentalList = document.getElementById('rental-list');
         rentalList.innerHTML = '';
-
         const currentDate = new Date();
 
         rentals.forEach((rental) => {
@@ -146,6 +145,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     statusHTML = '<span class="dot gray"></span><span class="status-text gray">No active date</span>';
                 }
 
+                // Create the carousel images by splitting the imageUrl string
+                const images = imageUrl.split(',').map(url => url.trim());
+                let imagesHTML = images.map((img, index) => 
+                    `<img src="${img}" alt="Rental Image ${index + 1}" style="display: ${index === 0 ? 'block' : 'none'};">`
+                ).join('');
+
                 const rentalDiv = document.createElement('div');
                 rentalDiv.className = 'rental-item';
                 rentalDiv.innerHTML = `
@@ -154,6 +159,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
                     <p><strong>Status:</strong> ${statusHTML}</p>
+                    <p><strong>Description:</strong> ${description}</p>
+                
+                    <!-- Carousel starts here -->
+                    <div class="carousel">
+                        <div class="carousel-images" id="carouselImages-${id}">
+                            ${imagesHTML}
+                        </div>
+                        <button class="carousel-button left" onclick="prevImage('${id}')">&#10094;</button>
+                        <button class="carousel-button right" onclick="nextImage('${id}')">&#10095;</button>
+                    </div>
+                    
                     <button onclick="submitActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                     <button onclick="submitInactiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Inactive</button>
@@ -162,6 +178,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 rentalList.appendChild(rentalDiv);
             }
         });
+    }
+
+    // Carousel navigation functions
+    function nextImage(id) {
+        const carousel = document.getElementById(`carouselImages-${id}`);
+        const images = carousel.querySelectorAll('img');
+        let currentIndex = [...images].findIndex(img => img.style.display === 'block');
+        images[currentIndex].style.display = 'none';
+        currentIndex = (currentIndex + 1) % images.length;
+        images[currentIndex].style.display = 'block';
+    }
+
+    function prevImage(id) {
+        const carousel = document.getElementById(`carouselImages-${id}`);
+        const images = carousel.querySelectorAll('img');
+        let currentIndex = [...images].findIndex(img => img.style.display === 'block');
+        images[currentIndex].style.display = 'none';
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        images[currentIndex].style.display = 'block';
     }
 
     // Set Active Date
