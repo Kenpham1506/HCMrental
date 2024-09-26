@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
                     <p><strong>Status:</strong> ${statusHTML}</p>
-                    <button onclick="setActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
+                    <button onclick="submitActiveDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Active</button>
                     <button onclick="setRentedDate('${id}', '${propertyName}', '${address}', '${price}', '${imageUrl}', '${description}', '${host}', '${phone}', '${district}', '${rentalEmail}')">Set Rented</button>
                     <div id="rentedDateContainer-${id}" class="rented-date-container"></div>
                     <hr>
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Set Active Date
-    window.setActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
+    window.submitActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
