@@ -154,7 +154,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const rentalDiv = document.createElement('div');
                 rentalDiv.className = 'rental-item';
                 rentalDiv.innerHTML = `
-                    <h3><a href="../rental-page/?id=${id}">${propertyName || 'No name'}</a></h3>
+                    <div class="rental-header">
+                        <h3><a href="../rental-page/?id=${id}">${propertyName || 'No name'}</a></h3>
+                        <a href="../rental-page/edit-rental-page/?id=${id}" class="edit-icon" title="Edit Rental">&#9998;</a>
+                    </div>
                     <hr>
                     <p><strong>Address:</strong> ${address}</p>
                     <p><strong>Price:</strong> ${price}</p>
