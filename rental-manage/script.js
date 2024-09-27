@@ -156,7 +156,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 rentalDiv.innerHTML = `
                     <div class="rental-header">
                         <h3><a href="../rental-page/?id=${id}">${propertyName || 'No name'}</a></h3>
-                        <a href="../rental-page/edit-rental-page/?id=${id}" class="edit-icon" title="Edit Rental">&#9998;</a>
+                        <a href="../rental-page/edit-rental-page/?id=${id}" class="edit-icon" title="Edit Rental" 
+                        style="
+                            padding-left: 10px;
+                            padding-right: 10px;
+                        ">&#9998;
+                        </a>
                     </div>
                     <hr>
                     <p><strong>Address:</strong> ${address}</p>
