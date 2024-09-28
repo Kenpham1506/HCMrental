@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     let userEmail = '';
     let userAvatar = '';
+    let idToken = '';  // Store the token here
 
     // Initialize Google Sign-In
     function initGoogleSignIn() {
@@ -24,23 +25,25 @@ document.addEventListener('DOMContentLoaded', function() {
     function checkUserStatus() {
         const storedEmail = localStorage.getItem('userEmail');
         const storedAvatar = localStorage.getItem('userAvatar');
+        const storedToken = localStorage.getItem('idToken'); // Retrieve token from local storage
 
-        if (storedEmail) {
+        if (storedEmail && storedToken) {
             userEmail = storedEmail;
             userAvatar = storedAvatar;
+            idToken = storedToken;  // Set idToken from local storage
             displayLoggedInState(userEmail, userAvatar);
         } else {
-            displayLoggedOutState(); // Call this function to ensure proper state
+            displayLoggedOutState();
         }
     }
 
     function handleCredentialResponse(response) {
-        const idToken = response.credential;
+        idToken = response.credential; // Use the new token from Google response
         const decodedToken = jwt_decode(idToken);
         userEmail = decodedToken.email;
         userAvatar = decodedToken.picture;
 
-        localStorage.setItem('idToken', idToken);
+        localStorage.setItem('idToken', idToken);  // Store the token in local storage
         localStorage.setItem('userEmail', userEmail);
         localStorage.setItem('userAvatar', userAvatar);
 
@@ -77,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayLoggedOutState() {
         localStorage.removeItem('userEmail');
         localStorage.removeItem('userAvatar');
+        localStorage.removeItem('idToken');  // Clear the token on logout
 
         document.getElementById('user-email').innerText = '';
         document.getElementById('g_id_signin').style.display = 'block';
@@ -86,12 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const userAvatarContainer = document.getElementById('user-avatar');
         userAvatarContainer.innerHTML = ''; // Clear any previous avatar
         userAvatarContainer.style.pointerEvents = 'none'; // Disable interactions
-
-        // Position the Google Sign-In button
-        const signInButton = document.getElementById('g_id_signin');
-        signInButton.style.position = 'absolute'; // Position as needed
-        signInButton.style.top = '40px'; // Adjust position
-        signInButton.style.right = '30px'; // Adjust position
     }
 
     // Sign out logic
@@ -158,10 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="rental-header">
                         <h3><a href="../rental-page/?id=${id}">${propertyName || 'No name'}</a></h3>
                         <a href="../rental-page/edit-rental-page/?id=${id}" class="edit-icon" title="Edit Rental" 
-                        style="
-                            padding-left: 10px;
-                            padding-right: 10px;
-                        ">&#9998;
+                        style="padding-left: 10px; padding-right: 10px;">&#9998;
                         </a>
                     </div>
                     <hr>
