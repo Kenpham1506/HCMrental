@@ -50,8 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         userEmail = decodedToken.email;
         userAvatar = decodedToken.picture;
         
-        const currentTime = new Date().getTime();
-        tokenExpiryTime = currentTime + (decodedToken.exp * 1000);  // Calculate token expiry time
+        tokenExpiryTime = decodedToken.exp * 1000;  // Calculate token expiry time
 
         localStorage.setItem('idToken', idToken);  // Store the token in local storage
         localStorage.setItem('userEmail', userEmail);
@@ -75,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         google.accounts.id.prompt((notification) => {
             if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
                 console.error('Token renewal failed or skipped.');
+                displayLoggedOutState();
             }
         });
     }
@@ -128,9 +128,9 @@ document.addEventListener('DOMContentLoaded', function() {
         signOutButton.addEventListener('click', function() {
             google.accounts.id.revoke(userEmail, (done) => {
                 console.log('User signed out.');
+                displayLoggedOutState();
+                location.reload();
             });
-            displayLoggedOutState();
-            location.reload(); // Reload page to reset rentals
         });
     }
 
