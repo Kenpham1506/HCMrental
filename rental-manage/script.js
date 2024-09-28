@@ -2,13 +2,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let userEmail = '';
     let userAvatar = '';
     let idToken = '';  // Store the token here
+    let tokenExpiryTime = 0;  // Store token expiry time
 
     // Initialize Google Sign-In
     function initGoogleSignIn() {
         if (typeof google !== 'undefined' && google.accounts) {
             google.accounts.id.initialize({
                 client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
-                callback: handleCredentialResponse
+                callback: handleCredentialResponse,
+                auto_select: true  // Automatically select if user already signed in
             });
 
             google.accounts.id.renderButton(
@@ -17,6 +19,9 @@ document.addEventListener('DOMContentLoaded', function() {
             );
 
             checkUserStatus(); // Check login status on load
+
+            // Automatically check token validity and refresh if necessary
+            setInterval(checkTokenValidity, 30000); // Check every 30 seconds
         } else {
             console.error('Google Sign-In library not loaded.');
         }
@@ -26,11 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const storedEmail = localStorage.getItem('userEmail');
         const storedAvatar = localStorage.getItem('userAvatar');
         const storedToken = localStorage.getItem('idToken'); // Retrieve token from local storage
+        const storedExpiryTime = localStorage.getItem('tokenExpiryTime'); // Get expiry time
 
-        if (storedEmail && storedToken) {
+        if (storedEmail && storedToken && storedExpiryTime) {
             userEmail = storedEmail;
             userAvatar = storedAvatar;
-            idToken = storedToken;  // Set idToken from local storage
+            idToken = storedToken;
+            tokenExpiryTime = parseInt(storedExpiryTime, 10);  // Set token expiry time
             displayLoggedInState(userEmail, userAvatar);
         } else {
             displayLoggedOutState();
@@ -42,12 +49,34 @@ document.addEventListener('DOMContentLoaded', function() {
         const decodedToken = jwt_decode(idToken);
         userEmail = decodedToken.email;
         userAvatar = decodedToken.picture;
+        
+        const currentTime = new Date().getTime();
+        tokenExpiryTime = currentTime + (decodedToken.exp * 1000);  // Calculate token expiry time
 
         localStorage.setItem('idToken', idToken);  // Store the token in local storage
         localStorage.setItem('userEmail', userEmail);
         localStorage.setItem('userAvatar', userAvatar);
+        localStorage.setItem('tokenExpiryTime', tokenExpiryTime);  // Store expiry time
 
         displayLoggedInState(userEmail, userAvatar);
+    }
+
+    function checkTokenValidity() {
+        const currentTime = new Date().getTime();
+        
+        if (currentTime > tokenExpiryTime - 60000) {  // Renew token if it's about to expire in 1 minute
+            console.log('Token is about to expire. Attempting to renew...');
+            renewToken();  // Trigger token renewal
+        }
+    }
+
+    function renewToken() {
+        // Trigger the One Tap prompt or refresh the token
+        google.accounts.id.prompt((notification) => {
+            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                console.error('Token renewal failed or skipped.');
+            }
+        });
     }
 
     function displayLoggedInState(email, avatar) {
@@ -80,7 +109,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayLoggedOutState() {
         localStorage.removeItem('userEmail');
         localStorage.removeItem('userAvatar');
-        localStorage.removeItem('idToken');  // Clear the token on logout
+        localStorage.removeItem('idToken');
+        localStorage.removeItem('tokenExpiryTime');  // Clear token expiry time on logout
 
         document.getElementById('user-email').innerText = '';
         document.getElementById('g_id_signin').style.display = 'block';
