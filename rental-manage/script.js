@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set Active Date
     window.submitActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const idToken = localStorage.getItem('idToken');
-        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
+        const url = 'https://script.google.com/macros/s/AKfycbzny4gZ91_MqW-lKBZA9AMVe9SrEW12Wqhq2AaOt0k-YkBsSCuyb97oLqEhg0jlCX3T/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
             active: new Date().toISOString().split('T')[0],
