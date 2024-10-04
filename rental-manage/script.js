@@ -245,8 +245,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             const response = await fetch(url, {
+                redirect: "follow",
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify(body),
             });
 
