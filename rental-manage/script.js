@@ -1,13 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     let userEmail = '';
     let userAvatar = '';
+    let idToken = '';  // Store the token here
+    let tokenExpiryTime = 0;  // Store token expiry time
 
     // Initialize Google Sign-In
     function initGoogleSignIn() {
         if (typeof google !== 'undefined' && google.accounts) {
             google.accounts.id.initialize({
                 client_id: '809802956700-h31b6mb6lrria57o6nr38kafbqnhl8o6.apps.googleusercontent.com',
-                callback: handleCredentialResponse
+                callback: handleCredentialResponse,
+                auto_select: true  // Automatically select if user already signed in
             });
 
             google.accounts.id.renderButton(
@@ -16,6 +19,9 @@ document.addEventListener('DOMContentLoaded', function() {
             );
 
             checkUserStatus(); // Check login status on load
+
+            // Automatically check token validity and refresh if necessary
+            setInterval(checkTokenValidity, 30000); // Check every 30 seconds
         } else {
             console.error('Google Sign-In library not loaded.');
         }
@@ -24,26 +30,53 @@ document.addEventListener('DOMContentLoaded', function() {
     function checkUserStatus() {
         const storedEmail = localStorage.getItem('userEmail');
         const storedAvatar = localStorage.getItem('userAvatar');
+        const storedToken = localStorage.getItem('idToken'); // Retrieve token from local storage
+        const storedExpiryTime = localStorage.getItem('tokenExpiryTime'); // Get expiry time
 
-        if (storedEmail) {
+        if (storedEmail && storedToken && storedExpiryTime) {
             userEmail = storedEmail;
             userAvatar = storedAvatar;
+            idToken = storedToken;
+            tokenExpiryTime = parseInt(storedExpiryTime, 10);  // Set token expiry time
             displayLoggedInState(userEmail, userAvatar);
         } else {
-            displayLoggedOutState(); // Call this function to ensure proper state
+            displayLoggedOutState();
         }
     }
 
     function handleCredentialResponse(response) {
-        const idToken = response.credential;
+        idToken = response.credential; // Use the new token from Google response
         const decodedToken = jwt_decode(idToken);
         userEmail = decodedToken.email;
         userAvatar = decodedToken.picture;
+        
+        tokenExpiryTime = decodedToken.exp * 1000;  // Calculate token expiry time
 
+        localStorage.setItem('idToken', idToken);  // Store the token in local storage
         localStorage.setItem('userEmail', userEmail);
         localStorage.setItem('userAvatar', userAvatar);
+        localStorage.setItem('tokenExpiryTime', tokenExpiryTime);  // Store expiry time
 
         displayLoggedInState(userEmail, userAvatar);
+    }
+
+    function checkTokenValidity() {
+        const currentTime = new Date().getTime();
+        
+        if (currentTime > tokenExpiryTime - 60000) {  // Renew token if it's about to expire in 1 minute
+            console.log('Token is about to expire. Attempting to renew...');
+            renewToken();  // Trigger token renewal
+        }
+    }
+
+    function renewToken() {
+        // Trigger the One Tap prompt or refresh the token
+        google.accounts.id.prompt((notification) => {
+            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                console.error('Token renewal failed or skipped.');
+                displayLoggedOutState();
+            }
+        });
     }
 
     function displayLoggedInState(email, avatar) {
@@ -76,6 +109,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayLoggedOutState() {
         localStorage.removeItem('userEmail');
         localStorage.removeItem('userAvatar');
+        localStorage.removeItem('idToken');
+        localStorage.removeItem('tokenExpiryTime');  // Clear token expiry time on logout
 
         document.getElementById('user-email').innerText = '';
         document.getElementById('g_id_signin').style.display = 'block';
@@ -85,12 +120,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const userAvatarContainer = document.getElementById('user-avatar');
         userAvatarContainer.innerHTML = ''; // Clear any previous avatar
         userAvatarContainer.style.pointerEvents = 'none'; // Disable interactions
-
-        // Position the Google Sign-In button
-        const signInButton = document.getElementById('g_id_signin');
-        signInButton.style.position = 'absolute'; // Position as needed
-        signInButton.style.top = '40px'; // Adjust position
-        signInButton.style.right = '30px'; // Adjust position
     }
 
     // Sign out logic
@@ -99,9 +128,9 @@ document.addEventListener('DOMContentLoaded', function() {
         signOutButton.addEventListener('click', function() {
             google.accounts.id.revoke(userEmail, (done) => {
                 console.log('User signed out.');
+                displayLoggedOutState();
+                location.reload();
             });
-            displayLoggedOutState();
-            location.reload(); // Reload page to reset rentals
         });
     }
 
@@ -157,10 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="rental-header">
                         <h3><a href="../rental-page/?id=${id}">${propertyName || 'No name'}</a></h3>
                         <a href="../rental-page/edit-rental-page/?id=${id}" class="edit-icon" title="Edit Rental" 
-                        style="
-                            padding-left: 10px;
-                            padding-right: 10px;
-                        ">&#9998;
+                        style="padding-left: 10px; padding-right: 10px;">&#9998;
                         </a>
                     </div>
                     <hr>
@@ -209,16 +235,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set Active Date
     window.submitActiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
-        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
+        const idToken = localStorage.getItem('idToken');
+        const url = 'https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
-            active: new Date().toISOString().split('T')[0]
+            active: new Date().toISOString().split('T')[0],
+            idToken
         };
 
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: JSON.stringify(body),
             });
 
@@ -259,17 +287,19 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Please select a valid rented date');
             return;
         }
-
-        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
+        
+        const idToken = localStorage.getItem('idToken');
+        const url = 'https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
-            active: rentedDate
+            active: rentedDate,
+            idToken
         };
 
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: JSON.stringify(body),
             });
 
@@ -284,16 +314,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set Inactive Date
     window.submitInactiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
-        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
+        const idToken = localStorage.getItem('idToken');
+        const url = 'https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
-            active: "0001-01-01"
+            active: "0001-01-01",
+            idToken
         };
 
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: JSON.stringify(body),
             });
 
