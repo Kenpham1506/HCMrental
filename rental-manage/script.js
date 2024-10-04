@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const idToken = localStorage.getItem('idToken');
-        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
+        const url = 'https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
             active: rentedDate,
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: JSON.stringify(body),
             });
 
@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set Inactive Date
     window.submitInactiveDate = async function(id, propertyName, address, price, imageUrl, description, host, phone, district, rentalEmail) {
         const idToken = localStorage.getItem('idToken');
-        const url = 'https://keen-ripple-tub.glitch.me/https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
+        const url = 'https://script.google.com/macros/s/AKfycbzXpkvvrpzgfzZrA_UZLdpbU7Zpd5pyxmKI6nxYLoWVsKBy0Qr29MkU2yFmpU2NQKEG/exec';
         const body = {
             id, propertyName, address, price, imageUrl, description, host, phone, district, email: rentalEmail,
             active: "0001-01-01",
@@ -325,7 +325,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: JSON.stringify(body),
             });
 
